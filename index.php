@@ -7,7 +7,7 @@ include 'includes/header.php';
 <div class="custom-frame overflow-hidden relative">
     <!-- Header -->
     <header class="absolute top-0 w-full z-50 bg-transparent">
-        <div class="mx-auto px-6 flex justify-between items-center h-24">
+        <div class="mx-auto px-12 flex justify-between items-center h-24 ">
             <nav class="flex gap-10 items-center">
                 <a class="text-[11px] font-bold uppercase tracking-widest text-black" href="#">Home</a>
                 <a class="text-[11px] font-bold uppercase tracking-widest text-black" href="#">Request Order</a>
@@ -34,7 +34,7 @@ include 'includes/header.php';
                 <img alt="Premium Headphones" class="w-full h-full object-contain" src="assets/images/img_cda5e480.jpg" />
             </div>
             <div class="w-64 h-80 bg-white/40 backdrop-blur-md rounded-[3rem] shadow-2xl p-6 floating-delayed mt-10">
-                <img alt="Pro Device" class="w-full h-full object-contain" src="assets/images/img_41c53f7d.jpg" />
+                <img alt="IPad" class="w-full h-full object-contain" src="assets/images/img_fc558cd.png" />
             </div>
             <div class="w-64 h-80 bg-white/40 backdrop-blur-md rounded-[3rem] shadow-2xl p-6 floating-more-delayed -mt-20">
                 <img alt="Flagship Smartphone" class="w-full h-full object-contain" src="assets/images/img_5ab27c1d.jpg" />
@@ -55,12 +55,12 @@ include 'includes/header.php';
     <!-- Category Grid -->
     <section class="mt-6">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="bg-[#d7e9f7] rounded-[2rem] p-12 h-[500px] flex flex-col justify-between group overflow-hidden relative">
+            <div class="bg-[#d7e9f7] rounded-[2rem] h-[500px] flex flex-col justify-between group overflow-hidden relative px-12 py-8">
                 <div>
                     <h3 class="text-4xl font-bold text-[#1a3a5f] leading-tight">Audio<br />Systems</h3>
                 </div>
                 <div class="relative flex justify-center flex-1">
-                    <img alt="Audio Systems" class="w-4/5 object-contain group-hover:scale-105 transition-transform duration-700" src="assets/images/img_59ed7574.jpg" />
+                    <img alt="Audio Systems" class="w-1/2 object-contain group-hover:scale-105 transition-transform duration-700" src="assets/images/img_59ed7574.jpg" />
                 </div>
                 <div class="flex justify-between items-center">
                     <p class="text-sm font-bold text-[#1a3a5f]/60 uppercase tracking-widest">Hi-Fi Solutions</p>
@@ -72,19 +72,19 @@ include 'includes/header.php';
                     <h3 class="text-4xl font-bold text-[#1e4620] leading-tight">Computing<br />Devices</h3>
                 </div>
                 <div class="relative flex justify-center flex-1 items-center">
-                    <img alt="Computing" class="object-contain group-hover:scale-105 transition-transform duration-700 h-[90%] w-auto" src="assets/images/img_2a743d1d.jpg" />
+                    <img alt="Computing" class="w-4/5 pb-10 object-contain group-hover:scale-105 transition-transform duration-700" src="assets/images/img_7778cd9c.png" />
                 </div>
                 <div class="flex justify-between items-center">
                     <p class="text-sm font-bold text-[#1e4620]/60 uppercase tracking-widest">Pro Performance</p>
                     <span class="material-symbols-outlined text-2xl">north_east</span>
                 </div>
             </div>
-            <div class="bg-slate-100 rounded-[2rem] p-12 h-[500px] flex flex-col justify-between group overflow-hidden relative">
+            <div class="bg-slate-100 rounded-[2rem] h-[500px] flex flex-col justify-between group overflow-hidden relative px-12 py-8">
                 <div>
                     <h3 class="text-4xl font-bold text-slate-900 leading-tight">Mobile<br />Essentials</h3>
                 </div>
                 <div class="relative flex justify-center flex-1">
-                    <img alt="Mobile" class="w-4/5 object-contain group-hover:scale-105 transition-transform duration-700" src="assets/images/img_6e30900c.jpg" />
+                    <img alt="Mobile" class="w-1/2 object-contain group-hover:scale-105 transition-transform duration-700" src="assets/images/img_6e30900c.jpg" />
                 </div>
                 <div class="flex justify-between items-center">
                     <p class="text-sm font-bold text-slate-500 uppercase tracking-widest">Connected Living</p>
@@ -98,7 +98,9 @@ include 'includes/header.php';
         <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
             <div class="bg-surface-container-low rounded-[1.5rem] py-6 px-8 flex justify-between items-center cursor-pointer hover:bg-surface-container transition-colors border border-black/5">
                 <span class="font-headline-md text-base tracking-tight">Personal Audio</span>
-                <img alt="" class="h-8 w-auto grayscale opacity-50" src="https://lh3.googleusercontent.com/aida/ADBb0ug0G7w-vul81qC-mikSerbzaiGm2KMWz_1OTtfHlDGIidXhQ7kz6PLlBgEQmPpNAx9byaxzE7pSTFR1Y0r7WnyfDldLRcVIxnsHDLHfwbmCXEH30tOIpXvc6m9Ap6OiCrVgDo1jjG7bPAYm0dxqPbEv2UNMdpwTdrejZtMds2ntceVmkh2BP5cnBaMPPnGH-qt9w3OF6KcAM9GJXbirIlLkgStmLwWlvmNZv8LVU0rI7MRRpxHQAQLFT_aYjXSm9s-VCxIbseo7" />
+                <div class="w-10 h-6 bg-blue-400 rounded-full flex items-center justify-center">
+                    <div class="w-4 h-1 bg-white rounded-full"></div>
+                </div>
             </div>
             <div class="bg-surface-container-low rounded-[1.5rem] py-6 px-8 flex justify-between items-center cursor-pointer hover:bg-surface-container transition-colors border border-black/5">
                 <span class="font-headline-md text-base tracking-tight">Smart Home</span>
@@ -130,7 +132,7 @@ include 'includes/header.php';
             <!-- Product Card 1 -->
             <div class="group">
                 <div class="aspect-[3/4] bg-surface-container-low rounded-[2rem] overflow-hidden mb-6 flex items-end justify-center relative border border-black/5">
-                    <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-80">
+                    <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-80 group-hover:opacity-100 group-hover:scale-[1.5]  transition-all duration-700">
                         <div class="w-full h-full bg-[radial-gradient(circle,_#bae6fd_0%,_transparent_75%)] blur-3xl"></div>
                     </div><img alt="Sonic Core 2000" class="w-full h-[90%] object-contain object-bottom group-hover:scale-105 transition-transform duration-700 relative z-10" src="assets/images/img_f65dbb08.jpg" />
                 </div>
@@ -144,7 +146,7 @@ include 'includes/header.php';
             <!-- Product Card 2 -->
             <div class="group">
                 <div class="aspect-[3/4] bg-surface-container-low rounded-[2rem] overflow-hidden mb-6 flex items-end justify-center relative border border-black/5">
-                    <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-80">
+                    <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-80 group-hover:opacity-100 group-hover:scale-[1.5]  transition-all duration-700">
                         <div class="w-full h-full bg-[radial-gradient(circle,_#2563eb_0%,_transparent_75%)] blur-3xl"></div>
                     </div><img alt="Type-X" class="w-full h-[90%] object-contain object-bottom group-hover:scale-105 transition-transform duration-700 relative z-10" src="assets/images/img_9befdc43.jpg" />
                 </div>
@@ -158,7 +160,7 @@ include 'includes/header.php';
             <!-- Product Card 3 -->
             <div class="group">
                 <div class="aspect-[3/4] bg-surface-container-low rounded-[2rem] overflow-hidden mb-6 flex items-end justify-center relative border border-black/5">
-                    <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-80">
+                    <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-80 group-hover:opacity-100 group-hover:scale-[1.5] transition-all duration-700">
                         <div class="w-full h-full bg-[radial-gradient(circle,_#d8b4fe_0%,_transparent_75%)] blur-3xl"></div>
                     </div><img alt="Slate Pro" class="w-full h-[90%] object-contain object-bottom group-hover:scale-105 transition-transform duration-700 relative z-10" src="assets/images/img_5501e0e5.jpg" />
                 </div>
@@ -172,7 +174,7 @@ include 'includes/header.php';
             <!-- Product Card 4 -->
             <div class="group">
                 <div class="aspect-[3/4] bg-surface-container-low rounded-[2rem] overflow-hidden mb-6 flex items-end justify-center relative border border-black/5">
-                    <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-80">
+                    <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-80 group-hover:opacity-100 group-hover:scale-[1.5]  transition-all duration-700">
                         <div class="w-full h-full bg-[radial-gradient(circle,_#fb923c_0%,_transparent_75%)] blur-3xl"></div>
                     </div><img alt="Volt Shell" class="w-full h-[90%] object-contain object-bottom group-hover:scale-105 transition-transform duration-700 relative z-10" src="assets/images/img_75af29ec.jpg" />
                 </div>
@@ -197,7 +199,7 @@ include 'includes/header.php';
                         <p class="text-sm opacity-70 mb-8 leading-relaxed">Immersive 3D audio precision for high-fidelity listeners.</p>
                         <button class="bg-[#1a3a24] text-white px-8 py-3 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-black transition-colors">Explore</button>
                     </div>
-                    <div class="absolute right-[-10%] top-1/2 -translate-y-1/2 w-[55%] group-hover:scale-105 transition-transform duration-700">
+                    <div class="absolute right-[-5%] top-1/2 -translate-y-1/2 w-[40%] group-hover:-translate-x-3 transition-transform duration-700">
                         <img alt="Audio Device" class="w-full h-auto object-contain drop-shadow-2xl" src="assets/images/img_256a167e.jpg" />
                     </div>
                 </div>
@@ -208,7 +210,7 @@ include 'includes/header.php';
                         <p class="text-sm opacity-70 mb-8 leading-relaxed">Power all your devices simultaneously with smart delivery.</p>
                         <button class="bg-black text-white px-8 py-3 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-black/80 transition-colors">Explore</button>
                     </div>
-                    <div class="absolute right-[-5%] bottom-[-15%] w-[55%] group-hover:-translate-y-3 transition-transform duration-700">
+                    <div class="absolute right-[1%] bottom-[-20%] w-[35%] group-hover:-translate-y-3 transition-transform duration-700">
                         <img alt="Power Device" class="w-full h-auto object-contain drop-shadow-2xl" src="assets/images/img_eca8edd1.jpg" />
                     </div>
                 </div>
@@ -219,16 +221,16 @@ include 'includes/header.php';
                     <h3 class="font-headline-md text-5xl mb-5 tracking-tight leading-[1.1]">Precision Touch Interface</h3>
                     <p class="text-base opacity-70 max-w-sm leading-relaxed">Revolutionary tactile feedback for the ultimate creative workflow.</p>
                 </div>
-                <div class="absolute right-[-5%] top-1/2 -translate-y-1/2 w-[70%] group-hover:scale-105 transition-transform duration-700">
-                    <img alt="Interface" class="w-full h-auto object-contain drop-shadow-2xl" src="assets/images/img_4e39c1fa.jpg" />
+                <div class="absolute right-[0%] top-1/2 -translate-y-1/2 w-[70%] group-hover:-translate-x-3 transition-transform duration-700">
+                    <img alt="Interface" class="w-full h-auto object-contain drop-shadow-2xl" src="assets/images/img_ff8dc7dc.png" />
                 </div>
                 <div class="z-10 relative mt-56">
                     <button class="bg-[#1a2c42] text-white px-10 py-4 rounded-full text-[12px] font-bold uppercase tracking-widest hover:bg-black transition-colors">Explore</button>
                 </div>
             </div>
         </div>
-        <!-- Brand Story Minimal Section -->
-        <section class="mt-24 flex flex-col items-center text-center mx-auto w-full"><img alt="Designed for the Modern World" class="w-full h-auto rounded-[2rem]" src="assets/images/img_b731058b.jpg" /></section>
+        <!-- New release section -->
+        <section class="rounded-[2rem] mt-24 flex flex-col items-center text-center mx-auto overflow-hidden h-[80vh] w-full"><img alt="Samsung S26 Ultra" class="w-full" src="assets/images/img_b731058c.jpg" /></section>
         <!-- Call to Action Banner -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-16">
             <div class="bg-[#fdf9d8] rounded-[2rem] p-16 flex flex-col justify-between min-h-[440px] relative overflow-hidden group">
@@ -253,7 +255,7 @@ include 'includes/header.php';
                 </div>
                 <div class="w-full md:absolute md:right-[-25%] md:top-1/2 md:-translate-y-1/2 w-full md:w-[80%] max-w-[400px] md:max-w-none my-8 md:my-0 flex justify-center items-center">
                     <div class="absolute inset-0 bg-[radial-gradient(circle,_rgba(255,255,255,0.8)_0%,_transparent_70%)] blur-2xl z-0 hidden md:block"></div>
-                    <img alt="MacBook Pro product image (half view)" class="w-full h-auto object-contain drop-shadow-2xl md:group-hover:-translate-x-1 md:group-hover:drop-shadow-[0_25px_25px_rgba(0,0,0,0.3)] transition-all duration-500 z-10 relative motion-reduce:transition-none motion-reduce:transform-none" src="assets/images/img_2a743d1d.jpg" />
+                    <img alt="MacBook Pro apply now" class="w-full h-auto object-contain drop-shadow-2xl md:group-hover:-translate-x-1 md:group-hover:drop-shadow-[0_25px_25px_rgba(0,0,0,0.3)] transition-all duration-500 z-10 relative motion-reduce:transition-none motion-reduce:transform-none" src="assets/images/img_cd9f9dd9.png" />
                 </div>
             </div>
         </div>
