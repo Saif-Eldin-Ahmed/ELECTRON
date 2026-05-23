@@ -51,13 +51,13 @@ include 'includes/header.php';
     <section class="relative h-[85vh] md:h-[700px] lg:h-[870px] min-h-[550px] md:min-h-[600px] flex items-center hero-bg">
         <div class="absolute inset-0 bg-white/20"></div>
         <div class="absolute inset-0 flex justify-center items-center gap-4 md:gap-8 lg:gap-12 pointer-events-none overflow-hidden">
-            <div class="hidden md:block md:w-56 lg:w-64 md:h-72 lg:h-80 bg-white/40 backdrop-blur-md rounded-[2.5rem] lg:rounded-[3rem] shadow-2xl p-4 lg:p-6 floating -mt-32">
+            <div class="hidden md:block md:w-56 lg:w-64 md:h-72 lg:h-80 bg-white/40 backdrop-blur-md rounded-[2.5rem] lg:rounded-[3rem] shadow-2xl p-4 lg:p-6 floating  -mt-32">
                 <img alt="Premium Headphones" class="w-full h-full object-contain" src="assets/images/img_cda5e480.jpg" />
             </div>
-            <div class="w-60 md:w-56 lg:w-64 h-72 md:h-72 lg:h-80 bg-white/40 backdrop-blur-md rounded-[2.5rem] lg:rounded-[3rem] shadow-2xl p-4 lg:p-6 floating-delayed -mt-64 md:mt-10">
+            <div class="w-60 md:w-56 lg:w-64 h-72 md:h-72 lg:h-80 bg-white/40 backdrop-blur-md rounded-[2.5rem] lg:rounded-[3rem] shadow-2xl p-4 lg:p-6 floating floating-delayed -mt-64 md:mt-10">
                 <img alt="IPad" class="w-full h-full object-contain" src="assets/images/img_fc558cd.png" />
             </div>
-            <div class="hidden md:block md:w-56 lg:w-64 md:h-72 lg:h-80 bg-white/40 backdrop-blur-md rounded-[2.5rem] lg:rounded-[3rem] shadow-2xl p-4 lg:p-6 floating-more-delayed -mt-20">
+            <div class="hidden md:block md:w-56 lg:w-64 md:h-72 lg:h-80 bg-white/40 backdrop-blur-md rounded-[2.5rem] lg:rounded-[3rem] shadow-2xl p-4 lg:p-6 floating floating-more-delayed -mt-20">
                 <img alt="Flagship Smartphone" class="w-full h-full object-contain" src="assets/images/img_5ab27c1d.jpg" />
             </div>
         </div>
