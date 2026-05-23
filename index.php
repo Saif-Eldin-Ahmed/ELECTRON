@@ -81,8 +81,8 @@ include 'includes/header.php';
                 <div>
                     <h3 class="text-3xl md:text-3xl lg:text-4xl font-bold text-[#1a3a5f] leading-tight">Audio<br />Systems</h3>
                 </div>
-                <div class="relative flex justify-center flex-1">
-                    <img alt="Audio Systems" class="w-1/2 object-contain group-hover:scale-105 transition-transform duration-700" src="assets/images/img_59ed7574.jpg" />
+                <div class="relative flex justify-center items-center flex-1">
+                    <img alt="Audio Systems" class="h-[200px] object-contain group-hover:scale-105 transition-transform duration-700" src="assets/images/img_59ed7574.png" />
                 </div>
                 <div class="flex justify-between items-center">
                     <p class="text-xs md:text-[10px] lg:text-sm font-bold text-[#1a3a5f]/60 uppercase tracking-widest">Hi-Fi Solutions</p>
@@ -93,8 +93,8 @@ include 'includes/header.php';
                 <div>
                     <h3 class="text-3xl md:text-3xl lg:text-4xl font-bold text-[#1e4620] leading-tight">Computing<br />Devices</h3>
                 </div>
-                <div class="relative flex justify-center flex-1 items-center">
-                    <img alt="Computing" class="w-3/4 md:w-3/4 lg:w-4/5 pb-6 md:pb-6 lg:pb-10 object-contain group-hover:scale-105 transition-transform duration-700" src="assets/images/img_7778cd9c.png" />
+                <div class="relative flex justify-center items-center flex-1 ">
+                    <img alt="Computing" class="h-[200px] object-contain group-hover:scale-105 transition-transform duration-700" src="assets/images/img_7778cd9c.png" />
                 </div>
                 <div class="flex justify-between items-center">
                     <p class="text-xs md:text-[10px] lg:text-sm font-bold text-[#1e4620]/60 uppercase tracking-widest">Pro Performance</p>
@@ -105,8 +105,8 @@ include 'includes/header.php';
                 <div>
                     <h3 class="text-3xl md:text-3xl lg:text-4xl font-bold text-slate-900 leading-tight">Mobile<br />Essentials</h3>
                 </div>
-                <div class="relative flex justify-center flex-1">
-                    <img alt="Mobile" class="w-1/2 object-contain group-hover:scale-105 transition-transform duration-700" src="assets/images/img_6e30900c.jpg" />
+                <div class="relative flex justify-center items-center flex-1">
+                    <img alt="Mobile" class="h-[200px] sm:scale-[1.2] object-contain group-hover:scale-105 sm:group-hover:scale-[1.3] transition-transform duration-700" src="assets/images/img_6e30900c.png" />
                 </div>
                 <div class="flex justify-between items-center">
                     <p class="text-xs md:text-[10px] lg:text-sm font-bold text-slate-500 uppercase tracking-widest">Connected Living</p>
