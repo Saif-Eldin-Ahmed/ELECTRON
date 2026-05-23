@@ -14,7 +14,7 @@ include 'includes/header.php';
         </div>
         <!-- Brand Logo -->
         <div class="flex-shrink-0">
-            <a class="text-3xl font-black tracking-tighter text-slate-950 dark:text-white font-['Space_Grotesk'] uppercase" href="#">ELECTRON</a>
+            <a class="text-3xl font-black tracking-tighter text-slate-950 dark:text-white font-['Space_Grotesk'] uppercase" href="index.php">ELECTRON</a>
         </div>
         <!-- Right Nav -->
         <div class="flex gap-8 items-center flex-1 justify-end">

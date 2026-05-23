@@ -22,7 +22,7 @@ include 'includes/header.php';
                 </div>
             </nav>
             <div class="absolute left-1/2 -translate-x-1/2">
-                <span class="text-2xl md:text-3xl font-black tracking-tighter text-black">ELECTRON</span>
+                <a href="index.php" class="text-2xl md:text-3xl font-black tracking-tighter text-black uppercase">ELECTRON</a>
             </div>
             <nav class="hidden md:flex md:gap-4 lg:gap-10 items-center">
                 <!-- Desktop Hover Search Bar -->
