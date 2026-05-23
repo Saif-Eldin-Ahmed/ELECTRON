@@ -14,10 +14,12 @@ include 'includes/header.php';
             </div>
 
             <nav class="hidden md:flex md:gap-4 lg:gap-10 items-center">
-                <a class="text-[11px] font-bold uppercase tracking-widest text-black" href="#">Home</a>
-                <a class="text-[11px] font-bold uppercase tracking-widest text-black" href="#">Request Order</a>
                 <div class="flex items-center gap-1 group cursor-pointer">
-                    <a class="text-[11px] font-bold uppercase tracking-widest text-black" href="#">Special Offer</a>
+                    <a class="text-[11px] font-bold uppercase tracking-widest text-black" href="#">account</a>
+                    <span class="material-symbols-outlined text-sm">expand_more</span>
+                </div>
+                <div class="flex items-center gap-1 group cursor-pointer">
+                    <a class="text-[11px] font-bold uppercase tracking-widest text-black" href="#">cart</a>
                     <span class="material-symbols-outlined text-sm">expand_more</span>
                 </div>
             </nav>
@@ -28,7 +30,7 @@ include 'includes/header.php';
                 <!-- Desktop Hover Search Bar -->
                 <div class="relative flex items-center group py-2">
                     <span class="text-[11px] font-bold uppercase tracking-widest text-black cursor-pointer group-hover:opacity-0 group-focus-within:opacity-0 transition-opacity duration-200">Search</span>
-                    <div class="absolute right-0 top-1/2 -translate-y-1/2 w-0 opacity-0 pointer-events-none group-hover:w-60 lg:group-hover:w-72 group-hover:opacity-100 group-hover:pointer-events-auto group-focus-within:w-60 lg:group-focus-within:w-72 group-focus-within:opacity-100 group-focus-within:pointer-events-auto transition-all duration-300 ease-out z-10 overflow-hidden">
+                    <div class="rounded-[2rem] absolute right-0 top-1/2 -translate-y-1/2 w-0 opacity-0 pointer-events-none group-hover:w-60 lg:group-hover:w-72 group-hover:opacity-100 group-hover:pointer-events-auto group-focus-within:w-60 lg:group-focus-within:w-72 group-focus-within:opacity-100 group-focus-within:pointer-events-auto transition-all duration-300 ease-out z-10 overflow-hidden">
                         <form action="search.php" method="GET" class="relative flex items-center w-60 lg:w-72">
                             <input type="text" name="q" placeholder="SEARCH PRODUCTS..." class="w-full bg-white/95 backdrop-blur-lg border border-black/20 rounded-full py-1.5 pl-4 pr-10 text-[10px] font-bold uppercase tracking-widest text-black placeholder-black/40 focus:outline-none focus:border-black focus:ring-0 transition-all shadow-[0_8px_30px_rgb(0,0,0,0.12)]" />
                             <button type="submit" class="absolute right-3.5 text-black hover:scale-110 transition-transform flex items-center">
@@ -37,8 +39,7 @@ include 'includes/header.php';
                         </form>
                     </div>
                 </div>
-                <a class="text-[11px] font-bold uppercase tracking-widest text-black" href="#">Account</a>
-                <a class="text-[11px] font-bold uppercase tracking-widest text-black" href="#">Cart ( 0 )</a>
+                <a class="text-[11px] font-bold uppercase tracking-widest text-black" href="#">special offer</a>
             </nav>
 
             <!-- Mobile Cart -->
@@ -293,8 +294,6 @@ include 'includes/header.php';
         <span class="material-symbols-outlined text-3xl">close</span>
     </button>
     <div class="flex flex-col gap-8 mt-12">
-        <a class="text-3xl font-headline-md uppercase tracking-tight text-black border-b border-black/10 pb-4 hover:text-black/70" href="#">Home</a>
-        <a class="text-3xl font-headline-md uppercase tracking-tight text-black border-b border-black/10 pb-4 hover:text-black/70" href="#">Request Order</a>
         <a class="text-3xl font-headline-md uppercase tracking-tight text-black border-b border-black/10 pb-4 hover:text-black/70" href="#">Special Offer</a>
         <form action="search.php" method="GET" class="relative flex items-center border-b border-black/10 pb-4">
             <input type="text" name="q" placeholder="SEARCH PRODUCTS..." class="w-full bg-transparent text-3xl font-headline-md uppercase tracking-tight text-black placeholder-black/30 focus:outline-none border-none p-0 focus:ring-0" />
@@ -303,7 +302,7 @@ include 'includes/header.php';
             </button>
         </form>
         <a class="text-3xl font-headline-md uppercase tracking-tight text-black border-b border-black/10 pb-4 hover:text-black/70" href="#">Account</a>
-        <a class="text-3xl font-headline-md uppercase tracking-tight text-black border-b border-black/10 pb-4 hover:text-black/70" href="#">Cart ( 0 )</a>
+        <a class="text-3xl font-headline-md uppercase tracking-tight text-black border-b border-black/10 pb-4 hover:text-black/70" href="#">Cart</a>
     </div>
     <div class="mt-auto pt-12">
         <p class="text-[10px] font-bold text-black/40 uppercase tracking-widest">ELECTRON DIGITAL FLAGSHIP</p>
