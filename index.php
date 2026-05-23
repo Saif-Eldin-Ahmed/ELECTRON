@@ -120,26 +120,34 @@ include 'includes/header.php';
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-4 lg:gap-6">
             <div class="bg-surface-container-low rounded-[1.5rem] py-4 md:py-4 lg:py-6 px-4 md:px-4 lg:px-8 flex flex-col lg:flex-row justify-between items-center gap-4 lg:gap-0 cursor-pointer hover:bg-surface-container transition-colors border border-black/5">
                 <span class="font-headline-md text-sm md:text-sm lg:text-base tracking-tight text-center lg:text-left">Personal Audio</span>
-                <div class="w-10 h-6 bg-blue-400 rounded-full flex items-center justify-center mt-auto lg:mt-0">
-                    <div class="w-4 h-1 bg-white rounded-full"></div>
+                <div class="h-[56.57px] flex justify-center items-center">
+                    <div class="w-10 h-6 bg-blue-400 rounded-full flex items-center justify-center">
+                        <div class="w-4 h-1 bg-white rounded-full"></div>
+                    </div>
                 </div>
             </div>
             <div class="bg-surface-container-low rounded-[1.5rem] py-4 md:py-4 lg:py-6 px-4 md:px-4 lg:px-8 flex flex-col lg:flex-row justify-between items-center gap-4 lg:gap-0 cursor-pointer hover:bg-surface-container transition-colors border border-black/5">
                 <span class="font-headline-md text-sm md:text-sm lg:text-base tracking-tight text-center lg:text-left">Smart Home</span>
-                <div class="w-10 h-6 bg-orange-400 rounded-full flex items-center justify-center mt-auto lg:mt-0">
-                    <div class="w-4 h-1 bg-white rounded-full"></div>
+                <div class="h-[56.57px] flex justify-center items-center">
+                    <div class="w-10 h-6 bg-orange-400 rounded-full flex items-center justify-center">
+                        <div class="w-4 h-1 bg-white rounded-full"></div>
+                    </div>
                 </div>
             </div>
             <div class="bg-surface-container-low rounded-[1.5rem] py-4 md:py-4 lg:py-6 px-4 md:px-4 lg:px-8 flex flex-col lg:flex-row justify-between items-center gap-4 lg:gap-0 cursor-pointer hover:bg-surface-container transition-colors border border-black/5">
                 <span class="font-headline-md text-sm md:text-sm lg:text-base tracking-tight text-center lg:text-left">Wearables</span>
-                <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center rotate-45 mt-auto lg:mt-0">
-                    <div class="w-4 h-6 border-2 border-white rounded-full"></div>
+                <div class="h-[56.57px] flex justify-center items-center">
+                    <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center rotate-45">
+                        <div class="w-4 h-6 border-2 border-white rounded-full"></div>
+                    </div>
                 </div>
             </div>
             <div class="bg-surface-container-low rounded-[1.5rem] py-4 md:py-4 lg:py-6 px-4 md:px-4 lg:px-8 flex flex-col lg:flex-row justify-between items-center gap-4 lg:gap-0 cursor-pointer hover:bg-surface-container transition-colors border border-black/5">
                 <span class="font-headline-md text-sm md:text-sm lg:text-base tracking-tight text-center lg:text-left">Power Kits</span>
-                <div class="w-12 h-6 bg-yellow-400 rounded-full flex items-center justify-center shadow-inner mt-auto lg:mt-0">
-                    <div class="w-6 h-3 bg-white/60 rounded-full"></div>
+                <div class="h-[56.57px] flex justify-center items-center">
+                    <div class="w-12 h-6 bg-yellow-400 rounded-full flex items-center justify-center shadow-inner">
+                        <div class="w-6 h-3 bg-white/60 rounded-full"></div>
+                    </div>
                 </div>
             </div>
         </div>
