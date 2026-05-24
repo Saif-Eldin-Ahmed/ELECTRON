@@ -232,7 +232,7 @@ include 'includes/header.php';
                         </div>
                         <button class="bg-white/30 backdrop-blur-md border border-white/50 text-[#1a3a24] shadow-[0_8px_32px_rgba(0,0,0,0.1)] px-8 py-4 md:py-3 rounded-full text-[12px] md:text-[10px] font-bold uppercase tracking-widest hover:bg-white/50 transition-all w-full md:w-auto">Explore</button>
                     </div>
-                    <div class="absolute right-[-15%] md:right-[-5%] w-[70%] md:w-[35%] sm:w-[50%] lg:w-[40%] group-hover:-translate-x-3 transition-transform duration-700 pointer-events-none">
+                    <div class="absolute right-[-5%] w-[300px] md:top-1/2 md:-translate-y-1/2 group-hover:-translate-x-3 transition-transform duration-700 pointer-events-none">
                         <img alt="Audio Device" class="w-full h-auto object-contain drop-shadow-2xl" src="assets/images/img_256a167e.jpg" />
                     </div>
                 </div>
@@ -245,21 +245,21 @@ include 'includes/header.php';
                         </div>
                         <button class="bg-white/30 backdrop-blur-md border border-white/50 text-black shadow-[0_8px_32px_rgba(0,0,0,0.1)] px-8 py-4 md:py-3 rounded-full text-[12px] md:text-[10px] font-bold uppercase tracking-widest hover:bg-white/50 transition-all w-full md:w-auto">Explore</button>
                     </div>
-                    <div class="absolute right-[-5%] md:right-[2%] bottom-[-10%] w-[60%] md:w-[35%] sm:w-[50%] group-hover:-translate-y-3 transition-transform duration-700 pointer-events-none">
+                    <div class="absolute right-[-5%] md:right-[2%] bottom-[-10%] sm:bottom-[0%] w-[300px] group-hover:-translate-y-3 transition-transform duration-700 pointer-events-none">
                         <img alt="Power Device" class="w-full h-auto object-contain drop-shadow-2xl" src="assets/images/img_eca8edd1.jpg" />
                     </div>
                 </div>
             </div>
             <!-- Right Column: Single Large Card -->
             <div class="rounded-[2rem] p-8 md:p-10 lg:p-14 flex flex-col justify-between relative overflow-hidden group h-full min-h-[450px] md:min-h-[300px] lg:min-h-0" style="background: linear-gradient(to top right, #e0f2fe 0%, #f3e8ff 20%, #fce7f3 40%, #ffedd5 60%, #fef9c3 80%, #dcfce7 100%);">
-                <div class="z-10 relative mt-48 md:mt-0 flex flex-col justify-between h-full">
+                <div class="z-10 relative w-[340px] lg:w-full flex flex-col justify-between h-full">
                     <div class="z-10 relative lg:w-auto">
                         <h3 class="font-headline-md text-4xl md:text-4xl lg:text-5xl mb-4 md:mb-5 tracking-tight leading-[1.1]">Precision Touch Interface</h3>
                         <p class="text-base md:text-sm lg:text-base opacity-70 max-w-sm leading-relaxed">Revolutionary tactile feedback for the ultimate creative workflow.</p>
                     </div>
                     <button class="bg-white/30 backdrop-blur-md border border-white/50 text-[#1a2c42] shadow-[0_8px_32px_rgba(0,0,0,0.1)] px-10 py-4 rounded-full text-[12px] font-bold uppercase tracking-widest hover:bg-white/50 transition-all max-w-[559px]">Explore</button>
                 </div>
-                <div class="absolute right-[-20%] md:right-[-5%] lg:right-[0%] top-[45%] md:top-1/2 -translate-y-1/2 w-[110%] md:w-[60%] lg:w-[70%] group-hover:-translate-x-3 transition-transform duration-700 pointer-events-none">
+                <div class="absolute right-[-10%] top-1/2 -translate-y-[40%] w-[400px] md:w-[500px] lg:max-w-[600px] lg:w-[80%] group-hover:-translate-x-3 transition-transform duration-700 pointer-events-none">
                     <img alt="Interface" class="w-full h-auto object-contain drop-shadow-2xl" src="assets/images/img_ff8dc7dc.png" />
                 </div>
             </div>
