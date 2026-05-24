@@ -106,7 +106,7 @@ include 'includes/header.php';
                     <h3 class="text-3xl md:text-3xl lg:text-4xl font-bold text-slate-900 leading-tight">Mobile<br />Essentials</h3>
                 </div>
                 <div class="relative flex justify-center items-center flex-1">
-                    <img alt="Mobile" class="h-[175px] sm:scale-[1.4] object-contain group-hover:scale-105 sm:group-hover:scale-[1.5] transition-transform duration-700" src="assets/images/img_6e30900c.png" />
+                    <img alt="Mobile" class="h-[175px] md:scale-[1] sm:scale-[1.4] object-contain group-hover:scale-105 sm:group-hover:scale-[1.5] md:group-hover:scale-[1.05] transition-transform duration-700" src="assets/images/img_6e30900c.png" />
                 </div>
                 <div class="flex justify-between items-center">
                     <p class="text-xs md:text-[10px] lg:text-sm font-bold text-slate-500 uppercase tracking-widest">Connected Living</p>
