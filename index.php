@@ -265,7 +265,7 @@ include 'includes/header.php';
             </div>
         </div>
         <!-- New release section -->
-        <section class="rounded-[2rem] mt-12 md:mt-16 lg:mt-24 flex flex-col items-center text-center mx-auto overflow-hidden h-[40vh] md:h-[60vh] lg:h-[80vh] w-full"><img alt="Samsung S26 Ultra" class="w-full h-full object-cover md:object-cover lg:object-cover" src="assets/images/img_b731058b.jpg" /></section>
+        <section class="rounded-[2rem] mt-12 md:mt-16 lg:mt-24 items-center mx-auto w-full overflow-hidden max-h-[70vh]"><img alt="Samsung S26 Ultra" class="rounded-[2rem] w-full object-contain" src="assets/images/img_b731058b.jpg" /></section>
         <!-- Call to Action Banner -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-12 md:mt-16">
             <div class="bg-[#fdf9d8] rounded-[2rem] p-8 md:p-12 lg:p-16 flex flex-col justify-between min-h-[380px] md:min-h-[350px] lg:min-h-[440px] relative overflow-hidden group">
