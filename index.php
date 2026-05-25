@@ -288,9 +288,8 @@ include 'includes/header.php';
                     <h2 class="font-headline-md text-4xl md:text-4xl lg:text-5xl tracking-tight leading-[1.1]">Apply for the beta.<br />We'll handle the rest.</h2>
                     <button class="bg-white/30 backdrop-blur-md border border-white/50 text-black shadow-[0_8px_32px_rgba(0,0,0,0.1)] px-12 py-4 md:py-3 lg:py-4 rounded-full font-bold uppercase text-[12px] md:text-[10px] lg:text-[12px] tracking-widest hover:bg-white/50 hover:-translate-y-1 transition-all w-full sm:max-w-xs mt-6 md:mt-6 lg:mt-8">Apply Now</button>
                 </div>
-                <div class="absolute right-1/2 translate-x-1/2 md:translate-x-0 md:right-[-10%] lg:right-[-25%] top-[5%] md:top-1/2 md:-translate-y-1/2 w-[80%] sm:max-w-[300px] md:max-w-[280px] lg:max-w-none lg:w-[80%] flex justify-center items-center pointer-events-none">
-                    <div class="absolute inset-0 bg-[radial-gradient(circle,_rgba(255,255,255,0.8)_0%,_transparent_70%)] blur-2xl z-0 hidden md:block"></div>
-                    <img alt="MacBook Pro apply now" class="w-full h-auto object-contain drop-shadow-2xl md:group-hover:-translate-x-1 md:group-hover:drop-shadow-[0_25px_25px_rgba(0,0,0,0.3)] transition-all duration-500 z-10 relative motion-reduce:transition-none motion-reduce:transform-none" src="assets/images/img_cd9f9dd9.png" />
+                <div class="absolute right-1/2 translate-x-1/2 md:translate-x-0 md:right-[-10%] lg:right-[-25%] md:top-1/2 md:-translate-y-1/2 w-[250px] sm:max-w-[300px] md:max-w-[280px] lg:max-w-none lg:w-[80%] flex justify-center items-center pointer-events-none">
+                    <img alt="MacBook Pro apply now" class="w-full h-auto object-contain md:group-hover:-translate-x-1 group-hover:drop-shadow-[0_25px_25px_rgba(0,0,0,0.3)] transition-all duration-500 z-10 relative" src="assets/images/img_cd9f9dd9.png" />
                 </div>
             </div>
         </div>
