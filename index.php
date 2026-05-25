@@ -64,7 +64,7 @@ include 'includes/header.php';
         </div>
         <div class="relative z-10 w-full px-6 flex flex-col justify-end h-full pb-16 md:pb-24">
             <div class="max-w-xl text-center md:text-left mx-auto md:mx-0">
-                <h1 class="font-bold text-5xl md:text-5xl lg:text-6xl leading-[1.1] text-black uppercase tracking-tight mb-6 md:mb-8">THE FUTURE AT YOUR FINGERTIPS</h1>
+                <h1 class="font-bold text-4xl md:text-5xl lg:text-6xl leading-[1.1] text-black uppercase tracking-tight mb-6 md:mb-8">THE FUTURE AT YOUR FINGERTIPS</h1>
                 <div class="flex flex-col md:flex-row justify-between items-center md:items-end gap-6 md:gap-4 lg:gap-0">
                     <p class="font-body-md text-black/80 md:text-black/60 max-w-[280px] md:max-w-[240px] lg:max-w-xs text-sm md:text-sm lg:text-base">Discover the convergence of precision engineering and lifestyle aesthetics with our curated collection.</p>
                     <button class="bg-white/30 backdrop-blur-md border border-white/50 text-black shadow-[0_8px_32px_rgba(0,0,0,0.1)] px-10 py-4 md:py-3 w-full md:w-auto rounded-full font-bold uppercase text-[12px] tracking-widest hover:bg-white/50 transition-all">Explore</button>
