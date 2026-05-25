@@ -316,6 +316,9 @@ include 'includes/header.php';
     </div>
 </div>
 
+<!-- Footer -->
+<?php include 'includes/footer.php'; ?>
+
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const openBtn = document.getElementById('openMenuBtn');
@@ -333,7 +336,3 @@ include 'includes/header.php';
         }
     });
 </script>
-
-<!-- Footer -->
-
-<?php include 'includes/footer-home.php'; ?>
