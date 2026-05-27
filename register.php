@@ -1,6 +1,6 @@
 <?php
-$down =
-    $nonav = true;
+$down = true;
+$nonav = true;
 $page_title = "ELECTRON | Register";
 $body_class = "font-body-md text-on-surface bg-white";
 include 'includes/header.php';
@@ -18,22 +18,27 @@ include 'includes/header.php';
             <!-- Name Field -->
             <div class="flex flex-row gap-2">
                 <div class="flex flex-col gap-base w-full">
-                    <label class="font-label-md text-label-md text-on-surface-variant" for="name">First Name</label>
+                    <label class="font-label-md text-label-md text-on-surface-variant" for="name">First Name*</label>
                     <input class="w-full h-input-height px-4 rounded-lg border border-outline-variant bg-[#F9FAFB] focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-body-md" id="name" name="name" placeholder="John" type="text" />
                 </div>
                 <div class="flex flex-col gap-base w-full">
-                    <label class="font-label-md text-label-md text-on-surface-variant" for="name">Last Name</label>
+                    <label class="font-label-md text-label-md text-on-surface-variant" for="name">Last Name*</label>
                     <input class="w-full h-input-height px-4 rounded-lg border border-outline-variant bg-[#F9FAFB] focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-body-md" id="name" name="name" placeholder="Doe" type="text" />
                 </div>
             </div>
             <!-- Email Field -->
             <div class="flex flex-col gap-base">
-                <label class="font-label-md text-label-md text-on-surface-variant" for="email">Email Address</label>
+                <label class="font-label-md text-label-md text-on-surface-variant" for="email">Email Address*</label>
                 <input class="w-full h-input-height px-4 rounded-lg border border-outline-variant bg-[#F9FAFB] focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-body-md" id="email" name="email" placeholder="example123@email.com" type="email" />
+            </div>
+            <!-- Phone Field -->
+            <div class="flex flex-col gap-base">
+                <label class="font-label-md text-label-md text-on-surface-variant" for="phone">Phone Number</label>
+                <input class="w-full h-input-height px-4 rounded-lg border border-outline-variant bg-[#F9FAFB] focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-body-md" id="phone" name="phone" placeholder="+1 234 567 890" type="tel" />
             </div>
             <!-- Password Field -->
             <div class="flex flex-col gap-base relative">
-                <label class="font-label-md text-label-md text-on-surface-variant" for="password">Password</label>
+                <label class="font-label-md text-label-md text-on-surface-variant" for="password">Password*</label>
                 <div class="relative">
                     <input class="w-full h-input-height px-4 rounded-lg border border-outline-variant bg-[#F9FAFB] focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-body-md" id="password" name="password" placeholder="Create a password" type="password" />
                     <button class="absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-primary transition-colors" type="button">
