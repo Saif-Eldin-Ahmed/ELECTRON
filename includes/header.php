@@ -12,10 +12,10 @@
     <link href="assets/css/style.css" rel="stylesheet" />
 </head>
 
-<body class="<?php echo isset($body_class) ? $body_class : 'bg-background text-on-background font-body-md selection:bg-secondary-container'; ?>">
+<body class="<?php echo isset($body_class) ? $body_class : 'min-h-[100vh] bg-background text-on-background font-body-md selection:bg-secondary-container'; ?>">
 
     <?php
-    if (!isset($home)) {
+    if (!isset($nonav)) {
         include 'includes/nav.php';
     }
     ?>
