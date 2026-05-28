@@ -1,3 +1,31 @@
+:root {
+  --bg: #090d16;
+  --surface: rgba(15, 23, 42, 0.5);
+  --border: rgba(255, 255, 255, 0.07);
+  --border-focus: rgba(99, 102, 241, 0.7);
+
+  --txt-primary: #f1f5f9;
+  --txt-secondary: #94a3b8;
+  --txt-muted: #64748b;
+
+  --primary: #6366f1;
+  --primary-dark: #4f46e5;
+  --primary-glow: rgba(99, 102, 241, 0.3);
+
+  --success: #10b981;
+  --success-glow: rgba(16, 185, 129, 0.18);
+  --danger: #ef4444;
+  --warning: #f59e0b;
+
+  --radius-card: 20px;
+  --radius-input: 10px;
+
+  --font-head: "Outfit", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+
+  --transition: 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
 /* Material Symbols */
 .material-symbols-outlined {
   font-variation-settings:
@@ -14,7 +42,11 @@ body {
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
 }
-
+/*
+================================
+======= Home page styles ======= 
+================================
+ */
 /* Home hero background (the URL was updated to the local file by python script) */
 .hero-bg {
   background-image: url("../images/hero_bg.jpg");
@@ -64,4 +96,287 @@ body {
 }
 .product-card-shadow:hover {
   box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.05);
+}
+
+/*
+================================
+===== register form styles =====
+================================
+ */
+/* Error state */
+.input-group.has-error input {
+  border-color: rgba(239, 68, 68, 0.5);
+}
+.input-group.has-error input:focus {
+  box-shadow: 0 0 0 3px var(--danger-glow, rgba(239, 68, 68, 0.2));
+}
+
+/* Validation messages */
+.validation-msg {
+  display: block;
+  font-size: 0.74rem;
+  color: var(--danger);
+  margin-top: 5px;
+  margin-left: 4px;
+  min-height: 14px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.validation-msg.show {
+  opacity: 1;
+}
+
+/* Strength meter styling */
+.strength-wrap {
+  display: none;
+  margin: -12px 0 10px;
+  padding: 0 2px;
+}
+.strength-bars {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 5px;
+}
+.s-bar {
+  flex: 1;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease;
+}
+.strength-label {
+  font-size: 0.73rem;
+  color: var(--txt-muted);
+  font-weight: 500;
+}
+/* --- Success Overlay ----------------------------------------- */
+.success-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(9, 13, 22, 0.82);
+  backdrop-filter: blur(14px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+.success-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+.success-card {
+  width: 90%;
+  max-width: 440px;
+  background: rgba(17, 24, 39, 0.92);
+  border: 1px solid rgba(16, 185, 129, 0.22);
+  border-radius: var(--radius-card);
+  padding: 36px;
+  text-align: center;
+  box-shadow:
+    0 32px 64px rgba(0, 0, 0, 0.55),
+    0 0 40px var(--success-glow);
+  transform: scale(0.88);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.success-overlay.open .success-card {
+  transform: scale(1);
+}
+
+.success-icon {
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.28);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 18px;
+  box-shadow: 0 0 18px rgba(16, 185, 129, 0.18);
+}
+.check-icon {
+  width: 28px;
+  height: 28px;
+  color: var(--success);
+}
+
+.success-card h2 {
+  font-family: var(--font-head);
+  font-size: 1.55rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.success-card > p {
+  font-size: 0.87rem;
+  color: var(--txt-secondary);
+  margin-bottom: 24px;
+}
+.success-card code {
+  background: rgba(99, 102, 241, 0.12);
+  color: #a5b4fc;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.82rem;
+}
+
+/* Record box */
+.record-box {
+  background: rgba(15, 23, 42, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 16px;
+  text-align: left;
+  margin-bottom: 22px;
+}
+.record-box h3 {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--txt-muted);
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+.record-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 0.84rem;
+}
+.record-row:last-child {
+  margin-bottom: 0;
+}
+.record-row span {
+  color: var(--txt-secondary);
+}
+.record-row strong {
+  color: var(--txt-primary);
+  font-weight: 500;
+}
+
+.db-tag {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--success) !important;
+  background: rgba(16, 185, 129, 0.08);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.78rem;
+}
+.tiny-icon {
+  width: 12px;
+  height: 12px;
+}
+
+/* Success action buttons */
+.success-actions {
+  display: flex;
+  gap: 10px;
+}
+.btn-ghost,
+.btn-outline {
+  flex: 1;
+  padding: 11px;
+  border-radius: 8px;
+  font-family: var(--font-head);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  transition: all var(--transition);
+}
+.btn-ghost {
+  background: rgba(30, 41, 59, 0.7);
+  border: 1px solid var(--border);
+  color: var(--txt-primary);
+}
+.btn-ghost:hover {
+  background: rgba(51, 65, 85, 0.8);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  color: var(--success);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.btn-outline:hover {
+  background: rgba(16, 185, 129, 0.08);
+  border-color: rgba(16, 185, 129, 0.55);
+}
+
+/* --- Toast Notifications ------------------------------------- */
+.toast-wrap {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 500;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.toast {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  padding: 13px 18px;
+  min-width: 290px;
+  max-width: 380px;
+  background: rgba(15, 23, 42, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  animation: toast-in 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+  transition:
+    opacity 0.3s,
+    transform 0.3s;
+}
+.toast.out {
+  opacity: 0;
+  transform: translateX(20px);
+}
+.toast.is-success {
+  border-left: 3px solid var(--success);
+}
+.toast.is-danger {
+  border-left: 3px solid var(--danger);
+}
+.toast svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.toast.is-success svg {
+  color: var(--success);
+}
+.toast.is-danger svg {
+  color: var(--danger);
+}
+.toast-body {
+  font-size: 0.84rem;
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }

@@ -1,5 +1,3 @@
-<?php include 'connect.php'; ?>
-
 <!DOCTYPE html>
 <html class="light" lang="en">
 
@@ -17,7 +15,7 @@
 <body class="<?php echo isset($body_class) ? $body_class : 'min-h-[100vh] bg-background text-on-background font-body-md selection:bg-secondary-container'; ?>">
 
     <?php
-    if (!isset($nonav)) {
+    if (!isset($acc)) {
         include 'includes/nav.php';
     }
     ?>

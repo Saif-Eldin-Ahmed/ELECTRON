@@ -40,11 +40,9 @@ function setError(fieldId, message) {
 /** Emit a toast notification */
 function toast(message, type = 'success') {
   const t = document.createElement('div');
-  const icon = type === 'success' ? 'check-circle' : 'alert-circle';
   t.className = `toast is-${type}`;
-  t.innerHTML = `<i data-lucide="${icon}"></i><span class="toast-body">${message}</span>`;
+  t.innerHTML = `<span class="toast-body">${message}</span>`;
   toastWrap.appendChild(t);
-  lucide.createIcons();
 
   setTimeout(() => {
     t.classList.add('out');
@@ -103,7 +101,7 @@ function updateStrength() {
   sBars.forEach((b, i) => {
     b.style.backgroundColor = i < score && palettes[score]
       ? palettes[score].color
-      : 'rgba(255,255,255,0.07)';
+      : 'rgba(0, 0, 0, 0.2)';
   });
 
   if (palettes[score]) {
@@ -117,8 +115,6 @@ function makeEyeToggle(btnId, inputEl, iconId) {
   document.getElementById(btnId).addEventListener('click', () => {
     const isText = inputEl.type === 'text';
     inputEl.type = isText ? 'password' : 'text';
-    document.getElementById(iconId).setAttribute('data-lucide', isText ? 'eye' : 'eye-off');
-    lucide.createIcons();
   });
 }
 makeEyeToggle('toggle-pwd', passwordEl, 'eye-pwd');
@@ -163,7 +159,7 @@ form.addEventListener('submit', async (e) => {
   data.append('password', passwordEl.value);
 
   try {
-    const res = await fetch('../includes/register-db.php', { method: 'POST', body: data });
+    const res = await fetch('includes/register-db.php', { method: 'POST', body: data });
     const json = await res.json();
 
     if (json.success) {

@@ -14,4 +14,8 @@
 </footer>
 </body>
 
+<?php if (isset($acc))
+    echo '<script src="assets/js/register.js"></script>';
+?>
+
 </html>

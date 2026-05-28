@@ -1,7 +1,7 @@
 <?php
 
 $down = true;
-$nonav = true;
+$acc = true;
 $page_title = "ELECTRON | Register";
 $body_class = "font-body-md text-on-surface bg-white";
 include 'includes/header.php';
@@ -15,38 +15,64 @@ include 'includes/header.php';
             <p class="font-body-md text-body-md text-on-surface-variant">Join us to start managing your projects efficiently.</p>
         </div>
         <!-- Form Section -->
-        <form class="flex flex-col gap-stack-gap-sm" id="registrationForm">
+        <form class="flex flex-col gap-stack-gap-sm" id="register-form" novalidate>
             <!-- Name Field -->
             <div class="flex flex-row gap-2">
-                <div class="flex flex-col gap-base w-full">
-                    <label class="font-label-md text-label-md text-on-surface-variant" for="name">First Name*</label>
-                    <input class="w-full h-input-height px-4 rounded-lg border border-outline-variant bg-[#F9FAFB] focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-body-md" id="name" name="name" placeholder="John" type="text" />
+                <!-- First Name -->
+                <div class="flex flex-col gap-base w-full input-group" id="group-fullname">
+                    <label class="font-label-md text-label-md text-on-surface-variant" for="fullname">First Name*</label>
+                    <input class="w-full h-input-height px-4 rounded-lg border border-outline-variant bg-[#F9FAFB] focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-body-md" id="fullname" name="fullname" placeholder="John" type="text" required />
+                    <span class="validation-msg" id="err-fullname"></span>
                 </div>
+                <!-- Last Name -->
                 <div class="flex flex-col gap-base w-full">
-                    <label class="font-label-md text-label-md text-on-surface-variant" for="name">Last Name*</label>
-                    <input class="w-full h-input-height px-4 rounded-lg border border-outline-variant bg-[#F9FAFB] focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-body-md" id="name" name="name" placeholder="Doe" type="text" />
+                    <label class="font-label-md text-label-md text-on-surface-variant" for="last_name">Last Name*</label>
+                    <input class="w-full h-input-height px-4 rounded-lg border border-outline-variant bg-[#F9FAFB] focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-body-md" id="last_name" name="last_name" placeholder="Doe" type="text" />
                 </div>
             </div>
             <!-- Email Field -->
-            <div class="flex flex-col gap-base">
+            <div class="flex flex-col gap-base input-group" id="group-email">
                 <label class="font-label-md text-label-md text-on-surface-variant" for="email">Email Address*</label>
-                <input class="w-full h-input-height px-4 rounded-lg border border-outline-variant bg-[#F9FAFB] focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-body-md" id="email" name="email" placeholder="example123@email.com" type="email" />
+                <input class="w-full h-input-height px-4 rounded-lg border border-outline-variant bg-[#F9FAFB] focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-body-md" id="email" name="email" placeholder="example123@email.com" type="email" required />
+                <span class="validation-msg" id="err-email"></span>
             </div>
             <!-- Phone Field -->
-            <div class="flex flex-col gap-base">
+            <div class="flex flex-col gap-base" id="group-phone">
                 <label class="font-label-md text-label-md text-on-surface-variant" for="phone">Phone Number</label>
                 <input class="w-full h-input-height px-4 rounded-lg border border-outline-variant bg-[#F9FAFB] focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-body-md" id="phone" name="phone" placeholder="+1 234 567 890" type="tel" />
+                <span class="validation-msg" id="err-phone"></span>
             </div>
             <!-- Password Field -->
-            <div class="flex flex-col gap-base relative">
+            <div class="flex flex-col gap-base relative input-group" id="group-password">
                 <label class="font-label-md text-label-md text-on-surface-variant" for="password">Password*</label>
                 <div class="relative">
-                    <input class="w-full h-input-height px-4 rounded-lg border border-outline-variant bg-[#F9FAFB] focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-body-md" id="password" name="password" placeholder="Create a password" type="password" />
-                    <button class="absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-primary transition-colors" type="button">
+                    <input class="w-full h-input-height px-4 rounded-lg border border-outline-variant bg-[#F9FAFB] focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-body-md" id="password" name="password" placeholder="XrkGFt067*" type="password" required />
+                    <button class="eye-btn absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-primary transition-colors" type="button" id="toggle-pwd">
                         <span class="material-symbols-outlined text-[20px]">visibility</span>
                     </button>
                 </div>
-                <p class="font-helper-text text-helper-text text-on-surface-variant">Must be at least 8 characters long.</p>
+                <span class="validation-msg" id="err-password"></span>
+            </div>
+            <!-- Password Strength -->
+            <div class="strength-wrap" id="strength-wrap">
+                <div class="strength-bars">
+                    <div class="s-bar" id="s1"></div>
+                    <div class="s-bar" id="s2"></div>
+                    <div class="s-bar" id="s3"></div>
+                    <div class="s-bar" id="s4"></div>
+                </div>
+                <span class="strength-label" id="strength-label">Strength</span>
+            </div>
+            <!-- Confirm Password Field -->
+            <div class="flex flex-col gap-base relative input-group" id="group-confirm">
+                <label class="font-label-md text-label-md text-on-surface-variant" for="confirm">Confirm Password*</label>
+                <div class="relative">
+                    <input class="w-full h-input-height px-4 rounded-lg border border-outline-variant bg-[#F9FAFB] focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-body-md" id="confirm" name="confirm" placeholder="XrkGFt067*" type="password" required />
+                    <button class="eye-btn absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-primary transition-colors" type="button" id="toggle-confirm" aria-label="Toggle confirm password visibility">
+                        <span class="material-symbols-outlined text-[20px]">visibility</span>
+                    </button>
+                </div>
+                <span class="validation-msg" id="err-confirm"></span>
             </div>
             <!-- Terms Checkbox -->
             <div class="flex items-start gap-3 py-2">
@@ -58,7 +84,7 @@ include 'includes/header.php';
                 </label>
             </div>
             <!-- Action Button -->
-            <button class="w-full h-[48px] bg-primary text-on-primary font-button-text text-button-text rounded-lg hover:bg-primary-container transition-all active:scale-[0.98] mt-2" type="submit">
+            <button class="w-full h-[48px] bg-primary text-on-primary font-button-text text-button-text rounded-lg hover:bg-primary-container transition-all active:scale-[0.98] mt-2" type="submit" id="submit-btn">
                 Create Account
             </button>
         </form>
@@ -77,7 +103,6 @@ include 'includes/header.php';
                 <span class="mr-2">M</span> Microsoft
             </button>
         </div>
-        <!-- Footer Link -->
         <div class="flex justify-center pt-2">
             <p class="font-body-md text-body-md text-on-surface-variant">
                 Already have an account? <a class="text-primary font-semibold hover:underline" href="#">Sign in</a>
@@ -85,35 +110,31 @@ include 'includes/header.php';
         </div>
     </div>
 </main>
+<!-- ========== Success Overlay ========== -->
+<div class="success-overlay" id="success-overlay" aria-hidden="true">
+    <div class="success-card">
+        <h2>Registration Successful!</h2>
+        <p>A new row was inserted into the <code>users</code> table.</p>
 
-<script>
-    // Simple micro-interaction for password visibility
-    const toggleBtn = document.querySelector('button[type="button"]');
-    const passInput = document.getElementById('password');
+        <div class="record-box">
+            <h3>Inserted Record</h3>
+            <div class="record-row"><span>ID</span><strong id="r-id">—</strong></div>
+            <div class="record-row"><span>Full Name</span><strong id="r-fullname">—</strong></div>
+            <div class="record-row"><span>Username</span><strong id="r-username">—</strong></div>
+            <div class="record-row"><span>Email</span><strong id="r-email">—</strong></div>
+            <div class="record-row"><span>Created At</span><strong id="r-created">—</strong></div>
+            <div class="record-row"><span>Database</span>
+            </div>
+        </div>
 
-    if (toggleBtn && passInput) {
-        toggleBtn.addEventListener('click', () => {
-            const type = passInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            passInput.setAttribute('type', type);
-            toggleBtn.querySelector('span').textContent = type === 'password' ? 'visibility' : 'visibility_off';
-        });
-    }
+        <div class="success-actions">
+            <button class="btn-ghost" id="btn-another">Register Another</button>
+            <a href="test-db.php" target="_blank" class="btn-outline">View in Diagnostics</a>
+        </div>
+    </div>
+</div>
+<!-- Toast container -->
+<div class="toast-wrap" id="toast-wrap"></div>
 
-    // Form submission animation/feedback
-    const form = document.getElementById('registrationForm');
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const btn = form.querySelector('button[type="submit"]');
-        const originalText = btn.textContent;
-        btn.innerHTML = '<span class="flex items-center justify-center"><svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Creating...</span>';
-        btn.disabled = true;
-
-        setTimeout(() => {
-            btn.innerHTML = originalText;
-            btn.disabled = false;
-            alert('Account creation simulated!');
-        }, 1500);
-    });
-</script>
 <!-- Footer -->
 <?php include 'includes/footer.php'; ?>
