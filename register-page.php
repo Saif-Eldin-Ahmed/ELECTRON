@@ -1,4 +1,5 @@
 <?php
+
 $down = true;
 $nonav = true;
 $page_title = "ELECTRON | Register";

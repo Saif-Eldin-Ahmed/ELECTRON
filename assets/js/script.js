@@ -1,0 +1,204 @@
+// ============================================================
+//  script.js — ELECTRON-2 PHP PDO Registration
+// ============================================================
+
+// ---- DOM References -----------------------------------------
+const form = document.getElementById('register-form');
+const submitBtn = document.getElementById('submit-btn');
+
+const fullnameEl = document.getElementById('fullname');
+const emailEl = document.getElementById('email');
+const passwordEl = document.getElementById('password');
+const confirmEl = document.getElementById('confirm');
+
+const strengthWrap = document.getElementById('strength-wrap');
+const strengthLabel = document.getElementById('strength-label');
+const sBars = [document.getElementById('s1'), document.getElementById('s2'),
+document.getElementById('s3'), document.getElementById('s4')];
+
+const successOverlay = document.getElementById('success-overlay');
+const btnAnother = document.getElementById('btn-another');
+const toastWrap = document.getElementById('toast-wrap');
+
+// ---- Helpers ------------------------------------------------
+
+/** Show or clear an error message under a field */
+function setError(fieldId, message) {
+  const group = document.getElementById('group-' + fieldId);
+  const msg = document.getElementById('err-' + fieldId);
+  if (message) {
+    msg.textContent = message;
+    msg.classList.add('show');
+    group.classList.add('has-error');
+  } else {
+    msg.textContent = '';
+    msg.classList.remove('show');
+    group.classList.remove('has-error');
+  }
+}
+
+/** Emit a toast notification */
+function toast(message, type = 'success') {
+  const t = document.createElement('div');
+  const icon = type === 'success' ? 'check-circle' : 'alert-circle';
+  t.className = `toast is-${type}`;
+  t.innerHTML = `<i data-lucide="${icon}"></i><span class="toast-body">${message}</span>`;
+  toastWrap.appendChild(t);
+  lucide.createIcons();
+
+  setTimeout(() => {
+    t.classList.add('out');
+    setTimeout(() => t.remove(), 320);
+  }, 4200);
+}
+
+// ---- Validators ---------------------------------------------
+const emailRx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function validateFullname() {
+  const v = fullnameEl.value.trim();
+  if (!v) { setError('fullname', 'Full name is required.'); return false; }
+  if (v.length < 2) { setError('fullname', 'At least 2 characters required.'); return false; }
+  setError('fullname', null); return true;
+}
+function validateEmail() {
+  const v = emailEl.value.trim();
+  if (!v) { setError('email', 'Email address is required.'); return false; }
+  if (!emailRx.test(v)) { setError('email', 'Enter a valid email address.'); return false; }
+  setError('email', null); return true;
+}
+function validatePassword() {
+  const v = passwordEl.value;
+  if (!v) { setError('password', 'Password is required.'); strengthWrap.style.display = 'none'; return false; }
+  if (v.length < 6) { setError('password', 'Minimum 6 characters required.'); return false; }
+  setError('password', null); return true;
+}
+function validateConfirm() {
+  const v = confirmEl.value;
+  if (!v) { setError('confirm', 'Please confirm your password.'); return false; }
+  if (v !== passwordEl.value) { setError('confirm', 'Passwords do not match.'); return false; }
+  setError('confirm', null); return true;
+}
+
+// ---- Password Strength Meter --------------------------------
+function updateStrength() {
+  const v = passwordEl.value;
+  if (!v) { strengthWrap.style.display = 'none'; return; }
+  strengthWrap.style.display = 'block';
+
+  let score = 0;
+  if (v.length >= 6) score++;
+  if (v.length >= 10) score++;
+  if (/[A-Z]/.test(v) && /[a-z]/.test(v)) score++;
+  if (/[0-9]/.test(v) && /[^A-Za-z0-9]/.test(v)) score++;
+
+  const palettes = [
+    null,
+    { color: '#ef4444', label: 'Weak' },
+    { color: '#f59e0b', label: 'Fair' },
+    { color: '#eab308', label: 'Good' },
+    { color: '#10b981', label: 'Strong' },
+  ];
+
+  sBars.forEach((b, i) => {
+    b.style.backgroundColor = i < score && palettes[score]
+      ? palettes[score].color
+      : 'rgba(255,255,255,0.07)';
+  });
+
+  if (palettes[score]) {
+    strengthLabel.textContent = 'Strength: ' + palettes[score].label;
+    strengthLabel.style.color = palettes[score].color;
+  }
+}
+
+// ---- Eye Toggle Buttons -------------------------------------
+function makeEyeToggle(btnId, inputEl, iconId) {
+  document.getElementById(btnId).addEventListener('click', () => {
+    const isText = inputEl.type === 'text';
+    inputEl.type = isText ? 'password' : 'text';
+    document.getElementById(iconId).setAttribute('data-lucide', isText ? 'eye' : 'eye-off');
+    lucide.createIcons();
+  });
+}
+makeEyeToggle('toggle-pwd', passwordEl, 'eye-pwd');
+makeEyeToggle('toggle-confirm', confirmEl, 'eye-confirm');
+
+// ---- Live Validation Listeners ------------------------------
+fullnameEl.addEventListener('blur', validateFullname);
+fullnameEl.addEventListener('input', () => { if (document.getElementById('err-fullname').classList.contains('show')) validateFullname(); });
+
+emailEl.addEventListener('blur', validateEmail);
+emailEl.addEventListener('input', () => { if (document.getElementById('err-email').classList.contains('show')) validateEmail(); });
+
+passwordEl.addEventListener('input', () => {
+  updateStrength();
+  if (document.getElementById('err-password').classList.contains('show')) validatePassword();
+  if (confirmEl.value) validateConfirm();
+});
+
+confirmEl.addEventListener('input', () => {
+  if (document.getElementById('err-confirm').classList.contains('show') || confirmEl.value) validateConfirm();
+});
+
+// ---- Form Submission via fetch() -> register-db.php -----------
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  // Run all validators
+  const ok = [validateFullname(), validateEmail(), validatePassword(), validateConfirm()];
+  if (ok.includes(false)) {
+    toast('Please fix the highlighted errors.', 'danger');
+    return;
+  }
+
+  // Loading state
+  submitBtn.classList.add('loading');
+  submitBtn.disabled = true;
+
+  // Build FormData to POST to register-db.php
+  const data = new FormData();
+  data.append('fullname', fullnameEl.value.trim());
+  data.append('email', emailEl.value.trim());
+  data.append('password', passwordEl.value);
+
+  try {
+    const res = await fetch('../includes/register-db.php', { method: 'POST', body: data });
+    const json = await res.json();
+
+    if (json.success) {
+      // Populate success overlay with returned record details
+      document.getElementById('r-id').textContent = json.record.id;
+      document.getElementById('r-fullname').textContent = json.record.fullname;
+      document.getElementById('r-email').textContent = json.record.email;
+      document.getElementById('r-created').textContent = json.record.created_at;
+
+      successOverlay.classList.add('open');
+      successOverlay.setAttribute('aria-hidden', 'false');
+      toast('Account created successfully!', 'success');
+      form.reset();
+      strengthWrap.style.display = 'none';
+    } else {
+      toast(json.error || 'Registration failed. Please try again.', 'danger');
+    }
+
+  } catch (err) {
+    toast('Network error: ' + err.message, 'danger');
+  } finally {
+    submitBtn.classList.remove('loading');
+    submitBtn.disabled = false;
+  }
+});
+
+// ---- Success Overlay Dismiss --------------------------------
+btnAnother.addEventListener('click', () => {
+  successOverlay.classList.remove('open');
+  successOverlay.setAttribute('aria-hidden', 'true');
+});
+
+successOverlay.addEventListener('click', (e) => {
+  if (e.target === successOverlay) {
+    successOverlay.classList.remove('open');
+    successOverlay.setAttribute('aria-hidden', 'true');
+  }
+});
