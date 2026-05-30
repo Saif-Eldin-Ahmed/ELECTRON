@@ -1,5 +1,5 @@
 <?php
-$nonav = true;
+$acc = true;
 $page_title = "ELECTRON | Digital Flagship";
 $body_class = "font-body-md text-on-surface bg-white";
 include 'includes/header.php';

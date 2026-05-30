@@ -51,7 +51,6 @@ include 'includes/header.php';
                         <span class="material-symbols-outlined text-[20px]">visibility</span>
                     </button>
                 </div>
-                <span class="validation-msg" id="err-password"></span>
             </div>
             <!-- Password Strength -->
             <div class="strength-wrap" id="strength-wrap">
@@ -63,6 +62,7 @@ include 'includes/header.php';
                 </div>
                 <span class="strength-label" id="strength-label">Strength</span>
             </div>
+            <span class="validation-msg" id="err-password"></span>
             <!-- Confirm Password Field -->
             <div class="flex flex-col gap-base relative input-group" id="group-confirm">
                 <label class="font-label-md text-label-md text-on-surface-variant" for="confirm">Confirm Password*</label>

@@ -20,6 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 // ---- Collect & Sanitize Input --------------------------------
 $fullname = trim($_POST['fullname'] ?? '');
 $email    = trim($_POST['email']    ?? '');
+$phone    = trim($_POST['phone']    ?? '');
 $password =       $_POST['password'] ?? '';
 
 // ---- Server-Side Validation ----------------------------------
@@ -41,6 +42,9 @@ if (empty($email)) {
     $errors[] = 'Email address is too long.';
 }
 
+if (strlen($phone) > 20) {
+    $errors[] = 'Phone number is too long.';
+}
 
 if (empty($password)) {
     $errors[] = 'Password is required.';
@@ -63,12 +67,13 @@ try {
 
     // PDO Prepared Statement — prevents SQL injection entirely
     $stmt = $pdo->prepare(
-        'INSERT INTO `users` (`fullname`, `email`, `password`) VALUES (:fullname, :email, :password)'
+        'INSERT INTO `users` (`fullname`, `email`, `phone`, `password`) VALUES (:fullname, :email, :phone, :password)'
     );
 
     $stmt->execute([
         ':fullname' => $fullname,
         ':email'    => $email,
+        ':phone'    => $phone,
         ':password' => $hashedPassword,
     ]);
 
@@ -82,6 +87,7 @@ try {
             'id'         => $newId,
             'fullname'   => $fullname,
             'email'      => $email,
+            'phone'      => $phone,
             'created_at' => date('Y-m-d H:i:s'),
         ],
     ]);

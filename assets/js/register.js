@@ -8,6 +8,7 @@ const submitBtn = document.getElementById('submit-btn');
 
 const fullnameEl = document.getElementById('fullname');
 const emailEl = document.getElementById('email');
+const phoneEl = document.getElementById('phone');
 const passwordEl = document.getElementById('password');
 const confirmEl = document.getElementById('confirm');
 
@@ -52,6 +53,7 @@ function toast(message, type = 'success') {
 
 // ---- Validators ---------------------------------------------
 const emailRx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const phoneRx = /^[0-9]{10}$/;
 
 function validateFullname() {
   const v = fullnameEl.value.trim();
@@ -64,6 +66,11 @@ function validateEmail() {
   if (!v) { setError('email', 'Email address is required.'); return false; }
   if (!emailRx.test(v)) { setError('email', 'Enter a valid email address.'); return false; }
   setError('email', null); return true;
+}
+function validatePhone() {
+  const v = phoneEl.value.trim();
+  if (!v) { setError('phone', null); return true; }
+  if (!phoneRx.test(v)) { setError('phone', 'Enter a valid phone number.'); return false; }
 }
 function validatePassword() {
   const v = passwordEl.value;
@@ -111,7 +118,7 @@ function updateStrength() {
 }
 
 // ---- Eye Toggle Buttons -------------------------------------
-function makeEyeToggle(btnId, inputEl, iconId) {
+function makeEyeToggle(btnId, inputEl) {
   document.getElementById(btnId).addEventListener('click', () => {
     const isText = inputEl.type === 'text';
     inputEl.type = isText ? 'password' : 'text';
@@ -126,6 +133,9 @@ fullnameEl.addEventListener('input', () => { if (document.getElementById('err-fu
 
 emailEl.addEventListener('blur', validateEmail);
 emailEl.addEventListener('input', () => { if (document.getElementById('err-email').classList.contains('show')) validateEmail(); });
+
+phoneEl.addEventListener('blur', validatePhone);
+phoneEl.addEventListener('input', () => { if (document.getElementById('err-phone').classList.contains('show')) validatePhone(); });
 
 passwordEl.addEventListener('input', () => {
   updateStrength();
@@ -142,20 +152,18 @@ form.addEventListener('submit', async (e) => {
   e.preventDefault();
 
   // Run all validators
-  const ok = [validateFullname(), validateEmail(), validatePassword(), validateConfirm()];
+  const ok = [validateFullname(), validateEmail(), validatePhone(), validatePassword(), validateConfirm()];
   if (ok.includes(false)) {
     toast('Please fix the highlighted errors.', 'danger');
     return;
   }
 
-  // Loading state
-  submitBtn.classList.add('loading');
-  submitBtn.disabled = true;
 
   // Build FormData to POST to register-db.php
   const data = new FormData();
   data.append('fullname', fullnameEl.value.trim());
   data.append('email', emailEl.value.trim());
+  data.append('phone', phoneEl.value.trim());
   data.append('password', passwordEl.value);
 
   try {
@@ -167,6 +175,7 @@ form.addEventListener('submit', async (e) => {
       document.getElementById('r-id').textContent = json.record.id;
       document.getElementById('r-fullname').textContent = json.record.fullname;
       document.getElementById('r-email').textContent = json.record.email;
+      document.getElementById('r-phone').textContent = json.record.phone;
       document.getElementById('r-created').textContent = json.record.created_at;
 
       successOverlay.classList.add('open');

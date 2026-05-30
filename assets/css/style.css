@@ -117,7 +117,6 @@ body {
   font-size: 0.74rem;
   color: var(--danger);
   margin-top: 5px;
-  margin-left: 4px;
   min-height: 14px;
   opacity: 0;
   transition: opacity 0.2s ease;
@@ -129,7 +128,7 @@ body {
 /* Strength meter styling */
 .strength-wrap {
   display: none;
-  margin: -12px 0 10px;
+  margin: 10px 0 0 0;
   padding: 0 2px;
 }
 .strength-bars {
