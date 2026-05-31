@@ -11,6 +11,7 @@ const emailEl = document.getElementById('email');
 const phoneEl = document.getElementById('phone');
 const passwordEl = document.getElementById('password');
 const confirmEl = document.getElementById('confirm');
+const termsEl = document.getElementById('terms');
 
 const strengthWrap = document.getElementById('strength-wrap');
 const strengthLabel = document.getElementById('strength-label');
@@ -85,6 +86,14 @@ function validateConfirm() {
   if (v !== passwordEl.value) { setError('confirm', 'Passwords do not match.'); return false; }
   setError('confirm', null); return true;
 }
+function validateTerms() {
+  if (!termsEl.checked) {
+    setError('terms', 'You must agree to the terms and conditions.');
+    return false;
+  }
+  setError('terms', null);
+  return true;
+}
 
 // ---- Password Strength Meter --------------------------------
 function updateStrength() {
@@ -153,7 +162,7 @@ form.addEventListener('submit', async (e) => {
   e.preventDefault();
 
   // Run all validators
-  const ok = [validateFullname(), validateEmail(), validatePhone(), validatePassword(), validateConfirm()];
+  const ok = [validateFullname(), validateEmail(), validatePhone(), validatePassword(), validateConfirm(), validateTerms()];
   if (ok.includes(false)) {
     toast('Please fix the highlighted errors.', 'danger');
     return;

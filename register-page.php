@@ -75,14 +75,15 @@ include 'includes/header.php';
                 <span class="validation-msg" id="err-confirm"></span>
             </div>
             <!-- Terms Checkbox -->
-            <div class="flex items-start gap-3 py-2">
-                <div class="flex items-center h-5">
-                    <input class="w-4 h-4 text-primary border-outline-variant rounded focus:ring-primary cursor-pointer" id="terms" name="terms" type="checkbox" />
+            <div class="flex items-start gap-3 py-2" id="group-terms">
+                <div class=" flex items-center h-5">
+                    <input class="group-terms w-4 h-4 text-primary border-outline-variant rounded focus:ring-primary cursor-pointer" id="terms" name="terms" type="checkbox" />
                 </div>
                 <label class="font-helper-text text-helper-text text-on-secondary-container" for="terms">
                     I agree to the <a class="text-primary hover:underline" href="#">Terms of Service</a> and <a class="text-primary hover:underline" href="#">Privacy Policy</a>.
                 </label>
             </div>
+            <span class="validation-msg" id="err-terms"></span>
             <!-- Action Button -->
             <button class="w-full h-[48px] bg-primary text-on-primary font-button-text text-button-text rounded-lg hover:bg-primary-container transition-all active:scale-[0.98] mt-2" type="submit" id="submit-btn">
                 Create Account
