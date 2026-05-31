@@ -46,10 +46,7 @@ function toast(message, type = 'success') {
   t.innerHTML = `<span class="toast-body">${message}</span>`;
   toastWrap.appendChild(t);
 
-  setTimeout(() => {
-    t.classList.add('out');
-    setTimeout(() => t.remove(), 320);
-  }, 4200);
+  setTimeout(() => t.remove(), 5000);
 }
 
 // ---- Validators ---------------------------------------------

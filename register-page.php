@@ -135,7 +135,7 @@ include 'includes/header.php';
     </div>
 </div>
 <!-- Toast container -->
-<div class="toast-wrap" id="toast-wrap"></div>
+<div class="border-outline-variant toast-wrap" id="toast-wrap"></div>
 
 <!-- Footer -->
 <?php include 'includes/footer.php'; ?>
