@@ -18,7 +18,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 // ---- Collect & Sanitize Input --------------------------------
-$fullname = trim($_POST['fullname'] ?? '');
+$firstname = trim($_POST['firstname'] ?? '');
+$lastname = trim($_POST['lastname'] ?? '');
 $email    = trim($_POST['email']    ?? '');
 $phone    = trim($_POST['phone']    ?? '');
 $password =       $_POST['password'] ?? '';
@@ -26,12 +27,20 @@ $password =       $_POST['password'] ?? '';
 // ---- Server-Side Validation ----------------------------------
 $errors = [];
 
-if (empty($fullname)) {
-    $errors[] = 'Full name is required.';
-} elseif (strlen($fullname) < 2) {
-    $errors[] = 'Full name must be at least 2 characters.';
-} elseif (strlen($fullname) > 255) {
-    $errors[] = 'Full name is too long.';
+if (empty($firstname)) {
+    $errors[] = 'First name is required.';
+} elseif (strlen($firstname) < 2) {
+    $errors[] = 'First name must be at least 2 characters.';
+} elseif (strlen($firstname) > 255) {
+    $errors[] = 'First name is too long.';
+}
+
+if (empty($lastname)) {
+    $errors[] = 'Last name is required.';
+} elseif (strlen($lastname) < 2) {
+    $errors[] = 'Last name must be at least 2 characters.';
+} elseif (strlen($lastname) > 255) {
+    $errors[] = 'Last name is too long.';
 }
 
 if (empty($email)) {
@@ -71,11 +80,12 @@ try {
 
     // PDO Prepared Statement — prevents SQL injection entirely
     $stmt = $pdo->prepare(
-        'INSERT INTO `users` (`fullname`, `email`, `phone`, `password`) VALUES (:fullname, :email, :phone, :password)'
+        'INSERT INTO `users` (`firstname`, `lastname`, `email`, `phone`, `password`) VALUES (:firstname, :lastname, :email, :phone, :password)'
     );
 
     $stmt->execute([
-        ':fullname' => $fullname,
+        ':firstname' => $firstname,
+        ':lastname' => $lastname,
         ':email'    => $email,
         ':phone'    => $phone,
         ':password' => $hashedPassword,
@@ -89,10 +99,11 @@ try {
     // Return success with the inserted record details
     echo json_encode([
         'success'  => true,
-        'message'  => 'Registration successful! Welcome, ' . htmlspecialchars($fullname) . '.',
+        'message'  => 'Registration successful! Welcome, ' . htmlspecialchars($firstname . ' ' . $lastname) . '.',
         'record'   => [
             'id'         => $newId,
-            'fullname'   => $fullname,
+            'firstname'   => $firstname,
+            'lastname'   => $lastname,
             'email'      => $email,
             'phone'      => $phone,
             'created_at' => date('Y-m-d H:i:s'),

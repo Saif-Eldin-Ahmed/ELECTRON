@@ -19,15 +19,16 @@ include 'includes/header.php';
             <!-- Name Field -->
             <div class="flex flex-row gap-2">
                 <!-- First Name -->
-                <div class="flex flex-col gap-base w-full input-group" id="group-fullname">
-                    <label class="font-label-md text-label-md text-on-surface-variant" for="fullname">First Name*</label>
-                    <input class="w-full h-input-height px-4 rounded-lg border border-outline-variant bg-[#F9FAFB] focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-body-md" id="fullname" name="fullname" placeholder="John" type="text" required />
-                    <span class="validation-msg" id="err-fullname"></span>
+                <div class="flex flex-col gap-base w-full input-group" id="group-firstname">
+                    <label class="font-label-md text-label-md text-on-surface-variant" for="firstname">First Name*</label>
+                    <input class="w-full h-input-height px-4 rounded-lg border border-outline-variant bg-[#F9FAFB] focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-body-md" id="firstname" name="firstname" placeholder="John" type="text" required />
+                    <span class="validation-msg" id="err-firstname"></span>
                 </div>
                 <!-- Last Name -->
-                <div class="flex flex-col gap-base w-full">
-                    <label class="font-label-md text-label-md text-on-surface-variant" for="last_name">Last Name*</label>
-                    <input class="w-full h-input-height px-4 rounded-lg border border-outline-variant bg-[#F9FAFB] focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-body-md" id="last_name" name="last_name" placeholder="Doe" type="text" />
+                <div class="flex flex-col gap-base w-full input-group" id="group-lastname">
+                    <label class="font-label-md text-label-md text-on-surface-variant" for="lastname">Last Name*</label>
+                    <input class="w-full h-input-height px-4 rounded-lg border border-outline-variant bg-[#F9FAFB] focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-body-md" id="lastname" name="lastname" placeholder="Doe" type="text" required />
+                    <span class="validation-msg" id="err-lastname"></span>
                 </div>
             </div>
             <!-- Email Field -->

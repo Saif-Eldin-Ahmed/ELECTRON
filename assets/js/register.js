@@ -6,7 +6,8 @@
 const form = document.getElementById('register-form');
 const submitBtn = document.getElementById('submit-btn');
 
-const fullnameEl = document.getElementById('fullname');
+const firstnameEl = document.getElementById('firstname');
+const lastnameEl = document.getElementById('lastname');
 const emailEl = document.getElementById('email');
 const phoneEl = document.getElementById('phone');
 const passwordEl = document.getElementById('password');
@@ -53,11 +54,17 @@ function toast(message, type = 'success') {
 const emailRx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const phoneRx = /^\+[1-9]\d{6,14}$/;
 
-function validateFullname() {
-  const v = fullnameEl.value.trim();
-  if (!v) { setError('fullname', 'Full name is required.'); return false; }
-  if (v.length < 2) { setError('fullname', 'At least 2 characters required.'); return false; }
-  setError('fullname', null); return true;
+function validateFirstname() {
+  const v = firstnameEl.value.trim();
+  if (!v) { setError('firstname', 'First name is required.'); return false; }
+  if (v.length < 2) { setError('firstname', 'At least 2 characters required.'); return false; }
+  setError('firstname', null); return true;
+}
+function validateLastname() {
+  const v = lastnameEl.value.trim();
+  if (!v) { setError('lastname', 'Last name is required.'); return false; }
+  if (v.length < 2) { setError('lastname', 'At least 2 characters required.'); return false; }
+  setError('lastname', null); return true;
 }
 function validateEmail() {
   const v = emailEl.value.trim();
@@ -135,8 +142,11 @@ makeEyeToggle('toggle-pwd', passwordEl, 'eye-pwd');
 makeEyeToggle('toggle-confirm', confirmEl, 'eye-confirm');
 
 // ---- Live Validation Listeners ------------------------------
-fullnameEl.addEventListener('blur', validateFullname);
-fullnameEl.addEventListener('input', () => { if (document.getElementById('err-fullname').classList.contains('show')) validateFullname(); });
+firstnameEl.addEventListener('blur', validateFirstname);
+firstnameEl.addEventListener('input', () => { if (document.getElementById('err-firstname').classList.contains('show')) validateFirstname(); });
+
+lastnameEl.addEventListener('blur', validateLastname);
+lastnameEl.addEventListener('input', () => { if (document.getElementById('err-lastname').classList.contains('show')) validateLastname(); });
 
 emailEl.addEventListener('blur', validateEmail);
 emailEl.addEventListener('input', () => { if (document.getElementById('err-email').classList.contains('show')) validateEmail(); });
@@ -159,7 +169,7 @@ form.addEventListener('submit', async (e) => {
   e.preventDefault();
 
   // Run all validators
-  const ok = [validateFullname(), validateEmail(), validatePhone(), validatePassword(), validateConfirm(), validateTerms()];
+  const ok = [validateFirstname(), validateLastname(), validateEmail(), validatePhone(), validatePassword(), validateConfirm(), validateTerms()];
   if (ok.includes(false)) {
     toast('Please fix the highlighted errors.', 'danger');
     return;
@@ -168,7 +178,8 @@ form.addEventListener('submit', async (e) => {
 
   // Build FormData to POST to register-db.php
   const data = new FormData();
-  data.append('fullname', fullnameEl.value.trim());
+  data.append('firstname', firstnameEl.value.trim());
+  data.append('lastname', lastnameEl.value.trim());
   data.append('email', emailEl.value.trim());
   data.append('phone', phoneEl.value.trim());
   data.append('password', passwordEl.value);
@@ -180,7 +191,7 @@ form.addEventListener('submit', async (e) => {
     if (json.success) {
       // Populate success overlay with returned record details
       document.getElementById('r-id').textContent = json.record.id;
-      document.getElementById('r-fullname').textContent = json.record.fullname;
+      document.getElementById('r-fullname').textContent = json.record.firstname + " " + json.record.lastname;
       document.getElementById('r-email').textContent = json.record.email;
       document.getElementById('r-phone').textContent = json.record.phone;
       document.getElementById('r-created').textContent = json.record.created_at;
