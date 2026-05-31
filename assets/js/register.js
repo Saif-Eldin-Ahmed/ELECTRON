@@ -53,7 +53,7 @@ function toast(message, type = 'success') {
 
 // ---- Validators ---------------------------------------------
 const emailRx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const phoneRx = /^[0-9]{10}$/;
+const phoneRx = /^\+[1-9]\d{6,14}$/;
 
 function validateFullname() {
   const v = fullnameEl.value.trim();
@@ -70,7 +70,8 @@ function validateEmail() {
 function validatePhone() {
   const v = phoneEl.value.trim();
   if (!v) { setError('phone', null); return true; }
-  if (!phoneRx.test(v)) { setError('phone', 'Enter a valid phone number.'); return false; }
+  if (!phoneRx.test(v)) { setError('phone', 'Phone number must start with + and country code, followed by digits (e.g., +1234567890).'); return false; }
+  setError('phone', null); return true;
 }
 function validatePassword() {
   const v = passwordEl.value;

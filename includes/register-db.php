@@ -1,6 +1,6 @@
 <?php
 // ============================================================
-//  register.php — Registration Handler
+//  register-db.php — Registration Handler
 //  Accepts POST requests and inserts a new user into the DB.
 // ============================================================
 
@@ -42,8 +42,12 @@ if (empty($email)) {
     $errors[] = 'Email address is too long.';
 }
 
-if (strlen($phone) > 20) {
-    $errors[] = 'Phone number is too long.';
+if (!empty($phone)) {
+    if (!preg_match('/^\+[1-9]\d{6,14}$/', $phone)) {
+        $errors[] = 'Phone number must start with + and country code, followed by digits (e.g., +1234567890).';
+    }
+} else {
+    $phone = null;
 }
 
 if (empty($password)) {
@@ -79,6 +83,9 @@ try {
 
     $newId = $pdo->lastInsertId();
 
+    if ($phone === null) {
+        $phone = 'N/A';
+    }
     // Return success with the inserted record details
     echo json_encode([
         'success'  => true,

@@ -39,7 +39,7 @@ include 'includes/header.php';
             <!-- Phone Field -->
             <div class="flex flex-col gap-base" id="group-phone">
                 <label class="font-label-md text-label-md text-on-surface-variant" for="phone">Phone Number</label>
-                <input class="w-full h-input-height px-4 rounded-lg border border-outline-variant bg-[#F9FAFB] focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-body-md" id="phone" name="phone" placeholder="+1 234 567 890" type="tel" />
+                <input class="w-full h-input-height px-4 rounded-lg border border-outline-variant bg-[#F9FAFB] focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-body-md" id="phone" name="phone" placeholder="+1234567890" type="tel" />
                 <span class="validation-msg" id="err-phone"></span>
             </div>
             <!-- Password Field -->
@@ -120,8 +120,8 @@ include 'includes/header.php';
             <h3>Inserted Record</h3>
             <div class="record-row"><span>ID</span><strong id="r-id">—</strong></div>
             <div class="record-row"><span>Full Name</span><strong id="r-fullname">—</strong></div>
-            <div class="record-row"><span>Username</span><strong id="r-username">—</strong></div>
             <div class="record-row"><span>Email</span><strong id="r-email">—</strong></div>
+            <div class="record-row"><span>Phone</span><strong id="r-phone">—</strong></div>
             <div class="record-row"><span>Created At</span><strong id="r-created">—</strong></div>
             <div class="record-row"><span>Database</span>
             </div>
