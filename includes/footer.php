@@ -14,8 +14,11 @@
 </footer>
 </body>
 
-<?php if (isset($acc))
+<?php
+if (isset($acc) && isset($reg))
     echo '<script src="assets/js/register.js"></script>';
+if (isset($acc) && isset($log))
+    echo '<script src="assets/js/login.js"></script>';
 ?>
 
 </html>

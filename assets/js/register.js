@@ -1,5 +1,5 @@
 // ============================================================
-//  script.js — ELECTRON-2 PHP PDO Registration
+//  register.js — ELECTRON-2 PHP PDO Registration
 // ============================================================
 
 // ---- DOM References -----------------------------------------
@@ -138,8 +138,8 @@ function makeEyeToggle(btnId, inputEl) {
     inputEl.type = isText ? 'password' : 'text';
   });
 }
-makeEyeToggle('toggle-pwd', passwordEl, 'eye-pwd');
-makeEyeToggle('toggle-confirm', confirmEl, 'eye-confirm');
+makeEyeToggle('toggle-pwd', passwordEl);
+makeEyeToggle('toggle-confirm', confirmEl);
 
 // ---- Live Validation Listeners ------------------------------
 firstnameEl.addEventListener('blur', validateFirstname);

@@ -2,6 +2,7 @@
 
 $down = true;
 $acc = true;
+$reg = true;
 $page_title = "ELECTRON | Register";
 $body_class = "font-body-md text-on-surface bg-white";
 include 'includes/header.php';
