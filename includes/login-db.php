@@ -58,6 +58,37 @@ try {
         exit;
     }
 
+    // Get User's IP Address
+    function getUserIP()
+    {
+        if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            // Take the first IP in the list
+            $ip = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR'])[0];
+        } elseif (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+            $ip = $_SERVER['HTTP_CLIENT_IP'];
+        } else {
+            $ip = $_SERVER['REMOTE_ADDR'];
+        }
+        return trim($ip);
+    }
+
+    // Updates Users IP Address
+    if (getUserIP() !== $user['last_login_ip']) {
+        $stmt = $pdo->prepare("UPDATE `users` SET `last_login_ip` = :ip WHERE `id` = :id");
+        $stmt->execute([':ip' => getUserIP(), ':id' => $user['id']]);
+        $user['last_login_ip'] = getUserIP();
+    }
+
+    // Update Last Log in Timestamp
+    $stmt = $pdo->prepare("UPDATE `users` SET `last_login_at` = NOW() WHERE `id` = :id");
+    $stmt->execute([':id' => $user['id']]);
+    $user['last_login_at'] = date('Y-m-d H:i:s');
+
+    // Phone Number Normalization
+    if ($user['phone'] === null) {
+        $user['phone'] = 'N/A';
+    }
+
     // Success — you can now create a session or return user details
     http_response_code(200);
     echo json_encode([
@@ -69,6 +100,8 @@ try {
             'email'      => $user['email'],
             'phone'      => $user['phone'],
             'created_at' => $user['created_at'],
+            'last_login_at' => $user['last_login_at'],
+            'last_login_ip' => $user['last_login_ip'],
         ]
     ]);
 } catch (PDOException $e) {

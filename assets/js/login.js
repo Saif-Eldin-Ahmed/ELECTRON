@@ -103,6 +103,8 @@ form.addEventListener('submit', async (e) => {
             document.getElementById('r-email').textContent = json.user.email;
             document.getElementById('r-phone').textContent = json.user.phone;
             document.getElementById('r-created').textContent = json.user.created_at;
+            document.getElementById('r-last-login').textContent = json.user.last_login_at;
+            document.getElementById('r-ip').textContent = json.user.last_login_ip;
 
             successOverlay.classList.add('open');
             successOverlay.setAttribute('aria-hidden', 'false');

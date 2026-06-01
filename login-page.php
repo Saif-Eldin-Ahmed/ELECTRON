@@ -74,6 +74,8 @@ include 'includes/header.php';
             <div class="record-row"><span>Email</span><strong id="r-email">—</strong></div>
             <div class="record-row"><span>Phone</span><strong id="r-phone">—</strong></div>
             <div class="record-row"><span>Created At</span><strong id="r-created">—</strong></div>
+            <div class="record-row"><span>Last Login At</span><strong id="r-last-login">—</strong></div>
+            <div class="record-row"><span>Last Login IP</span><strong id="r-ip">—</strong></div>
             <div class="record-row"><span>Database</span>
             </div>
         </div>
