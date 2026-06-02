@@ -10,7 +10,8 @@ const emailEl = document.getElementById('email');
 const passwordEl = document.getElementById('password');
 
 const successOverlay = document.getElementById('success-overlay');
-const btnAnother = document.getElementById('btn-another');
+const btnYes = document.getElementById('btn-yes');
+const btnNo = document.getElementById('btn-no');
 const toastWrap = document.getElementById('toast-wrap');
 
 // ---- Helpers ------------------------------------------------
@@ -98,17 +99,18 @@ form.addEventListener('submit', async (e) => {
 
         if (json.success) {
             // Populate success overlay with returned user details
-            document.getElementById('r-id').textContent = json.user.id;
             document.getElementById('r-fullname').textContent = json.user.firstname + " " + json.user.lastname;
-            document.getElementById('r-email').textContent = json.user.email;
-            document.getElementById('r-phone').textContent = json.user.phone;
-            document.getElementById('r-created').textContent = json.user.created_at;
-            document.getElementById('r-last-login').textContent = json.user.last_login_at;
-            document.getElementById('r-ip').textContent = json.user.last_login_ip;
-
             successOverlay.classList.add('open');
             successOverlay.setAttribute('aria-hidden', 'false');
             toast('Logged in Successfully!', 'success');
+            form.reset();
+            btnYes.addEventListener('click', () => {
+                window.location.href = 'index.php';
+            });
+            btnNo.addEventListener('click', () => {
+                successOverlay.classList.remove('open');
+                successOverlay.setAttribute('aria-hidden', 'true');
+            });
         } else {
             toast(json.error || 'Logging in failed. Please try again.', 'danger');
         }

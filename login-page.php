@@ -64,25 +64,16 @@ include 'includes/header.php';
 <!-- ========== Success Overlay ========== -->
 <div class="success-overlay" id="success-overlay" aria-hidden="true">
     <div class="success-card">
-        <h2>Account Login Successful!</h2>
-        <p>Welcome back! You have successfully logged in to your account.</p>
-
         <div class="record-box">
-            <h3>User Information</h3>
-            <div class="record-row"><span>ID</span><strong id="r-id">—</strong></div>
-            <div class="record-row"><span>Full Name</span><strong id="r-fullname">—</strong></div>
-            <div class="record-row"><span>Email</span><strong id="r-email">—</strong></div>
-            <div class="record-row"><span>Phone</span><strong id="r-phone">—</strong></div>
-            <div class="record-row"><span>Created At</span><strong id="r-created">—</strong></div>
-            <div class="record-row"><span>Last Login At</span><strong id="r-last-login">—</strong></div>
-            <div class="record-row"><span>Last Login IP</span><strong id="r-ip">—</strong></div>
-            <div class="record-row"><span>Database</span>
+            <div class="record-row text-center">
+                <h3>Are you</h3>
+                <h1 id="r-fullname">—</h1>
             </div>
         </div>
 
         <div class="success-actions">
-            <button class="btn-ghost" id="btn-another">Login Another</button>
-            <a href="test-db.php" target="_blank" class="btn-outline">View in Diagnostics</a>
+            <button class="btn-ghost yes" id="btn-yes">Yes</button>
+            <button class="btn-ghost no" id="btn-no">No</button>
         </div>
     </div>
 </div>

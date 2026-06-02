@@ -1,7 +1,7 @@
 :root {
   --bg: #090d16;
   --surface: rgba(15, 23, 42, 0.5);
-  --border: rgba(255, 255, 255, 0.07);
+  --border: rgb(0, 0, 0);
   --border-focus: rgba(99, 102, 241, 0.7);
 
   --txt-primary: #f1f5f9;
@@ -169,14 +169,11 @@ body {
 .success-card {
   width: 90%;
   max-width: 440px;
-  background: rgba(17, 24, 39, 0.92);
-  border: 1px solid rgba(16, 185, 129, 0.22);
+  background: rgb(255 255 255 / 92%);
+  border: 1px solid rgb(0 0 0);
   border-radius: var(--radius-card);
-  padding: 36px;
+  padding: 16px;
   text-align: center;
-  box-shadow:
-    0 32px 64px rgba(0, 0, 0, 0.55),
-    0 0 40px var(--success-glow);
   transform: scale(0.88);
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -223,51 +220,28 @@ body {
 
 /* Record box */
 .record-box {
-  background: rgba(15, 23, 42, 0.65);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid rgb(0 0 0);
   border-radius: 12px;
   padding: 16px;
-  text-align: left;
   margin-bottom: 22px;
 }
 .record-box h3 {
-  font-size: 0.72rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1px;
-  color: var(--txt-muted);
   margin-bottom: 12px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+.record-box h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
 }
 .record-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-  font-size: 0.84rem;
-}
-.record-row:last-child {
-  margin-bottom: 0;
-}
-.record-row span {
-  color: var(--txt-secondary);
-}
-.record-row strong {
-  color: var(--txt-primary);
-  font-weight: 500;
+  text-align: center;
 }
 
-.db-tag {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  color: var(--success) !important;
-  background: rgba(16, 185, 129, 0.08);
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-size: 0.78rem;
-}
 .tiny-icon {
   width: 12px;
   height: 12px;
@@ -292,15 +266,14 @@ body {
   transition: all var(--transition);
 }
 .btn-ghost {
-  background: rgba(30, 41, 59, 0.7);
   border: 1px solid var(--border);
-  color: var(--txt-primary);
 }
-.btn-ghost:hover {
-  background: rgba(51, 65, 85, 0.8);
-  border-color: rgba(255, 255, 255, 0.12);
+.btn-ghost.yes:hover {
+  background: var(--success);
 }
-
+.btn-ghost.no:hover {
+  background: var(--danger);
+}
 .btn-outline {
   background: transparent;
   border: 1px solid rgba(16, 185, 129, 0.35);
