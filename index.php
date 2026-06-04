@@ -15,9 +15,35 @@ include 'includes/header.php';
             </div>
 
             <nav class="hidden md:flex md:gap-4 lg:gap-10 items-center">
-                <div class="flex items-center gap-1 group cursor-pointer">
-                    <a class="text-[11px] font-bold uppercase tracking-widest text-black" href="#">account</a>
-                    <span class="material-symbols-outlined text-sm">expand_more</span>
+                <div class="relative flex items-center gap-1 group cursor-pointer py-2" id="accDropdown">
+                    <img class="w-10 h-10 mr-5 rounded-full" src="<?php echo isset($_SESSION['pro_img']) ? $_SESSION['pro_img'] : 'assets/proImgs/Default.jpg'; ?>" alt="<?php echo isset($_SESSION['firstname']) ? htmlspecialchars($_SESSION['firstname']) : 'account'; ?>'s profile image">
+                    <span class="text-[11px] font-bold uppercase tracking-widest text-black" id="accBtn">
+                        <?php echo isset($_SESSION['firstname']) ? htmlspecialchars($_SESSION['firstname']) : 'account'; ?>
+                    </span>
+                    <span class="material-symbols-outlined text-sm" id="accBtnIco">expand_more</span>
+
+                    <!-- Dropdown Menu -->
+                    <div class="hide-menu absolute left-0 top-full mt-1 w-48 bg-white/95 backdrop-blur-lg border border-black/10 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] z-50 overflow-hidden py-2" id="accMenu">
+                        <?php if (isset($_SESSION['id'])): ?>
+                            <a href="profile.php" class="flex items-center gap-3 px-4 py-2.5 text-[11px] font-bold uppercase tracking-widest text-black hover:bg-black/5 transition-colors">
+                                <span class="material-symbols-outlined text-base">person</span>
+                                Profile
+                            </a>
+                            <a href="logout.php" class="flex items-center gap-3 px-4 py-2.5 text-[11px] font-bold uppercase tracking-widest text-red-600 hover:bg-red-50 transition-colors">
+                                <span class="material-symbols-outlined text-base">logout</span>
+                                Log Out
+                            </a>
+                        <?php else: ?>
+                            <a href="login-page.php" class="flex items-center gap-3 px-4 py-2.5 text-[11px] font-bold uppercase tracking-widest text-black hover:bg-black/5 transition-colors">
+                                <span class="material-symbols-outlined text-base">login</span>
+                                Log In
+                            </a>
+                            <a href="register-page.php" class="flex items-center gap-3 px-4 py-2.5 text-[11px] font-bold uppercase tracking-widest text-black hover:bg-black/5 transition-colors">
+                                <span class="material-symbols-outlined text-base">person_add</span>
+                                Sign Up
+                            </a>
+                        <?php endif; ?>
+                    </div>
                 </div>
                 <div class="flex items-center gap-1 group cursor-pointer">
                     <a class="text-[11px] font-bold uppercase tracking-widest text-black" href="#">cart</a>
@@ -309,7 +335,19 @@ include 'includes/header.php';
                 <span class="material-symbols-outlined text-3xl">search</span>
             </button>
         </form>
-        <a class="text-3xl font-headline-md uppercase tracking-tight text-black border-b border-black/10 pb-4 hover:text-black/70" href="#">Account</a>
+        <?php if (isset($_SESSION['id'])): ?>
+            <div class="border-b border-black/10 pb-4 flex flex-col gap-4">
+                <span class="text-xs font-bold uppercase tracking-widest text-black/40">Logged in as <?php echo htmlspecialchars($_SESSION['firstname']); ?></span>
+                <a class="text-3xl font-headline-md uppercase tracking-tight text-black hover:text-black/70 flex items-center gap-3" href="profile.php">
+                    <span class="material-symbols-outlined text-2xl">person</span> Profile
+                </a>
+                <a class="text-3xl font-headline-md uppercase tracking-tight text-red-600 hover:text-red-500 flex items-center gap-3" href="logout.php">
+                    <span class="material-symbols-outlined text-2xl">logout</span> Log Out
+                </a>
+            </div>
+        <?php else: ?>
+            <a class="text-3xl font-headline-md uppercase tracking-tight text-black border-b border-black/10 pb-4 hover:text-black/70" href="login-page.php">Account</a>
+        <?php endif; ?>
         <a class="text-3xl font-headline-md uppercase tracking-tight text-black border-b border-black/10 pb-4 hover:text-black/70" href="#">Cart</a>
     </div>
     <div class="mt-auto pt-12">
@@ -325,6 +363,8 @@ include 'includes/header.php';
         const openBtn = document.getElementById('openMenuBtn');
         const closeBtn = document.getElementById('closeMenuBtn');
         const mobileMenu = document.getElementById('mobileMenu');
+        const accDropdown = document.getElementById('accDropdown');
+        const accMenu = document.getElementById('accMenu');
 
         if (openBtn && closeBtn && mobileMenu) {
             openBtn.addEventListener('click', () => {
@@ -333,6 +373,24 @@ include 'includes/header.php';
 
             closeBtn.addEventListener('click', () => {
                 mobileMenu.classList.add('translate-y-full');
+            });
+        }
+
+        if (accDropdown && accMenu) {
+            accDropdown.addEventListener('click', (e) => {
+                // Toggle the dropdown if the click did not happen inside the dropdown menu itself
+                if (!accMenu.contains(e.target)) {
+                    accMenu.classList.toggle('show-menu');
+                    accMenu.classList.toggle('hide-menu');
+                }
+            });
+
+            // Close the dropdown when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!accDropdown.contains(e.target)) {
+                    accMenu.classList.remove('show-menu');
+                    accMenu.classList.add('hide-menu');
+                }
             });
         }
     });

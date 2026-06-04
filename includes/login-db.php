@@ -93,17 +93,21 @@ try {
     http_response_code(200);
     echo json_encode([
         'success' => true,
-        'user' => [
-            'id'         => $user['id'],
-            'firstname'  => $user['firstname'],
-            'lastname'   => $user['lastname'],
-            'email'      => $user['email'],
-            'phone'      => $user['phone'],
-            'created_at' => $user['created_at'],
-            'last_login_at' => $user['last_login_at'],
-            'last_login_ip' => $user['last_login_ip'],
-        ]
+        'firstname' => $user['firstname'],
+        'lastname'  => $user['lastname']
     ]);
+
+    session_start();
+
+    $_SESSION['id']             = $user['id'];
+    $_SESSION['email']          = $user['email'];
+    $_SESSION['firstname']      = $user['firstname'];
+    $_SESSION['lastname']       = $user['lastname'];
+    $_SESSION['phone']          = $user['phone'];
+    $_SESSION['created_at']     = $user['created_at'];
+    $_SESSION['last_login_at']  = $user['last_login_at'];
+    $_SESSION['last_login_ip']  = $user['last_login_ip'];
+    $_SESSION['pro_img']        = $user['pro_img'];
 } catch (PDOException $e) {
     http_response_code(500);
     echo json_encode(['success' => false, 'error' => 'Database error: ' . $e->getMessage()]);
