@@ -100,6 +100,7 @@ try {
     session_start();
 
     $_SESSION['id']             = $user['id'];
+    $_SESSION['role']           = $user['role'];
     $_SESSION['email']          = $user['email'];
     $_SESSION['firstname']      = $user['firstname'];
     $_SESSION['lastname']       = $user['lastname'];

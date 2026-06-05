@@ -34,7 +34,7 @@ if (!$product) {
 // Parse images
 $imgs = json_decode($product['imgs'], true);
 if (!is_array($imgs) || empty($imgs)) {
-    $imgs = ['assets/proImgs/Default.jpg'];
+    $imgs = ['assets/prdctImgs/Default.png'];
 }
 $primary_img = $imgs[0];
 $gallery_imgs = $imgs;
@@ -121,8 +121,8 @@ include 'includes/header.php';
                         onclick="setMainImage('<?php echo htmlspecialchars($img); ?>', this)"
                         class="thumb-btn flex-shrink-0 w-16 h-16 md:w-20 md:h-20 rounded-xl overflow-hidden border-2 transition-all duration-200 <?php echo $i === 0 ? 'border-zinc-950' : 'border-zinc-200 hover:border-zinc-400'; ?> bg-zinc-50">
                         <img src="<?php echo htmlspecialchars($img); ?>"
-                             alt="View <?php echo $i + 1; ?>"
-                             class="w-full h-full object-contain p-2">
+                            alt="View <?php echo $i + 1; ?>"
+                            class="w-full h-full object-contain p-2">
                     </button>
                 <?php endforeach; ?>
             </div>
@@ -132,9 +132,9 @@ include 'includes/header.php';
                     <span class="absolute top-5 left-5 bg-red-600 text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 z-10">Sale</span>
                 <?php endif; ?>
                 <img id="mainProductImage"
-                     src="<?php echo htmlspecialchars($primary_img); ?>"
-                     alt="<?php echo htmlspecialchars($product['name']); ?>"
-                     class="w-full h-full object-contain p-10 transition-transform duration-500 group-hover:scale-105">
+                    src="<?php echo htmlspecialchars($primary_img); ?>"
+                    alt="<?php echo htmlspecialchars($product['name']); ?>"
+                    class="w-full h-full object-contain p-10 transition-transform duration-500 group-hover:scale-105">
             </div>
         </div>
 
@@ -162,7 +162,7 @@ include 'includes/header.php';
                             <span class="material-symbols-outlined text-xl" style="font-variation-settings:'FILL' 1">star_half</span>
                         <?php else: ?>
                             <span class="material-symbols-outlined text-xl">star</span>
-                        <?php endif;
+                    <?php endif;
                     endfor; ?>
                 </div>
                 <span class="text-sm font-semibold text-zinc-600"><?php echo number_format($rating, 1); ?></span>
@@ -196,14 +196,14 @@ include 'includes/header.php';
 
             <!-- Key Specs Preview -->
             <?php if (!empty($specs)): ?>
-            <div class="grid grid-cols-2 gap-3">
-                <?php foreach (array_slice($specs, 0, 4) as $key => $value): ?>
-                    <div class="bg-zinc-50 rounded-xl p-4">
-                        <p class="text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-1"><?php echo htmlspecialchars(ucfirst(str_replace('_', ' ', $key))); ?></p>
-                        <p class="text-sm font-bold text-zinc-900"><?php echo htmlspecialchars(is_bool($value) ? ($value ? 'Yes' : 'No') : $value); ?></p>
-                    </div>
-                <?php endforeach; ?>
-            </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <?php foreach (array_slice($specs, 0, 4) as $key => $value): ?>
+                        <div class="bg-zinc-50 rounded-xl p-4">
+                            <p class="text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-1"><?php echo htmlspecialchars(ucfirst(str_replace('_', ' ', $key))); ?></p>
+                            <p class="text-sm font-bold text-zinc-900"><?php echo htmlspecialchars(is_bool($value) ? ($value ? 'Yes' : 'No') : $value); ?></p>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
             <?php endif; ?>
 
             <!-- Actions -->
@@ -239,56 +239,56 @@ include 'includes/header.php';
 
     <!-- Full Specifications -->
     <?php if (!empty($specs)): ?>
-    <div class="mt-20 md:mt-28">
-        <div class="flex items-center gap-6 mb-10">
-            <h2 class="text-2xl md:text-3xl font-black uppercase tracking-tight text-zinc-950">Specifications</h2>
-            <div class="flex-1 h-px bg-zinc-100"></div>
+        <div class="mt-20 md:mt-28">
+            <div class="flex items-center gap-6 mb-10">
+                <h2 class="text-2xl md:text-3xl font-black uppercase tracking-tight text-zinc-950">Specifications</h2>
+                <div class="flex-1 h-px bg-zinc-100"></div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <?php foreach ($specs as $key => $value): ?>
+                    <div class="group bg-zinc-50 hover:bg-zinc-100 rounded-2xl p-5 transition-colors">
+                        <p class="text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-2"><?php echo htmlspecialchars(ucfirst(str_replace('_', ' ', $key))); ?></p>
+                        <p class="text-base font-bold text-zinc-900"><?php echo htmlspecialchars(is_bool($value) ? ($value ? 'Yes' : 'No') : $value); ?></p>
+                    </div>
+                <?php endforeach; ?>
+            </div>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <?php foreach ($specs as $key => $value): ?>
-                <div class="group bg-zinc-50 hover:bg-zinc-100 rounded-2xl p-5 transition-colors">
-                    <p class="text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-2"><?php echo htmlspecialchars(ucfirst(str_replace('_', ' ', $key))); ?></p>
-                    <p class="text-base font-bold text-zinc-900"><?php echo htmlspecialchars(is_bool($value) ? ($value ? 'Yes' : 'No') : $value); ?></p>
-                </div>
-            <?php endforeach; ?>
-        </div>
-    </div>
     <?php endif; ?>
 
     <!-- Related Products -->
     <?php if (!empty($related_products)): ?>
-    <div class="mt-20 md:mt-28">
-        <div class="flex items-center gap-6 mb-10">
-            <h2 class="text-2xl md:text-3xl font-black uppercase tracking-tight text-zinc-950">You May Also Like</h2>
-            <div class="flex-1 h-px bg-zinc-100"></div>
-            <a href="search.php" class="text-xs font-bold uppercase tracking-widest border-b-2 border-zinc-950 pb-0.5 whitespace-nowrap hover:text-zinc-500 hover:border-zinc-500 transition-colors">View All</a>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <?php foreach ($related_products as $rel): ?>
-                <?php
-                $rel_imgs = json_decode($rel['imgs'], true);
-                $rel_img = (is_array($rel_imgs) && !empty($rel_imgs)) ? $rel_imgs[0] : 'assets/proImgs/Default.jpg';
-                ?>
-                <a href="product.php?id=<?php echo $rel['id']; ?>" class="group bg-white border border-zinc-100 rounded-2xl overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1 flex flex-col">
-                    <div class="aspect-square bg-zinc-50 flex items-center justify-center overflow-hidden">
-                        <img src="<?php echo htmlspecialchars($rel_img); ?>"
-                             alt="<?php echo htmlspecialchars($rel['name']); ?>"
-                             class="w-full h-full object-contain p-6 group-hover:scale-105 transition-transform duration-500">
-                    </div>
-                    <div class="p-5 flex flex-col flex-grow">
-                        <span class="text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-1"><?php echo htmlspecialchars($rel['brand_name']); ?></span>
-                        <h3 class="font-bold text-zinc-950 text-sm mb-3 leading-snug flex-grow"><?php echo htmlspecialchars($rel['name']); ?></h3>
-                        <div class="flex items-center justify-between mt-auto">
-                            <span class="font-black text-zinc-950">$<?php echo number_format($rel['price'], 2); ?></span>
-                            <span class="text-[10px] font-bold uppercase tracking-widest text-zinc-400 group-hover:text-zinc-950 transition-colors flex items-center gap-1">
-                                View <span class="material-symbols-outlined text-sm">north_east</span>
-                            </span>
+        <div class="mt-20 md:mt-28">
+            <div class="flex items-center gap-6 mb-10">
+                <h2 class="text-2xl md:text-3xl font-black uppercase tracking-tight text-zinc-950">You May Also Like</h2>
+                <div class="flex-1 h-px bg-zinc-100"></div>
+                <a href="search.php" class="text-xs font-bold uppercase tracking-widest border-b-2 border-zinc-950 pb-0.5 whitespace-nowrap hover:text-zinc-500 hover:border-zinc-500 transition-colors">View All</a>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <?php foreach ($related_products as $rel): ?>
+                    <?php
+                    $rel_imgs = json_decode($rel['imgs'], true);
+                    $rel_img = (is_array($rel_imgs) && !empty($rel_imgs)) ? $rel_imgs[0] : 'assets/proImgs/Default.jpg';
+                    ?>
+                    <a href="product.php?id=<?php echo $rel['id']; ?>" class="group bg-white border border-zinc-100 rounded-2xl overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1 flex flex-col">
+                        <div class="aspect-square bg-zinc-50 flex items-center justify-center overflow-hidden">
+                            <img src="<?php echo htmlspecialchars($rel_img); ?>"
+                                alt="<?php echo htmlspecialchars($rel['name']); ?>"
+                                class="w-full h-full object-contain p-6 group-hover:scale-105 transition-transform duration-500">
                         </div>
-                    </div>
-                </a>
-            <?php endforeach; ?>
+                        <div class="p-5 flex flex-col flex-grow">
+                            <span class="text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-1"><?php echo htmlspecialchars($rel['brand_name']); ?></span>
+                            <h3 class="font-bold text-zinc-950 text-sm mb-3 leading-snug flex-grow"><?php echo htmlspecialchars($rel['name']); ?></h3>
+                            <div class="flex items-center justify-between mt-auto">
+                                <span class="font-black text-zinc-950">$<?php echo number_format($rel['price'], 2); ?></span>
+                                <span class="text-[10px] font-bold uppercase tracking-widest text-zinc-400 group-hover:text-zinc-950 transition-colors flex items-center gap-1">
+                                    View <span class="material-symbols-outlined text-sm">north_east</span>
+                                </span>
+                            </div>
+                        </div>
+                    </a>
+                <?php endforeach; ?>
+            </div>
         </div>
-    </div>
     <?php endif; ?>
 
 </main>
@@ -296,43 +296,43 @@ include 'includes/header.php';
 <?php include 'includes/footer.php'; ?>
 
 <script>
-// Gallery image switcher
-function setMainImage(src, btn) {
-    document.getElementById('mainProductImage').src = src;
-    document.querySelectorAll('.thumb-btn').forEach(b => {
-        b.classList.remove('border-zinc-950');
-        b.classList.add('border-zinc-200');
-    });
-    btn.classList.remove('border-zinc-200');
-    btn.classList.add('border-zinc-950');
-}
+    // Gallery image switcher
+    function setMainImage(src, btn) {
+        document.getElementById('mainProductImage').src = src;
+        document.querySelectorAll('.thumb-btn').forEach(b => {
+            b.classList.remove('border-zinc-950');
+            b.classList.add('border-zinc-200');
+        });
+        btn.classList.remove('border-zinc-200');
+        btn.classList.add('border-zinc-950');
+    }
 
-// Wishlist toggle
-const wishlistBtn = document.getElementById('wishlistBtn');
-if (wishlistBtn) {
-    const icon = wishlistBtn.querySelector('.material-symbols-outlined');
-    let wishlisted = false;
-    wishlistBtn.addEventListener('click', () => {
-        wishlisted = !wishlisted;
-        icon.style.fontVariationSettings = wishlisted ? "'FILL' 1" : "'FILL' 0";
-        wishlistBtn.classList.toggle('border-red-400', wishlisted);
-        wishlistBtn.classList.toggle('text-red-500', wishlisted);
-    });
-}
+    // Wishlist toggle
+    const wishlistBtn = document.getElementById('wishlistBtn');
+    if (wishlistBtn) {
+        const icon = wishlistBtn.querySelector('.material-symbols-outlined');
+        let wishlisted = false;
+        wishlistBtn.addEventListener('click', () => {
+            wishlisted = !wishlisted;
+            icon.style.fontVariationSettings = wishlisted ? "'FILL' 1" : "'FILL' 0";
+            wishlistBtn.classList.toggle('border-red-400', wishlisted);
+            wishlistBtn.classList.toggle('text-red-500', wishlisted);
+        });
+    }
 
-// Add to Cart feedback
-const cartBtn = document.getElementById('addToCartBtn');
-if (cartBtn) {
-    cartBtn.addEventListener('click', () => {
-        const original = cartBtn.innerHTML;
-        cartBtn.innerHTML = '<span class="material-symbols-outlined text-xl" style="font-variation-settings:\'FILL\' 1">check_circle</span> Added!';
-        cartBtn.classList.add('bg-emerald-600');
-        cartBtn.classList.remove('bg-zinc-950', 'hover:bg-zinc-800');
-        setTimeout(() => {
-            cartBtn.innerHTML = original;
-            cartBtn.classList.remove('bg-emerald-600');
-            cartBtn.classList.add('bg-zinc-950', 'hover:bg-zinc-800');
-        }, 2000);
-    });
-}
+    // Add to Cart feedback
+    const cartBtn = document.getElementById('addToCartBtn');
+    if (cartBtn) {
+        cartBtn.addEventListener('click', () => {
+            const original = cartBtn.innerHTML;
+            cartBtn.innerHTML = '<span class="material-symbols-outlined text-xl" style="font-variation-settings:\'FILL\' 1">check_circle</span> Added!';
+            cartBtn.classList.add('bg-emerald-600');
+            cartBtn.classList.remove('bg-zinc-950', 'hover:bg-zinc-800');
+            setTimeout(() => {
+                cartBtn.innerHTML = original;
+                cartBtn.classList.remove('bg-emerald-600');
+                cartBtn.classList.add('bg-zinc-950', 'hover:bg-zinc-800');
+            }, 2000);
+        });
+    }
 </script>

@@ -279,7 +279,7 @@ include 'includes/header.php';
                 <?php foreach ($products as $product): ?>
                     <?php
                     $product_imgs = json_decode($product['imgs'], true);
-                    $primary_img = 'assets/proImgs/Default.jpg';
+                    $primary_img = 'assets/prdctImgs/Default.png';
                     if (is_array($product_imgs) && !empty($product_imgs)) {
                         $primary_img = $product_imgs[0];
                     }
@@ -291,7 +291,7 @@ include 'includes/header.php';
                     $review_count = ($product['id'] * 17) % 150 + 10;
                     $rating = 4.0 + (($product['id'] * 3) % 11) / 10.0;
                     ?>
-                    <article class="bg-white dark:bg-zinc-950 rounded-lg overflow-hidden border border-zinc-100 dark:border-zinc-900 product-card-shadow flex flex-col">
+                    <article onclick="window.location.href='product.php?id=<?php echo $product['id']; ?>'" class="bg-white dark:bg-zinc-950 rounded-lg overflow-hidden border border-zinc-100 dark:border-zinc-900 product-card-shadow flex flex-col cursor-pointer transition-transform duration-300 hover:-translate-y-1">
                         <div class="relative aspect-square bg-zinc-50 dark:bg-zinc-900 group">
                             <img alt="<?php echo htmlspecialchars($product['name']); ?>" class="w-full h-full object-contain p-8 group-hover:scale-105 transition-transform duration-500" src="<?php echo htmlspecialchars($primary_img); ?>" />
                             <?php if ($product['compare_at_price'] && $product['compare_at_price'] > $product['price']): ?>
@@ -304,10 +304,10 @@ include 'includes/header.php';
                                 </div>
                             <?php endif; ?>
                             <div class="absolute top-4 right-4 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                <button class="w-10 h-10 bg-white dark:bg-zinc-900 rounded-full flex items-center justify-center text-zinc-900 dark:text-white hover:bg-zinc-950 dark:hover:bg-white dark:hover:text-zinc-950 hover:text-white transition-colors shadow-sm">
+                                <button onclick="event.stopPropagation();" class="w-10 h-10 bg-white dark:bg-zinc-900 rounded-full flex items-center justify-center text-zinc-900 dark:text-white hover:bg-zinc-950 dark:hover:bg-white dark:hover:text-zinc-950 hover:text-white transition-colors shadow-sm">
                                     <span class="material-symbols-outlined text-xl" data-icon="favorite">favorite</span>
                                 </button>
-                                <button class="w-10 h-10 bg-white dark:bg-zinc-900 rounded-full flex items-center justify-center text-zinc-900 dark:text-white hover:bg-zinc-950 dark:hover:bg-white dark:hover:text-zinc-950 hover:text-white transition-colors shadow-sm">
+                                <button onclick="event.stopPropagation();" class="w-10 h-10 bg-white dark:bg-zinc-900 rounded-full flex items-center justify-center text-zinc-900 dark:text-white hover:bg-zinc-950 dark:hover:bg-white dark:hover:text-zinc-950 hover:text-white transition-colors shadow-sm">
                                     <span class="material-symbols-outlined text-xl" data-icon="shopping_cart">shopping_cart</span>
                                 </button>
                             </div>
@@ -340,7 +340,7 @@ include 'includes/header.php';
                                     <?php endif; ?>
                                     <p class="text-xl font-black text-zinc-950 dark:text-white">$<?php echo number_format($product['price'], 2); ?></p>
                                 </div>
-                                <a href="product.php?id=<?php echo $product['id']; ?>" class="text-xs font-bold uppercase tracking-widest border-b-2 border-zinc-950 dark:border-white pb-0.5 hover:text-zinc-500 hover:border-zinc-500 transition-colors">Details</a>
+                                <a href="product.php?id=<?php echo $product['id']; ?>" onclick="event.stopPropagation();" class="text-xs font-bold uppercase tracking-widest border-b-2 border-zinc-950 dark:border-white pb-0.5 hover:text-zinc-500 hover:border-zinc-500 transition-colors">Details</a>
                             </div>
                         </div>
                     </article>
