@@ -1,147 +1,338 @@
 <?php
-$page_title = "ELECTRON | Sonic Core 2000";
-$body_class = "bg-background text-on-background font-body-md selection:bg-secondary-container";
+require_once 'includes/config.php';
+
+try {
+    $pdo = getDBConnection();
+} catch (PDOException $e) {
+    die("Database connection failed: " . $e->getMessage());
+}
+
+// Validate product ID
+$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+if ($id <= 0) {
+    header('Location: search.php');
+    exit;
+}
+
+// Fetch product with brand and category
+$stmt = $pdo->prepare(
+    "SELECT p.*, b.name AS brand_name, b.slug AS brand_slug, c.name AS category_name, c.slug AS category_slug
+     FROM products p
+     LEFT JOIN brands b ON p.brand_id = b.id
+     LEFT JOIN categories c ON p.category_id = c.id
+     WHERE p.id = :id AND p.status = 'published'
+     LIMIT 1"
+);
+$stmt->execute([':id' => $id]);
+$product = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if (!$product) {
+    header('Location: search.php');
+    exit;
+}
+
+// Parse images
+$imgs = json_decode($product['imgs'], true);
+if (!is_array($imgs) || empty($imgs)) {
+    $imgs = ['assets/proImgs/Default.jpg'];
+}
+$primary_img = $imgs[0];
+$gallery_imgs = $imgs;
+
+// Parse specifications
+$specs = [];
+if (!empty($product['specifications'])) {
+    $decoded = json_decode($product['specifications'], true);
+    if (is_array($decoded)) {
+        $specs = $decoded;
+    }
+}
+
+// Fetch related products (same category, excluding current)
+$related_stmt = $pdo->prepare(
+    "SELECT p.id, p.name, p.price, p.compare_at_price, p.imgs, b.name AS brand_name, c.name AS category_name
+     FROM products p
+     LEFT JOIN brands b ON p.brand_id = b.id
+     LEFT JOIN categories c ON p.category_id = c.id
+     WHERE p.category_id = :cat_id AND p.id != :id AND p.status = 'published'
+     LIMIT 4"
+);
+$related_stmt->execute([':cat_id' => $product['category_id'], ':id' => $id]);
+$related_products = $related_stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// If not enough related products, fetch from anywhere
+if (count($related_products) < 2) {
+    $fill_stmt = $pdo->prepare(
+        "SELECT p.id, p.name, p.price, p.compare_at_price, p.imgs, b.name AS brand_name, c.name AS category_name
+         FROM products p
+         LEFT JOIN brands b ON p.brand_id = b.id
+         LEFT JOIN categories c ON p.category_id = c.id
+         WHERE p.id != :id AND p.status = 'published'
+         ORDER BY RAND() LIMIT 4"
+    );
+    $fill_stmt->execute([':id' => $id]);
+    $related_products = $fill_stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+// Ratings (deterministic)
+$review_count = ($product['id'] * 17) % 150 + 10;
+$rating = 4.0 + (($product['id'] * 3) % 11) / 10.0;
+
+// Stock status
+$stock = intval($product['stock_quantity']);
+if ($stock === 0) {
+    $stock_label = 'Out of Stock';
+    $stock_class = 'text-red-600';
+} elseif ($stock <= intval($product['low_stock_limit'])) {
+    $stock_label = "Low Stock — Only {$stock} left";
+    $stock_class = 'text-orange-500';
+} else {
+    $stock_label = 'In Stock';
+    $stock_class = 'text-emerald-600';
+}
+
+$page_title = "ELECTRON | " . htmlspecialchars($product['name']);
+$body_class = "bg-white font-body-md text-on-background selection:bg-secondary-container";
 include 'includes/header.php';
 ?>
 
-<!-- TopNavBar -->
+<main class="max-w-[1440px] mx-auto px-6 md:px-12 pt-28 md:pt-32 pb-24">
 
-<main class="mt-24">
-    <!-- Product Section -->
-    <section class="max-w-[1440px] mx-auto px-12 py-section-gap flex flex-col lg:flex-row gap-gutter">
-        <!-- Left Side: Content -->
-        <div class="w-full lg:w-5/12 flex flex-col justify-center">
-            <nav class="flex items-center gap-2 mb-stack-lg text-slate-400">
-                <span class="font-label-bold text-[10px] uppercase tracking-widest">Audio</span>
-                <span class="material-symbols-outlined text-sm">chevron_right</span>
-                <span class="font-label-bold text-[10px] uppercase tracking-widest text-on-surface">Headphones</span>
-            </nav>
-            <h1 class="font-display-xl text-display-xl mb-stack-md">SAMSUNG S26 ULTRA</h1>
-            <div class="flex items-center gap-4 mb-stack-lg">
-                <p class="font-headline-md text-headline-md">$1299.00</p>
-                <div class="bg-secondary-container/20 px-3 py-1 rounded-full">
-                    <span class="text-secondary font-label-bold text-xs uppercase tracking-tighter">In Stock</span>
-                </div>
+    <!-- Breadcrumb -->
+    <nav class="flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-zinc-400 mb-10 md:mb-14">
+        <a href="index.php" class="hover:text-zinc-900 transition-colors">Home</a>
+        <span class="material-symbols-outlined text-sm">chevron_right</span>
+        <a href="search.php" class="hover:text-zinc-900 transition-colors">Shop</a>
+        <span class="material-symbols-outlined text-sm">chevron_right</span>
+        <a href="search.php?category[]=<?php echo urlencode(strtolower(explode(' ', $product['category_name'])[0])); ?>" class="hover:text-zinc-900 transition-colors"><?php echo htmlspecialchars($product['category_name']); ?></a>
+        <span class="material-symbols-outlined text-sm">chevron_right</span>
+        <span class="text-zinc-900"><?php echo htmlspecialchars($product['name']); ?></span>
+    </nav>
+
+    <!-- Product Hero -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
+
+        <!-- Gallery -->
+        <div class="flex flex-col-reverse md:flex-row gap-4 lg:sticky lg:top-32">
+            <!-- Thumbnails -->
+            <div class="flex md:flex-col gap-3 overflow-x-auto md:overflow-visible pb-2 md:pb-0">
+                <?php foreach ($gallery_imgs as $i => $img): ?>
+                    <button
+                        onclick="setMainImage('<?php echo htmlspecialchars($img); ?>', this)"
+                        class="thumb-btn flex-shrink-0 w-16 h-16 md:w-20 md:h-20 rounded-xl overflow-hidden border-2 transition-all duration-200 <?php echo $i === 0 ? 'border-zinc-950' : 'border-zinc-200 hover:border-zinc-400'; ?> bg-zinc-50">
+                        <img src="<?php echo htmlspecialchars($img); ?>"
+                             alt="View <?php echo $i + 1; ?>"
+                             class="w-full h-full object-contain p-2">
+                    </button>
+                <?php endforeach; ?>
             </div>
-            <p class="font-body-lg text-body-lg text-on-surface-variant mb-section-gap leading-relaxed max-w-md">
-                Engineered with proprietary bio-cellulose drivers and active spatial mapping. The Sonic Core 2000 represents the pinnacle of acoustic precision and luxury comfort.
-            </p>
-            <!-- Specs Grid -->
-            <div class="grid grid-cols-2 gap-stack-lg mb-section-gap">
-                <div>
-                    <span class="font-label-bold text-[10px] text-slate-400 uppercase tracking-widest block mb-2">Battery Life</span>
-                    <p class="font-headline-md text-xl">60 Hours</p>
-                </div>
-                <div>
-                    <span class="font-label-bold text-[10px] text-slate-400 uppercase tracking-widest block mb-2">Noise Cancellation</span>
-                    <p class="font-headline-md text-xl">Adaptive Ultra</p>
-                </div>
-                <div>
-                    <span class="font-label-bold text-[10px] text-slate-400 uppercase tracking-widest block mb-2">Connection</span>
-                    <p class="font-headline-md text-xl">Lossless 5.4</p>
-                </div>
-                <div>
-                    <span class="font-label-bold text-[10px] text-slate-400 uppercase tracking-widest block mb-2">Weight</span>
-                    <p class="font-headline-md text-xl">280 Grams</p>
-                </div>
+            <!-- Main Image -->
+            <div class="flex-1 bg-zinc-50 rounded-[2rem] overflow-hidden flex items-center justify-center aspect-square relative group">
+                <?php if ($product['compare_at_price'] && $product['compare_at_price'] > $product['price']): ?>
+                    <span class="absolute top-5 left-5 bg-red-600 text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 z-10">Sale</span>
+                <?php endif; ?>
+                <img id="mainProductImage"
+                     src="<?php echo htmlspecialchars($primary_img); ?>"
+                     alt="<?php echo htmlspecialchars($product['name']); ?>"
+                     class="w-full h-full object-contain p-10 transition-transform duration-500 group-hover:scale-105">
             </div>
-            <!-- Interaction Area -->
-            <div class="flex flex-col gap-6">
-                <div class="flex items-center gap-8">
-                    <div class="flex items-center border border-outline-variant rounded-lg p-1">
-                        <button class="w-12 h-12 flex items-center justify-center hover:bg-surface-container-low transition-colors"><span class="material-symbols-outlined">remove</span></button>
-                        <span class="w-12 text-center font-headline-md text-lg">01</span>
-                        <button class="w-12 h-12 flex items-center justify-center hover:bg-surface-container-low transition-colors"><span class="material-symbols-outlined">add</span></button>
-                    </div>
-                    <div class="flex gap-3">
-                        <button class="w-10 h-10 rounded-full border-2 border-primary bg-primary flex items-center justify-center"></button>
-                        <button class="w-10 h-10 rounded-full border border-outline-variant bg-slate-200 flex items-center justify-center"></button>
-                        <button class="w-10 h-10 rounded-full border border-outline-variant bg-zinc-800 flex items-center justify-center"></button>
-                    </div>
+        </div>
+
+        <!-- Product Info -->
+        <div class="flex flex-col gap-6">
+            <!-- Category & Brand -->
+            <div class="flex items-center gap-3">
+                <span class="text-[10px] font-bold uppercase tracking-widest text-zinc-400 border border-zinc-200 px-3 py-1 rounded-full"><?php echo htmlspecialchars($product['category_name']); ?></span>
+                <span class="text-[10px] font-bold uppercase tracking-widest text-zinc-400 border border-zinc-200 px-3 py-1 rounded-full"><?php echo htmlspecialchars($product['brand_name']); ?></span>
+            </div>
+
+            <!-- Title -->
+            <h1 class="text-3xl md:text-4xl font-black tracking-tight text-zinc-950 leading-tight"><?php echo htmlspecialchars($product['name']); ?></h1>
+
+            <!-- Stars -->
+            <div class="flex items-center gap-3">
+                <div class="flex text-yellow-500">
+                    <?php
+                    $full_stars = floor($rating);
+                    $has_half = ($rating - $full_stars) >= 0.5;
+                    for ($i = 1; $i <= 5; $i++):
+                        if ($i <= $full_stars): ?>
+                            <span class="material-symbols-outlined text-xl" style="font-variation-settings:'FILL' 1">star</span>
+                        <?php elseif ($i == $full_stars + 1 && $has_half): ?>
+                            <span class="material-symbols-outlined text-xl" style="font-variation-settings:'FILL' 1">star_half</span>
+                        <?php else: ?>
+                            <span class="material-symbols-outlined text-xl">star</span>
+                        <?php endif;
+                    endfor; ?>
                 </div>
-                <div class="flex gap-gutter">
-                    <button class="rounded-[2rem] flex-1 bg-primary text-white font-label-bold py-6 px-12 uppercase tracking-widest hover:bg-slate-800 transition-all active:scale-[0.98]">
+                <span class="text-sm font-semibold text-zinc-600"><?php echo number_format($rating, 1); ?></span>
+                <span class="text-sm text-zinc-400">(<?php echo $review_count; ?> reviews)</span>
+            </div>
+
+            <!-- Price -->
+            <div class="flex items-end gap-4 py-4 border-y border-zinc-100">
+                <span class="text-4xl md:text-5xl font-black text-zinc-950">$<?php echo number_format($product['price'], 2); ?></span>
+                <?php if ($product['compare_at_price'] && $product['compare_at_price'] > $product['price']): ?>
+                    <div class="flex flex-col mb-1">
+                        <span class="text-sm text-zinc-400 line-through">$<?php echo number_format($product['compare_at_price'], 2); ?></span>
+                        <?php
+                        $discount = round((($product['compare_at_price'] - $product['price']) / $product['compare_at_price']) * 100);
+                        ?>
+                        <span class="text-sm font-bold text-red-600"><?php echo $discount; ?>% off</span>
+                    </div>
+                <?php endif; ?>
+            </div>
+
+            <!-- Stock Status -->
+            <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-base <?php echo $stock_class; ?>" style="font-variation-settings:'FILL' 1">
+                    <?php echo $stock === 0 ? 'cancel' : ($stock <= intval($product['low_stock_limit']) ? 'warning' : 'check_circle'); ?>
+                </span>
+                <span class="text-sm font-bold <?php echo $stock_class; ?>"><?php echo $stock_label; ?></span>
+            </div>
+
+            <!-- Description -->
+            <p class="text-zinc-600 text-base leading-relaxed"><?php echo htmlspecialchars($product['description']); ?></p>
+
+            <!-- Key Specs Preview -->
+            <?php if (!empty($specs)): ?>
+            <div class="grid grid-cols-2 gap-3">
+                <?php foreach (array_slice($specs, 0, 4) as $key => $value): ?>
+                    <div class="bg-zinc-50 rounded-xl p-4">
+                        <p class="text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-1"><?php echo htmlspecialchars(ucfirst(str_replace('_', ' ', $key))); ?></p>
+                        <p class="text-sm font-bold text-zinc-900"><?php echo htmlspecialchars(is_bool($value) ? ($value ? 'Yes' : 'No') : $value); ?></p>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+            <?php endif; ?>
+
+            <!-- Actions -->
+            <div class="flex flex-col sm:flex-row gap-4 pt-2">
+                <?php if ($stock > 0): ?>
+                    <button id="addToCartBtn" class="flex-1 bg-zinc-950 text-white px-8 py-4 rounded-full font-bold uppercase tracking-widest text-sm hover:bg-zinc-800 active:scale-95 transition-all flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined text-xl">shopping_cart</span>
                         Add to Cart
                     </button>
-                    <button class="w-20 rounded-[2rem] border border-outline-variant flex items-center justify-center hover:bg-white transition-all">
-                        <span class="material-symbols-outlined" data-icon="favorite">favorite</span>
+                <?php else: ?>
+                    <button class="flex-1 bg-zinc-200 text-zinc-500 px-8 py-4 rounded-full font-bold uppercase tracking-widest text-sm cursor-not-allowed flex items-center justify-center gap-2" disabled>
+                        <span class="material-symbols-outlined text-xl">remove_shopping_cart</span>
+                        Out of Stock
                     </button>
-                </div>
+                <?php endif; ?>
+                <button class="w-14 h-14 border-2 border-zinc-200 rounded-full flex items-center justify-center hover:border-red-400 hover:text-red-500 transition-all active:scale-95" id="wishlistBtn" title="Add to Wishlist">
+                    <span class="material-symbols-outlined text-xl">favorite</span>
+                </button>
+                <button class="w-14 h-14 border-2 border-zinc-200 rounded-full flex items-center justify-center hover:border-zinc-950 transition-all active:scale-95" title="Share">
+                    <span class="material-symbols-outlined text-xl">share</span>
+                </button>
+            </div>
+
+            <!-- Meta Info -->
+            <div class="flex flex-wrap gap-x-6 gap-y-2 pt-2 text-xs text-zinc-400">
+                <?php if ($product['sku']): ?><span>SKU: <strong class="text-zinc-600"><?php echo htmlspecialchars($product['sku']); ?></strong></span><?php endif; ?>
+                <?php if ($product['warranty_months']): ?><span>Warranty: <strong class="text-zinc-600"><?php echo $product['warranty_months']; ?> months</strong></span><?php endif; ?>
+                <?php if ($product['weight_grams']): ?><span>Weight: <strong class="text-zinc-600"><?php echo $product['weight_grams']; ?>g</strong></span><?php endif; ?>
+                <?php if ($product['dimensions']): ?><span>Dimensions: <strong class="text-zinc-600"><?php echo htmlspecialchars($product['dimensions']); ?></strong></span><?php endif; ?>
             </div>
         </div>
-        <!-- Right Side: Gallery -->
-        <div class="w-full lg:w-7/12 flex flex-col">
-            <div class="bg-surface-container-low product-gradient rounded-xl overflow-hidden aspect-[4/5] flex items-center justify-center p-12">
-                <img alt="Samsung S26 Ultra" class="w-full h-full object-contain mix-blend-multiply" data-alt="Premium sleek matte black over-ear headphones centered on a soft grey minimalist studio background with elegant side lighting" src="assets/images/img_6e30900c.jpg" />
-            </div>
-            <div class="grid grid-cols-4 gap-gutter mt-gutter">
-                <div class="aspect-square bg-surface-container rounded-lg border-2 border-primary p-4 cursor-pointer">
-                    <img alt="Thumbnail 1" class="w-full h-full object-contain" data-alt="Close up of headphones ear cup showing premium mesh material and precise stitching details in high key lighting" src="assets/images/img_606ffabb.jpg" />
-                </div>
-                <div class="aspect-square bg-surface-container rounded-lg border border-transparent p-4 cursor-pointer hover:border-outline-variant transition-all">
-                    <img alt="Thumbnail 2" class="w-full h-full object-contain" data-alt="Side profile of luxury headphones highlighting the sleek adjustable headband and metallic accents on a neutral backdrop" src="assets/images/img_3b1b011f.jpg" />
-                </div>
-                <div class="aspect-square bg-surface-container rounded-lg border border-transparent p-4 cursor-pointer hover:border-outline-variant transition-all">
-                    <img alt="Thumbnail 3" class="w-full h-full object-contain" data-alt="Detailed view of control buttons on headphones earcup focusing on the tactile quality and premium finish" src="assets/images/img_1cf77dd8.jpg" />
-                </div>
-                <div class="aspect-square bg-surface-container rounded-lg border border-transparent flex items-center justify-center cursor-pointer hover:border-outline-variant transition-all">
-                    <span class="material-symbols-outlined text-4xl text-slate-400">play_circle</span>
-                </div>
-            </div>
+    </div>
+
+    <!-- Full Specifications -->
+    <?php if (!empty($specs)): ?>
+    <div class="mt-20 md:mt-28">
+        <div class="flex items-center gap-6 mb-10">
+            <h2 class="text-2xl md:text-3xl font-black uppercase tracking-tight text-zinc-950">Specifications</h2>
+            <div class="flex-1 h-px bg-zinc-100"></div>
         </div>
-    </section>
-    <!-- Bento Specifications Section -->
-    <section class="bg-surface-container-lowest py-section-gap">
-        <div class="max-w-[1440px] mx-auto px-12">
-            <div class="flex justify-between items-end mb-16">
-                <div>
-                    <span class="font-label-bold text-label-bold text-secondary uppercase tracking-[0.2em] mb-4 block">Performance</span>
-                    <h2 class="font-headline-lg text-headline-lg">ENGINEERED DEPTH</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <?php foreach ($specs as $key => $value): ?>
+                <div class="group bg-zinc-50 hover:bg-zinc-100 rounded-2xl p-5 transition-colors">
+                    <p class="text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-2"><?php echo htmlspecialchars(ucfirst(str_replace('_', ' ', $key))); ?></p>
+                    <p class="text-base font-bold text-zinc-900"><?php echo htmlspecialchars(is_bool($value) ? ($value ? 'Yes' : 'No') : $value); ?></p>
                 </div>
-                <p class="max-w-sm text-on-surface-variant font-body-md">Every component of the Sonic Core 2000 is meticulously crafted to deliver an unparalleled auditory landscape.</p>
-            </div>
-            <div class="grid grid-cols-12 gap-gutter">
-                <!-- Bento Item 1 -->
-                <div class="col-span-12 md:col-span-8 bg-surface-container-low rounded-xl p-12 flex flex-col justify-between min-h-[400px]">
-                    <div>
-                        <span class="material-symbols-outlined text-primary text-5xl mb-8" data-icon="waves" data-weight="fill">waves</span>
-                        <h3 class="font-headline-md text-headline-md mb-4">Adaptive Spatial Mapping</h3>
-                        <p class="font-body-lg text-on-surface-variant max-w-md">Our AI-driven sensor array analyzes your ear shape 1,000 times per second to optimize sound delivery for your unique anatomy.</p>
-                    </div>
-                    <img alt="Samsung S26 Ultra" class="self-end h-32 object-contain" data-alt="Abstract visualization of fluid blue sound waves flowing through a dark space with micro-particles and light streaks" src="assets/images/img_e6f86be2.jpg" />
-                </div>
-                <!-- Bento Item 2 -->
-                <div class="col-span-12 md:col-span-4 bg-primary text-white rounded-xl p-12 flex flex-col justify-between overflow-hidden">
-                    <div>
-                        <h3 class="font-headline-md text-headline-md mb-4">Pure Titanium Build</h3>
-                        <p class="font-body-md opacity-70">Ultra-light aerospace grade titanium frame ensures durability without the weight.</p>
-                    </div>
-                    <div class="mt-8 flex justify-center">
-                        <span class="material-symbols-outlined text-[120px] opacity-20">precision_manufacturing</span>
-                    </div>
-                </div>
-                <!-- Bento Item 3 -->
-                <div class="col-span-12 md:col-span-4 bg-secondary-container/10 rounded-xl p-12 border border-secondary-container/20">
-                    <span class="material-symbols-outlined text-secondary text-4xl mb-6">bolt</span>
-                    <h3 class="font-headline-md text-2xl mb-2">Rapid Charge</h3>
-                    <p class="font-body-md text-on-surface-variant">5 minutes of charging provides 6 hours of high-fidelity playback.</p>
-                </div>
-                <!-- Bento Item 4 -->
-                <div class="col-span-12 md:col-span-4 bg-surface-container-high rounded-xl p-12 flex flex-col">
-                    <span class="material-symbols-outlined text-primary text-4xl mb-6">shield</span>
-                    <h3 class="font-headline-md text-2xl mb-2">2 Year Warranty</h3>
-                    <p class="font-body-md text-on-surface-variant">Comprehensive coverage for manufacturing defects and battery longevity.</p>
-                </div>
-                <!-- Bento Item 5 -->
-                <div class="col-span-12 md:col-span-4 bg-tertiary-container rounded-xl p-12 text-white">
-                    <span class="material-symbols-outlined text-tertiary-fixed text-4xl mb-6">eco</span>
-                    <h3 class="font-headline-md text-2xl mb-2">Sustainability</h3>
-                    <p class="font-body-md text-slate-400">100% recycled aluminum and vegan protein leather components.</p>
-                </div>
-            </div>
+            <?php endforeach; ?>
         </div>
-    </section>
+    </div>
+    <?php endif; ?>
+
+    <!-- Related Products -->
+    <?php if (!empty($related_products)): ?>
+    <div class="mt-20 md:mt-28">
+        <div class="flex items-center gap-6 mb-10">
+            <h2 class="text-2xl md:text-3xl font-black uppercase tracking-tight text-zinc-950">You May Also Like</h2>
+            <div class="flex-1 h-px bg-zinc-100"></div>
+            <a href="search.php" class="text-xs font-bold uppercase tracking-widest border-b-2 border-zinc-950 pb-0.5 whitespace-nowrap hover:text-zinc-500 hover:border-zinc-500 transition-colors">View All</a>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <?php foreach ($related_products as $rel): ?>
+                <?php
+                $rel_imgs = json_decode($rel['imgs'], true);
+                $rel_img = (is_array($rel_imgs) && !empty($rel_imgs)) ? $rel_imgs[0] : 'assets/proImgs/Default.jpg';
+                ?>
+                <a href="product.php?id=<?php echo $rel['id']; ?>" class="group bg-white border border-zinc-100 rounded-2xl overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1 flex flex-col">
+                    <div class="aspect-square bg-zinc-50 flex items-center justify-center overflow-hidden">
+                        <img src="<?php echo htmlspecialchars($rel_img); ?>"
+                             alt="<?php echo htmlspecialchars($rel['name']); ?>"
+                             class="w-full h-full object-contain p-6 group-hover:scale-105 transition-transform duration-500">
+                    </div>
+                    <div class="p-5 flex flex-col flex-grow">
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-1"><?php echo htmlspecialchars($rel['brand_name']); ?></span>
+                        <h3 class="font-bold text-zinc-950 text-sm mb-3 leading-snug flex-grow"><?php echo htmlspecialchars($rel['name']); ?></h3>
+                        <div class="flex items-center justify-between mt-auto">
+                            <span class="font-black text-zinc-950">$<?php echo number_format($rel['price'], 2); ?></span>
+                            <span class="text-[10px] font-bold uppercase tracking-widest text-zinc-400 group-hover:text-zinc-950 transition-colors flex items-center gap-1">
+                                View <span class="material-symbols-outlined text-sm">north_east</span>
+                            </span>
+                        </div>
+                    </div>
+                </a>
+            <?php endforeach; ?>
+        </div>
+    </div>
+    <?php endif; ?>
+
 </main>
-<!-- Footer -->
 
 <?php include 'includes/footer.php'; ?>
+
+<script>
+// Gallery image switcher
+function setMainImage(src, btn) {
+    document.getElementById('mainProductImage').src = src;
+    document.querySelectorAll('.thumb-btn').forEach(b => {
+        b.classList.remove('border-zinc-950');
+        b.classList.add('border-zinc-200');
+    });
+    btn.classList.remove('border-zinc-200');
+    btn.classList.add('border-zinc-950');
+}
+
+// Wishlist toggle
+const wishlistBtn = document.getElementById('wishlistBtn');
+if (wishlistBtn) {
+    const icon = wishlistBtn.querySelector('.material-symbols-outlined');
+    let wishlisted = false;
+    wishlistBtn.addEventListener('click', () => {
+        wishlisted = !wishlisted;
+        icon.style.fontVariationSettings = wishlisted ? "'FILL' 1" : "'FILL' 0";
+        wishlistBtn.classList.toggle('border-red-400', wishlisted);
+        wishlistBtn.classList.toggle('text-red-500', wishlisted);
+    });
+}
+
+// Add to Cart feedback
+const cartBtn = document.getElementById('addToCartBtn');
+if (cartBtn) {
+    cartBtn.addEventListener('click', () => {
+        const original = cartBtn.innerHTML;
+        cartBtn.innerHTML = '<span class="material-symbols-outlined text-xl" style="font-variation-settings:\'FILL\' 1">check_circle</span> Added!';
+        cartBtn.classList.add('bg-emerald-600');
+        cartBtn.classList.remove('bg-zinc-950', 'hover:bg-zinc-800');
+        setTimeout(() => {
+            cartBtn.innerHTML = original;
+            cartBtn.classList.remove('bg-emerald-600');
+            cartBtn.classList.add('bg-zinc-950', 'hover:bg-zinc-800');
+        }, 2000);
+    });
+}
+</script>
