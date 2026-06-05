@@ -105,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $image_paths[] = $primary_path;
         } else {
             // Default primary fallback
-            $primary_path = 'assets/prdctImgs/Default.jpg';
+            $primary_path = 'assets/prdctImgs/Default.png';
             $image_paths[] = $primary_path;
         }
 

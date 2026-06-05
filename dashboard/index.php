@@ -67,6 +67,7 @@ $body_class = "bg-zinc-950 text-white font-body-md min-h-screen";
 ?>
 <!DOCTYPE html>
 <html class="dark" lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
@@ -82,12 +83,14 @@ $body_class = "bg-zinc-950 text-white font-body-md min-h-screen";
             backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
+
         .sidebar-item-active {
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.03));
             border-left: 3px solid #ffffff;
         }
     </style>
 </head>
+
 <body class="bg-zinc-950 text-zinc-100 min-h-screen flex">
 
     <!-- Sidebar -->
@@ -100,7 +103,7 @@ $body_class = "bg-zinc-950 text-white font-body-md min-h-screen";
                     ELECTRON
                 </a>
             </div>
-            
+
             <!-- Navigation -->
             <nav class="p-4 space-y-2">
                 <p class="px-4 text-[10px] font-bold uppercase tracking-widest text-zinc-500 mb-2">Management</p>
@@ -118,7 +121,7 @@ $body_class = "bg-zinc-950 text-white font-body-md min-h-screen";
                 </a>
             </nav>
         </div>
-        
+
         <!-- User Account Details -->
         <div class="p-6 border-t border-zinc-800 flex items-center gap-3">
             <span class="material-symbols-outlined text-2xl text-zinc-400">account_circle</span>
@@ -137,7 +140,7 @@ $body_class = "bg-zinc-950 text-white font-body-md min-h-screen";
                 <h1 class="font-['Space_Grotesk'] text-xl font-bold tracking-tight text-white">Products Management</h1>
                 <p class="text-xs text-zinc-400">Add, edit, or remove catalog items</p>
             </div>
-            
+
             <div class="flex items-center gap-4">
                 <a href="add-product.php" class="flex items-center gap-2 px-5 py-2.5 text-xs font-bold uppercase tracking-widest bg-white text-zinc-950 rounded-lg hover:bg-zinc-100 transition-colors shadow-sm">
                     <span class="material-symbols-outlined text-base">add</span>
@@ -195,6 +198,12 @@ $body_class = "bg-zinc-950 text-white font-body-md min-h-screen";
 
         <!-- Product Table/List Section -->
         <section class="p-8 pt-0 flex-grow">
+            <!-- Notifcations -->
+            <div class="hidden mb-6 p-4 bg-red-950/40 border border-red-900/60 rounded-xl text-red-200 text-xs font-semibold uppercase tracking-wider" id="err-msg">
+            </div>
+
+            <div class="hidden mb-6 p-4 bg-emerald-950/40 border border-emerald-900/60 rounded-xl text-emerald-200 text-xs font-semibold uppercase tracking-wider" id="success-msg">
+            </div>
             <div class="glass-card rounded-2xl overflow-hidden flex flex-col h-full">
                 <!-- Table Header Options -->
                 <div class="p-6 border-b border-zinc-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -204,7 +213,7 @@ $body_class = "bg-zinc-950 text-white font-body-md min-h-screen";
                             <span class="material-symbols-outlined text-base">search</span>
                         </button>
                     </form>
-                    
+
                     <div class="text-xs text-zinc-500 font-medium">
                         Found <?php echo $total_filtered; ?> products
                     </div>
@@ -236,7 +245,7 @@ $body_class = "bg-zinc-950 text-white font-body-md min-h-screen";
                                 <?php foreach ($products as $product): ?>
                                     <?php
                                     $p_imgs = json_decode($product['imgs'], true);
-                                    $p_img = (!empty($p_imgs) && is_array($p_imgs)) ? '../' . $p_imgs[0] : '../assets/proImgs/Default.jpg';
+                                    $p_img = (!empty($p_imgs) && is_array($p_imgs)) ? '../' . $p_imgs[0] : '../assets/prdctImgs/Default.png';
                                     ?>
                                     <tr class="hover:bg-zinc-900/10 transition-colors">
                                         <td class="p-6 flex items-center gap-4">
@@ -288,7 +297,21 @@ $body_class = "bg-zinc-950 text-white font-body-md min-h-screen";
                                             <?php endif; ?>
                                         </td>
                                         <td class="p-6 text-right">
-                                            <a href="../product.php?id=<?php echo $product['id']; ?>" target="_blank" class="text-xs font-bold text-zinc-400 hover:text-white uppercase tracking-widest border border-zinc-800 hover:border-zinc-700 px-3 py-1.5 rounded-lg transition-colors">
+                                            <?php if ($product['status'] === 'published'): ?>
+                                                <button onclick="pubProduct(<?php echo (isset($product['id'])) ? $product['id'] : ''; ?>, 'hide', '<?php echo (isset($product['status'])) ? $product['status'] : ''; ?>')" class="text-xs font-bold text-zinc-400 hover:text-yellow-400 uppercase tracking-widest border border-zinc-800 hover:border-yellow-700 px-3 py-1.5 rounded-lg transition-colors">
+                                                    Hide
+                                                </button>
+                                            <?php else: ?>
+                                                <button onclick="pubProduct(<?php echo (isset($product['id'])) ? $product['id'] : ''; ?>, 'publish', '<?php echo (isset($product['status'])) ? $product['status'] : ''; ?>')" class="text-xs font-bold text-zinc-400 hover:text-emerald-400 uppercase tracking-widest border border-zinc-800 hover:border-emerald-700 px-3 py-1.5 rounded-lg transition-colors">
+                                                    Publish
+                                                </button>
+                                            <?php endif; ?>
+
+
+                                            <a href="../edit.php?id=<?php echo $product['id']; ?>" target="_blank" class="text-xs font-bold text-zinc-400 hover:text-white uppercase tracking-widest border border-zinc-800 hover:border-zinc-700 px-3 py-1.5 rounded-lg transition-colors mx-1">
+                                                Edit
+                                            </a>
+                                            <a href="../product.php?id=<?php echo $product['id']; ?>" target="_blank" class="text-xs font-bold text-zinc-400 hover:text-white uppercase tracking-widest border border-zinc-800 hover:border-zinc-700 px-3 py-1.5 rounded-lg transition-colors mx-1">
                                                 View
                                             </a>
                                         </td>
@@ -325,4 +348,36 @@ $body_class = "bg-zinc-950 text-white font-body-md min-h-screen";
     </main>
 
 </body>
+
+<script>
+    async function pubProduct(id, order, status) {
+        const data = new FormData()
+        data.append('id', id)
+        data.append('order', order)
+        data.append('status', status)
+        try {
+            const res = await fetch('functions/hide-pub.php', {
+                method: 'POST',
+                body: data
+            });
+            const json = await res.json();
+
+            if (json.success) {
+                document.getElementById('success-msg').textContent = json.message;
+                document.getElementById('success-msg').classList.remove('hidden');
+                setTimeout(() => {
+                    location.reload();
+                }, 1000);
+            } else {
+                document.getElementById('err-msg').textContent = json.error;
+                document.getElementById('err-msg').classList.remove('hidden');
+            }
+
+        } catch (err) {
+            document.getElementById('err-msg').textContent = "Database error: " + err.message;
+            document.getElementById('err-msg').classList.remove('hidden');
+        }
+    }
+</script>
+
 </html>
