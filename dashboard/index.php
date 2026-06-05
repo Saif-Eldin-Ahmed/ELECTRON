@@ -308,7 +308,7 @@ $body_class = "bg-zinc-950 text-white font-body-md min-h-screen";
                                             <?php endif; ?>
 
 
-                                            <a href="../edit.php?id=<?php echo $product['id']; ?>" target="_blank" class="text-xs font-bold text-zinc-400 hover:text-white uppercase tracking-widest border border-zinc-800 hover:border-zinc-700 px-3 py-1.5 rounded-lg transition-colors mx-1">
+                                            <a href="edit.php?id=<?php echo $product['id']; ?>" target="_blank" class="text-xs font-bold text-zinc-400 hover:text-white uppercase tracking-widest border border-zinc-800 hover:border-zinc-700 px-3 py-1.5 rounded-lg transition-colors mx-1">
                                                 Edit
                                             </a>
                                             <a href="../product.php?id=<?php echo $product['id']; ?>" target="_blank" class="text-xs font-bold text-zinc-400 hover:text-white uppercase tracking-widest border border-zinc-800 hover:border-zinc-700 px-3 py-1.5 rounded-lg transition-colors mx-1">
