@@ -76,19 +76,7 @@ $body_class = "bg-zinc-950 text-white font-body-md min-h-screen";
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
     <script src="../assets/js/tailwind-config.js"></script>
-    <link href="../assets/css/style.css" rel="stylesheet" />
-    <style>
-        .glass-card {
-            background: rgba(24, 24, 27, 0.65);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        .sidebar-item-active {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.03));
-            border-left: 3px solid #ffffff;
-        }
-    </style>
+    <link href="style.css" rel="stylesheet" />
 </head>
 
 <body class="bg-zinc-950 text-zinc-100 min-h-screen flex">

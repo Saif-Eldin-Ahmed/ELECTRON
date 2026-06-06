@@ -212,7 +212,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
     <script src="../assets/js/tailwind-config.js"></script>
-    <link href="../assets/css/style.css" rel="stylesheet" />
+    <link href="style.css" rel="stylesheet" />
     <style>
         .glass-card {
             background: rgba(24, 24, 27, 0.65);
@@ -242,7 +242,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <span class="material-symbols-outlined text-lg">dashboard</span>
                     Products
                 </a>
-                <a href="add-product.php" class="flex items-center gap-3 px-4 py-3 text-xs font-bold uppercase tracking-widest text-white rounded-lg bg-zinc-900 border-l-3 border-white transition-all">
+                <a href="add-product.php" class="flex items-center gap-3 px-4 py-3 text-xs font-bold uppercase tracking-widest text-white rounded-lg sidebar-item-active transition-all">
                     <span class="material-symbols-outlined text-lg">add_circle</span>
                     Add Product
                 </a>
