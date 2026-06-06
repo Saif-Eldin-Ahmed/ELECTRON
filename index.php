@@ -207,7 +207,7 @@ if (isset($_SESSION['id'])) {
                 <div class="aspect-[3/4] bg-surface-container-low rounded-[2rem] overflow-hidden mb-4 md:mb-6 flex items-end justify-center relative border border-black/5">
                     <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-80 group-hover:opacity-100 group-hover:scale-[1.5]  transition-all duration-700">
                         <div class="w-full h-full bg-[radial-gradient(circle,_#bae6fd_0%,_transparent_75%)] blur-3xl"></div>
-                    </div><img alt="Sonic Core 2000" class="w-full h-[90%] object-contain object-bottom group-hover:scale-105 transition-transform duration-700 relative z-10" src="assets/images/img_f65dbb08.jpg" />
+                    </div><a href="product.php?id=23"><img alt="Sonic Core 2000" class="w-full h-[90%] object-contain object-bottom group-hover:scale-105 transition-transform duration-700 relative z-10" src="assets/images/img_f65dbb08.jpg" /></a>
                 </div>
                 <div class="space-y-1 md:space-y-2">
                     <p class="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Audio</p>
@@ -221,7 +221,7 @@ if (isset($_SESSION['id'])) {
                 <div class="aspect-[3/4] bg-surface-container-low rounded-[2rem] overflow-hidden mb-4 md:mb-6 flex items-end justify-center relative border border-black/5">
                     <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-80 group-hover:opacity-100 group-hover:scale-[1.5]  transition-all duration-700">
                         <div class="w-full h-full bg-[radial-gradient(circle,_#2563eb_0%,_transparent_75%)] blur-3xl"></div>
-                    </div><img alt="Type-X" class="w-full h-[90%] object-contain object-bottom group-hover:scale-105 transition-transform duration-700 relative z-10" src="assets/images/img_9befdc43.jpg" />
+                    </div><a href="product.php?id=22"><img alt="Type-X" class="w-full h-[90%] object-contain object-bottom group-hover:scale-105 transition-transform duration-700 relative z-10" src="assets/images/img_9befdc43.jpg" /></a>
                 </div>
                 <div class="space-y-1 md:space-y-2">
                     <p class="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Peripherals</p>
@@ -235,7 +235,7 @@ if (isset($_SESSION['id'])) {
                 <div class="aspect-[3/4] bg-surface-container-low rounded-[2rem] overflow-hidden mb-4 md:mb-6 flex items-end justify-center relative border border-black/5">
                     <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-80 group-hover:opacity-100 group-hover:scale-[1.5] transition-all duration-700">
                         <div class="w-full h-full bg-[radial-gradient(circle,_#d8b4fe_0%,_transparent_75%)] blur-3xl"></div>
-                    </div><img alt="Slate Pro" class="w-full h-[90%] object-contain object-bottom group-hover:scale-105 transition-transform duration-700 relative z-10" src="assets/images/img_5501e0e5.jpg" />
+                    </div><a href="product.php?id=22"><img alt="Slate Pro" class="w-full h-[90%] object-contain object-bottom group-hover:scale-105 transition-transform duration-700 relative z-10" src="assets/images/img_5501e0e5.jpg" /></a>
                 </div>
                 <div class="space-y-1 md:space-y-2">
                     <p class="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Computing</p>
@@ -249,7 +249,7 @@ if (isset($_SESSION['id'])) {
                 <div class="aspect-[3/4] bg-surface-container-low rounded-[2rem] overflow-hidden mb-4 md:mb-6 flex items-end justify-center relative border border-black/5">
                     <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-80 group-hover:opacity-100 group-hover:scale-[1.5]  transition-all duration-700">
                         <div class="w-full h-full bg-[radial-gradient(circle,_#fb923c_0%,_transparent_75%)] blur-3xl"></div>
-                    </div><img alt="Volt Shell" class="w-full h-[90%] object-contain object-bottom group-hover:scale-105 transition-transform duration-700 relative z-10" src="assets/images/img_75af29ec.jpg" />
+                    </div><a href="product.php?id=21"><img alt="Volt Shell" class="w-full h-[90%] object-contain object-bottom group-hover:scale-105 transition-transform duration-700 relative z-10" src="assets/images/img_75af29ec.jpg" /></a>
                 </div>
                 <div class="space-y-1 md:space-y-2">
                     <p class="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Power</p>

@@ -50,13 +50,13 @@ if (isset($_SESSION['id'])) {
                     <span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
                     <span class="cart-badge-count absolute -top-1 -right-1 bg-primary text-white text-[8px] px-1 rounded-full <?php echo $nav_cart_count === 0 ? 'hidden' : ''; ?>"><?php echo $nav_cart_count; ?></span>
                 </button>
-                <div class="relative group cursor-pointer py-2 flex items-center">
+                <div class="relative group cursor-pointer py-2 flex items-center" id="accDropdown">
                     <button class="scale-95 active:opacity-80 transition-transform flex items-center">
-                        <span class="material-symbols-outlined" data-icon="person">person</span>
+                        <img src="<?php echo isset($_SESSION['pro_img']) ? $_SESSION['pro_img'] : 'assets/proImgs/Default.jpg'; ?>" alt="<?php echo isset($_SESSION['firstname']) ? htmlspecialchars($_SESSION['firstname']) : 'account'; ?>'s profile image" class="w-10 h-10 rounded-full">
                     </button>
 
                     <!-- Dropdown Menu -->
-                    <div class="absolute right-0 top-full mt-1 w-48 bg-white/95 dark:bg-zinc-950/95 backdrop-blur-lg border border-slate-100 dark:border-zinc-900 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-300 ease-out z-50 overflow-hidden transform scale-95 origin-top-right group-hover:scale-100 py-2">
+                    <div class="hide-menu absolute right-0 top-full mt-1 w-48 bg-white/95 backdrop-blur-lg border border-black/10 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] z-50 overflow-hidden py-2" id="accMenu">
                         <?php if (isset($_SESSION['id'])): ?>
                             <div class="px-4 py-2 text-[10px] font-bold uppercase tracking-widest text-slate-400 dark:text-zinc-500 border-b border-slate-100 dark:border-zinc-900 mb-1">
                                 Hi, <?php echo htmlspecialchars($_SESSION['firstname']); ?>
@@ -172,6 +172,30 @@ if (isset($_SESSION['id'])) {
 </div>
 <!-- Mobile Menu Trigger -->
 <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        const accDropdown = document.getElementById('accDropdown');
+        const accMenu = document.getElementById('accMenu');
+
+        if (accDropdown && accMenu) {
+            accDropdown.addEventListener('click', (e) => {
+                // Toggle the dropdown if the click did not happen inside the dropdown menu itself
+                if (!accMenu.contains(e.target)) {
+                    accMenu.classList.toggle('show-menu');
+                    accMenu.classList.toggle('hide-menu');
+                }
+            });
+
+            // Close the dropdown when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!accDropdown.contains(e.target)) {
+                    accMenu.classList.remove('show-menu');
+                    accMenu.classList.add('hide-menu');
+                }
+            });
+        }
+    });
+
     function openMobileNav() {
         // Close cart if open
         closeCartDrawer();
