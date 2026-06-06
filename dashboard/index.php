@@ -2,7 +2,9 @@
 // ============================================================
 //  dashboard/index.php — Admin Dashboard
 // ============================================================
-
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 $acc = true; // Exclude front-end navbar
 require_once '../includes/config.php';
 
@@ -114,10 +116,10 @@ $body_class = "bg-zinc-950 text-white font-body-md min-h-screen";
 
         <!-- User Account Details -->
         <div class="p-6 border-t border-zinc-800 flex items-center gap-3">
-            <span class="material-symbols-outlined text-2xl text-zinc-400">account_circle</span>
+            <img src="<?php echo $_SESSION['pro_img'] ? '../' . $_SESSION['pro_img'] : '../assets/proImgs/Default.jpg'; ?>" alt="Profile Picture" class="w-10 h-10 rounded-full">
             <div class="overflow-hidden">
-                <p class="text-xs font-bold uppercase tracking-wider text-white truncate">Administrator</p>
-                <p class="text-[10px] text-zinc-500 truncate">admin@electron.com</p>
+                <p class="text-xs font-bold uppercase tracking-wider text-white truncate"><?php echo $_SESSION['firstname'] . " " . $_SESSION['lastname']; ?></p>
+                <p class="text-[10px] text-zinc-500 truncate"><?php echo $_SESSION['email']; ?></p>
             </div>
         </div>
     </aside>
@@ -296,13 +298,18 @@ $body_class = "bg-zinc-950 text-white font-body-md min-h-screen";
                                                     visibility
                                                 </button>
                                             <?php endif; ?>
-
                                             <a href="edit.php?id=<?php echo $product['id']; ?>" target="_blank" class="material-symbols-outlined text-xs font-bold text-zinc-400 hover:text-white uppercase tracking-widest border border-zinc-800 hover:border-zinc-700 px-3 py-1.5 rounded-lg transition-colors">
                                                 edit
                                             </a>
-                                            <a href="../product.php?id=<?php echo $product['id']; ?>" target="_blank" class="material-symbols-outlined text-xs font-bold text-zinc-400 hover:text-white uppercase tracking-widest border border-zinc-800 hover:border-zinc-700 px-3 py-1.5 rounded-lg transition-colors">
-                                                inventory_2
-                                            </a>
+                                            <?php if ($product['status'] === 'published'): ?>
+                                                <a href="../product.php?id=<?php echo $product['id']; ?>" target="_blank" class="material-symbols-outlined text-xs font-bold text-zinc-400 hover:text-white uppercase tracking-widest border border-zinc-800 hover:border-zinc-700 px-3 py-1.5 rounded-lg transition-colors">
+                                                    inventory_2
+                                                </a>
+                                            <?php else: ?>
+                                                <a class="material-symbols-outlined text-xs font-bold text-zinc-800 uppercase tracking-widest border border-zinc-800  px-3 py-1.5 rounded-lg transition-colors cursor-default">
+                                                    inventory_2
+                                                </a>
+                                            <?php endif; ?>
                                             <button onclick="deleteProduct(<?php echo $product['id']; ?>, '<?php echo htmlspecialchars(addslashes($product['name'])); ?>')" class="material-symbols-outlined text-xs font-bold text-zinc-400 hover:text-red-400 uppercase tracking-widest border border-zinc-800 hover:border-red-800 px-3 py-1.5 rounded-lg transition-colors">
                                                 delete
                                             </button>
