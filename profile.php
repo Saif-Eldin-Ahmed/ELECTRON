@@ -43,10 +43,20 @@ include 'includes/header.php';
 
         <!-- Left Column: Avatar & Quick Actions -->
         <div class="flex flex-col items-center gap-6 text-center md:w-1/3 z-10">
-            <div class="w-32 h-32 rounded-full bg-gradient-to-tr from-slate-900 via-zinc-800 to-slate-700 p-[3px] shadow-lg flex items-center justify-center">
-                <div class="w-full h-full rounded-full bg-white flex items-center justify-center overflow-hidden">
-                    <img class="w-full h-full object-cover" src="<?php echo isset($user['pro_img']) ? $user['pro_img'] : 'assets/proImgs/Default.jpg'; ?>" alt="<?php echo isset($user['firstname']) ? htmlspecialchars($user['firstname']) : 'account'; ?>'s profile image">
+            <!-- Avatar with hover-to-edit overlay -->
+            <div class="relative w-32 h-32 group cursor-pointer" onclick="document.getElementById('avatarInput').click()" title="Change profile photo">
+                <!-- Gradient ring -->
+                <div class="absolute inset-0 rounded-full bg-gradient-to-tr from-slate-900 via-zinc-800 to-slate-700 p-[3px]">
+                    <div class="w-full h-full rounded-full bg-white overflow-hidden">
+                        <img id="avatarPreview" class="w-full h-full object-cover" src="<?php echo isset($user['pro_img']) ? htmlspecialchars($user['pro_img']) : 'assets/proImgs/Default.jpg'; ?>" alt="<?php echo isset($user['firstname']) ? htmlspecialchars($user['firstname']) : 'account'; ?>'s profile image">
+                    </div>
                 </div>
+                <!-- Dark overlay on hover -->
+                <div class="absolute inset-0 rounded-full bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-white text-3xl" style="font-variation-settings:'FILL' 0">edit</span>
+                </div>
+                <!-- Hidden file input -->
+                <input id="avatarInput" type="file" accept="image/jpeg,image/png,image/webp,image/gif" class="hidden">
             </div>
             <div>
                 <h2 class="text-2xl font-black tracking-tight text-slate-950 uppercase">
@@ -127,3 +137,69 @@ include 'includes/header.php';
 </main>
 
 <?php include 'includes/footer.php'; ?>
+
+<!-- Profile image upload toast -->
+<div id="avatarToast" class="fixed bottom-6 right-6 z-[200] flex items-center gap-3 px-5 py-3.5 rounded-2xl shadow-2xl text-xs font-bold uppercase tracking-widest transition-all duration-300 translate-y-4 opacity-0 pointer-events-none"></div>
+
+<script>
+    const avatarInput   = document.getElementById('avatarInput');
+    const avatarPreview = document.getElementById('avatarPreview');
+    const avatarToast   = document.getElementById('avatarToast');
+
+    function showAvatarToast(message, type) {
+        avatarToast.className = 'fixed bottom-6 right-6 z-[200] flex items-center gap-3 px-5 py-3.5 rounded-2xl shadow-2xl text-xs font-bold uppercase tracking-widest transition-all duration-300 ';
+        avatarToast.className += type === 'success'
+            ? 'bg-emerald-600 text-white'
+            : 'bg-red-600 text-white';
+        const icon = type === 'success' ? 'check_circle' : 'error';
+        avatarToast.innerHTML = `<span class="material-symbols-outlined text-base" style="font-variation-settings:'FILL' 1">${icon}</span>${message}`;
+
+        // Animate in
+        requestAnimationFrame(() => {
+            avatarToast.classList.remove('translate-y-4', 'opacity-0');
+            avatarToast.classList.add('translate-y-0', 'opacity-100');
+        });
+
+        // Animate out after 3 s
+        setTimeout(() => {
+            avatarToast.classList.remove('translate-y-0', 'opacity-100');
+            avatarToast.classList.add('translate-y-4', 'opacity-0');
+        }, 3000);
+    }
+
+    avatarInput.addEventListener('change', async () => {
+        const file = avatarInput.files[0];
+        if (!file) return;
+
+        // Instant local preview before upload finishes
+        const objectUrl = URL.createObjectURL(file);
+        avatarPreview.src = objectUrl;
+
+        const formData = new FormData();
+        formData.append('photo', file);
+
+        try {
+            const res  = await fetch('func/update-profile-img.php', { method: 'POST', body: formData });
+            const json = await res.json();
+
+            if (json.success) {
+                // Replace the blob URL with the persisted server path
+                avatarPreview.src = json.new_src + '?t=' + Date.now();
+                URL.revokeObjectURL(objectUrl);
+                showAvatarToast('Profile photo updated!', 'success');
+            } else {
+                // Revert to original on failure
+                avatarPreview.src = '<?php echo isset($user["pro_img"]) ? htmlspecialchars($user["pro_img"]) : "assets/proImgs/Default.jpg"; ?>';
+                URL.revokeObjectURL(objectUrl);
+                showAvatarToast(json.error || 'Upload failed.', 'error');
+            }
+        } catch (err) {
+            avatarPreview.src = '<?php echo isset($user["pro_img"]) ? htmlspecialchars($user["pro_img"]) : "assets/proImgs/Default.jpg"; ?>';
+            URL.revokeObjectURL(objectUrl);
+            showAvatarToast('Network error. Please try again.', 'error');
+        }
+
+        // Reset so same file can be picked again if needed
+        avatarInput.value = '';
+    });
+</script>
