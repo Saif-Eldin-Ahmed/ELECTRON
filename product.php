@@ -320,19 +320,100 @@ include 'includes/header.php';
         });
     }
 
-    // Add to Cart feedback
+    // Add to Cart — real API call
     const cartBtn = document.getElementById('addToCartBtn');
     if (cartBtn) {
-        cartBtn.addEventListener('click', () => {
+        cartBtn.addEventListener('click', async () => {
+            // Prevent double-clicks
+            if (cartBtn.disabled) return;
+            cartBtn.disabled = true;
+
             const original = cartBtn.innerHTML;
-            cartBtn.innerHTML = '<span class="material-symbols-outlined text-xl" style="font-variation-settings:\'FILL\' 1">check_circle</span> Added!';
-            cartBtn.classList.add('bg-emerald-600');
-            cartBtn.classList.remove('bg-zinc-950', 'hover:bg-zinc-800');
-            setTimeout(() => {
+            cartBtn.innerHTML = '<span class="material-symbols-outlined text-xl animate-spin">progress_activity</span> Adding...';
+
+            try {
+                const data = new FormData();
+                data.append('product_id', '<?php echo $product["id"]; ?>');
+                data.append('quantity', '1');
+
+                const res = await fetch('includes/add-cart.php', {
+                    method: 'POST',
+                    body: data
+                });
+                const json = await res.json();
+
+                if (json.success) {
+                    // Success state
+                    cartBtn.innerHTML = '<span class="material-symbols-outlined text-xl" style="font-variation-settings:\'FILL\' 1">check_circle</span> Added!';
+                    cartBtn.classList.add('bg-emerald-600');
+                    cartBtn.classList.remove('bg-zinc-950', 'hover:bg-zinc-800');
+
+                    // Update all cart badges in the navbar
+                    document.querySelectorAll('.cart-badge-count').forEach(badge => {
+                        badge.textContent = json.cart_count;
+                        badge.classList.remove('hidden');
+                    });
+
+                    showToast(json.message, 'success');
+
+                    setTimeout(() => {
+                        cartBtn.innerHTML = original;
+                        cartBtn.classList.remove('bg-emerald-600');
+                        cartBtn.classList.add('bg-zinc-950', 'hover:bg-zinc-800');
+                        cartBtn.disabled = false;
+                    }, 2000);
+                } else {
+                    // Handle login redirect
+                    if (json.login_required) {
+                        showToast('Please log in to add items to your cart.', 'error');
+                        setTimeout(() => {
+                            window.location.href = 'login-page.php';
+                        }, 1500);
+                    } else {
+                        showToast(json.error || 'Could not add to cart.', 'error');
+                    }
+                    cartBtn.innerHTML = original;
+                    cartBtn.disabled = false;
+                }
+            } catch (err) {
+                showToast('Something went wrong. Please try again.', 'error');
                 cartBtn.innerHTML = original;
-                cartBtn.classList.remove('bg-emerald-600');
-                cartBtn.classList.add('bg-zinc-950', 'hover:bg-zinc-800');
-            }, 2000);
+                cartBtn.disabled = false;
+            }
         });
+    }
+
+    // Toast notification
+    function showToast(message, type) {
+        // Remove existing toast
+        const existing = document.getElementById('cartToast');
+        if (existing) existing.remove();
+
+        const toast = document.createElement('div');
+        toast.id = 'cartToast';
+        toast.className = 'fixed bottom-6 right-6 z-[100] flex items-center gap-3 px-6 py-4 rounded-2xl shadow-2xl text-sm font-bold uppercase tracking-widest transform translate-y-4 opacity-0 transition-all duration-300';
+
+        if (type === 'success') {
+            toast.classList.add('bg-emerald-600', 'text-white');
+            toast.innerHTML = '<span class="material-symbols-outlined text-xl" style="font-variation-settings:\'FILL\' 1">check_circle</span>' + message;
+        } else {
+            toast.classList.add('bg-red-600', 'text-white');
+            toast.innerHTML = '<span class="material-symbols-outlined text-xl" style="font-variation-settings:\'FILL\' 1">error</span>' + message;
+        }
+
+        document.body.appendChild(toast);
+
+        // Animate in
+        requestAnimationFrame(() => {
+            toast.classList.remove('translate-y-4', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+        });
+
+        // Animate out after 3s
+        setTimeout(() => {
+            toast.classList.remove('translate-y-0', 'opacity-100');
+            toast.classList.add('translate-y-4', 'opacity-0');
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
     }
 </script>
