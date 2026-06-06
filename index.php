@@ -24,11 +24,11 @@ if (isset($_SESSION['id'])) {
     <header class="absolute top-0 w-full z-50 bg-transparent">
         <div class="mx-auto px-6 md:px-8 lg:px-12 flex justify-between items-center h-20 md:h-24">
             <!-- Mobile Menu -->
-            <div id="openMenuBtn" class="md:hidden flex items-center cursor-pointer">
+            <div id="openMenuBtn" class="lg:hidden flex items-center cursor-pointer">
                 <span class="material-symbols-outlined text-2xl text-black">menu</span>
             </div>
 
-            <nav class="hidden md:flex md:gap-4 lg:gap-10 items-center">
+            <nav class="hidden lg:flex md:gap-4 lg:gap-10 items-center">
                 <div class="relative flex items-center gap-1 group cursor-pointer py-2" id="accDropdown">
                     <img class="w-10 h-10 mr-5 rounded-full" src="<?php echo isset($_SESSION['pro_img']) ? $_SESSION['pro_img'] : 'assets/proImgs/Default.jpg'; ?>" alt="<?php echo isset($_SESSION['firstname']) ? htmlspecialchars($_SESSION['firstname']) : 'account'; ?>'s profile image">
                     <span class="text-[11px] font-bold uppercase tracking-widest text-black" id="accBtn">
@@ -66,9 +66,9 @@ if (isset($_SESSION['id'])) {
                 </button>
             </nav>
             <div class="absolute left-1/2 -translate-x-1/2">
-                <a href="index.php" class="text-2xl md:text-3xl font-black tracking-tighter text-black uppercase">ELECTRON</a>
+                <a href="index.php" class="text-2xl lg:text-3xl font-black tracking-tighter text-black uppercase">ELECTRON</a>
             </div>
-            <nav class="hidden md:flex md:gap-4 lg:gap-10 items-center">
+            <nav class="hidden lg:flex md:gap-4 lg:gap-10 items-center">
                 <!-- Desktop Hover Search Bar -->
                 <div class="relative flex items-center group py-2">
                     <span class="text-[11px] font-bold uppercase tracking-widest text-black cursor-pointer group-hover:opacity-0 group-focus-within:opacity-0 transition-opacity duration-200">Search</span>
@@ -85,32 +85,32 @@ if (isset($_SESSION['id'])) {
             </nav>
 
             <!-- Mobile Cart -->
-            <button onclick="openCartDrawer()" class="md:hidden flex items-center scale-95 active:opacity-80 transition-transform relative">
+            <button onclick="openCartDrawer()" class="lg:hidden flex items-center scale-95 active:opacity-80 transition-transform relative">
                 <span class="material-symbols-outlined text-2xl text-black">shopping_cart</span>
                 <span class="cart-badge-count absolute -top-1 -right-1 bg-black text-white text-[8px] px-1 rounded-full <?php echo $nav_cart_count === 0 ? 'hidden' : ''; ?>"><?php echo $nav_cart_count; ?></span>
             </button>
         </div>
     </header>
     <!-- Hero Section -->
-    <section class="relative h-[85vh] md:h-[700px] lg:h-[870px] min-h-[550px] md:min-h-[600px] flex items-center hero-bg">
+    <section class="relative h-[85vh] min-h-[550px] lg:min-h-[600px] flex items-center hero-bg">
         <div class="absolute inset-0 bg-white/20"></div>
         <div class="absolute inset-0 flex justify-center items-center gap-4 md:gap-8 lg:gap-12 pointer-events-none overflow-hidden">
-            <div class="hidden md:block md:w-56 lg:w-64 md:h-72 lg:h-80 bg-white/40 backdrop-blur-md rounded-[2.5rem] lg:rounded-[3rem] shadow-2xl p-4 lg:p-6 floating  -mt-32">
+            <div class="hidden lg:block lg:w-64 lg:h-72 lg:h-80 bg-white/40 rounded-[2.5rem] lg:rounded-[3rem] shadow-2xl p-4 lg:p-6 floating  -mt-32">
                 <img alt="Premium Headphones" class="w-full h-full object-contain" src="assets/images/img_cda5e480.jpg" />
             </div>
-            <div class="w-60 md:w-56 lg:w-64 h-72 md:h-72 lg:h-80 bg-white/40 backdrop-blur-md rounded-[2.5rem] lg:rounded-[3rem] shadow-2xl p-4 lg:p-6 floating floating-delayed -mt-64 md:mt-10">
+            <div class="w-60 lg:w-64 h-72 md:h-72 lg:h-80 bg-white/40 rounded-[2.5rem] lg:rounded-[3rem] shadow-2xl p-4 lg:p-6 floating floating-delayed -mt-64 lg:mt-10">
                 <img alt="IPad" class="w-full h-full object-contain" src="assets/images/img_fc558cd.png" />
             </div>
-            <div class="hidden md:block md:w-56 lg:w-64 md:h-72 lg:h-80 bg-white/40 backdrop-blur-md rounded-[2.5rem] lg:rounded-[3rem] shadow-2xl p-4 lg:p-6 floating floating-more-delayed -mt-20">
+            <div class="hidden lg:block lg:w-64 lg:h-72 lg:h-80 bg-white/40 rounded-[2.5rem] lg:rounded-[3rem] shadow-2xl p-4 lg:p-6 floating floating-more-delayed -mt-20">
                 <img alt="Flagship Smartphone" class="w-full h-full object-contain" src="assets/images/img_5ab27c1d.jpg" />
             </div>
         </div>
-        <div class="relative z-10 w-full px-6 flex flex-col justify-end h-full pb-16 md:pb-24">
-            <div class="max-w-xl text-center md:text-left mx-auto md:mx-0">
-                <h1 class="font-bold text-4xl md:text-5xl lg:text-6xl leading-[1.1] text-black uppercase tracking-tight mb-6 md:mb-8">THE FUTURE AT YOUR FINGERTIPS</h1>
-                <div class="flex flex-col md:flex-row justify-between items-center md:items-end gap-6 md:gap-4 lg:gap-0">
+        <div class="relative z-10 w-full px-6 flex flex-col justify-end h-full pb-16 lg:pb-24">
+            <div class="max-w-xl text-center lg:text-left mx-auto lg:mx-0">
+                <h1 class="font-bold text-4xl md:text-5xl lg:text-6xl leading-[1.1] text-black uppercase tracking-tight mb-6 lg:mb-8">THE FUTURE AT YOUR FINGERTIPS</h1>
+                <div class="flex flex-col lg:flex-row justify-between items-center lg:items-end gap-6 lg:gap-0">
                     <p class="font-body-md text-black/80 md:text-black/60 max-w-[280px] md:max-w-[240px] lg:max-w-xs text-sm md:text-sm lg:text-base">Discover the convergence of precision engineering and lifestyle aesthetics with our curated collection.</p>
-                    <button class="bg-white/30 backdrop-blur-md border border-white/50 text-black shadow-[0_8px_32px_rgba(0,0,0,0.1)] px-10 py-4 md:py-3 w-full md:w-auto rounded-full font-bold uppercase text-[12px] tracking-widest hover:bg-white/50 transition-all">Explore</button>
+                    <button class="bg-white/30 backdrop-blur-md border border-white/50 text-black shadow-[0_8px_32px_rgba(0,0,0,0.1)] px-10 py-4 md:py-3 w-full lg:w-auto rounded-full font-bold uppercase text-[12px] tracking-widest hover:bg-white/50 transition-all">Explore</button>
                 </div>
             </div>
         </div>
@@ -364,7 +364,6 @@ if (isset($_SESSION['id'])) {
         <?php else: ?>
             <a class="text-3xl font-headline-md uppercase tracking-tight text-black border-b border-black/10 pb-4 hover:text-black/70" href="login-page.php">Account</a>
         <?php endif; ?>
-        <a class="text-3xl font-headline-md uppercase tracking-tight text-black border-b border-black/10 pb-4 hover:text-black/70" href="#">Cart</a>
     </div>
     <div class="mt-auto pt-12">
         <p class="text-[10px] font-bold text-black/40 uppercase tracking-widest">ELECTRON DIGITAL FLAGSHIP</p>
