@@ -144,7 +144,7 @@ $body_class = "bg-zinc-950 text-white font-body-md min-h-screen";
             <!-- Stat 1 -->
             <div class="glass-card rounded-2xl p-6 flex items-center gap-5">
                 <div class="w-12 h-12 rounded-xl bg-zinc-900 flex items-center justify-center border border-zinc-800">
-                    <span class="material-symbols-outlined text-zinc-400">inventory_2</span>
+                    <span class="material-symbols-outlined text-zinc-400">inventory</span>
                 </div>
                 <div>
                     <p class="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-1">Total Products</p>
@@ -237,7 +237,7 @@ $body_class = "bg-zinc-950 text-white font-body-md min-h-screen";
                                     $p_imgs = json_decode($product['imgs'], true);
                                     $p_img = (!empty($p_imgs) && is_array($p_imgs)) ? '../' . $p_imgs[0] : '../assets/prdctImgs/Default.png';
                                     ?>
-                                    <tr class="hover:bg-zinc-900/10 transition-colors">
+                                    <tr id="product-row-<?php echo $product['id']; ?>" class="hover:bg-zinc-900/10 transition-colors">
                                         <td class="p-6 flex items-center gap-4">
                                             <div class="w-12 h-12 rounded-lg bg-zinc-900 border border-zinc-800 overflow-hidden flex items-center justify-center p-1.5 flex-shrink-0">
                                                 <img class="w-full h-full object-contain" src="<?php echo htmlspecialchars($p_img); ?>" alt="">
@@ -288,22 +288,24 @@ $body_class = "bg-zinc-950 text-white font-body-md min-h-screen";
                                         </td>
                                         <td class="p-6 text-right whitespace-nowrap">
                                             <?php if ($product['status'] === 'published'): ?>
-                                                <button onclick="pubProduct(<?php echo (isset($product['id'])) ? $product['id'] : ''; ?>, 'hide', '<?php echo (isset($product['status'])) ? $product['status'] : ''; ?>')" class="text-xs font-bold text-zinc-400 hover:text-yellow-400 uppercase tracking-widest border border-zinc-800 hover:border-yellow-700 px-3 py-1.5 rounded-lg transition-colors">
-                                                    Hide
+                                                <button onclick="pubProduct(<?php echo (isset($product['id'])) ? $product['id'] : ''; ?>, 'hide', '<?php echo (isset($product['status'])) ? $product['status'] : ''; ?>')" class="material-symbols-outlined text-xs font-bold text-zinc-400 hover:text-yellow-400 uppercase tracking-widest border border-zinc-800 hover:border-yellow-700 px-3 py-1.5 rounded-lg transition-colors">
+                                                    visibility_off
                                                 </button>
                                             <?php else: ?>
-                                                <button onclick="pubProduct(<?php echo (isset($product['id'])) ? $product['id'] : ''; ?>, 'publish', '<?php echo (isset($product['status'])) ? $product['status'] : ''; ?>')" class="text-xs font-bold text-zinc-400 hover:text-emerald-400 uppercase tracking-widest border border-zinc-800 hover:border-emerald-700 px-3 py-1.5 rounded-lg transition-colors">
-                                                    Publish
+                                                <button onclick="pubProduct(<?php echo (isset($product['id'])) ? $product['id'] : ''; ?>, 'publish', '<?php echo (isset($product['status'])) ? $product['status'] : ''; ?>')" class="material-symbols-outlined text-xs font-bold text-zinc-400 hover:text-emerald-400 uppercase tracking-widest border border-zinc-800 hover:border-emerald-700 px-3 py-1.5 rounded-lg transition-colors">
+                                                    visibility
                                                 </button>
                                             <?php endif; ?>
 
-
-                                            <a href="edit.php?id=<?php echo $product['id']; ?>" target="_blank" class="text-xs font-bold text-zinc-400 hover:text-white uppercase tracking-widest border border-zinc-800 hover:border-zinc-700 px-3 py-1.5 rounded-lg transition-colors mx-1">
-                                                Edit
+                                            <a href="edit.php?id=<?php echo $product['id']; ?>" target="_blank" class="material-symbols-outlined text-xs font-bold text-zinc-400 hover:text-white uppercase tracking-widest border border-zinc-800 hover:border-zinc-700 px-3 py-1.5 rounded-lg transition-colors">
+                                                edit
                                             </a>
-                                            <a href="../product.php?id=<?php echo $product['id']; ?>" target="_blank" class="text-xs font-bold text-zinc-400 hover:text-white uppercase tracking-widest border border-zinc-800 hover:border-zinc-700 px-3 py-1.5 rounded-lg transition-colors mx-1">
-                                                View
+                                            <a href="../product.php?id=<?php echo $product['id']; ?>" target="_blank" class="material-symbols-outlined text-xs font-bold text-zinc-400 hover:text-white uppercase tracking-widest border border-zinc-800 hover:border-zinc-700 px-3 py-1.5 rounded-lg transition-colors">
+                                                inventory_2
                                             </a>
+                                            <button onclick="deleteProduct(<?php echo $product['id']; ?>, '<?php echo htmlspecialchars(addslashes($product['name'])); ?>')" class="material-symbols-outlined text-xs font-bold text-zinc-400 hover:text-red-400 uppercase tracking-widest border border-zinc-800 hover:border-red-800 px-3 py-1.5 rounded-lg transition-colors">
+                                                delete
+                                            </button>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
@@ -365,6 +367,42 @@ $body_class = "bg-zinc-950 text-white font-body-md min-h-screen";
 
         } catch (err) {
             document.getElementById('err-msg').textContent = "Database error: " + err.message;
+            document.getElementById('err-msg').classList.remove('hidden');
+        }
+    }
+
+    async function deleteProduct(id, name) {
+        if (!confirm(`Permanently delete "${name}"?\n\nThis cannot be undone.`)) return;
+
+        const data = new FormData();
+        data.append('id', id);
+
+        try {
+            const res = await fetch('functions/delete-product.php', {
+                method: 'POST',
+                body: data
+            });
+            const json = await res.json();
+
+            if (json.success) {
+                // Fade out the row, then remove it
+                const row = document.getElementById('product-row-' + id);
+                if (row) {
+                    row.style.transition = 'opacity 0.4s';
+                    row.style.opacity = '0';
+                    setTimeout(() => row.remove(), 420);
+                }
+                document.getElementById('success-msg').textContent = json.message;
+                document.getElementById('success-msg').classList.remove('hidden');
+                setTimeout(() => {
+                    document.getElementById('success-msg').classList.add('hidden');
+                }, 3000);
+            } else {
+                document.getElementById('err-msg').textContent = json.error;
+                document.getElementById('err-msg').classList.remove('hidden');
+            }
+        } catch (err) {
+            document.getElementById('err-msg').textContent = "Network error: " + err.message;
             document.getElementById('err-msg').classList.remove('hidden');
         }
     }
