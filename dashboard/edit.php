@@ -184,7 +184,8 @@ x<?php
                         `specifications` = :specifications,
                         `warranty_months` = :warranty_months,
                         `weight_grams` = :weight_grams,
-                        `dimensions` = :dimensions
+                        `dimensions` = :dimensions,
+                        `updated_by` = :updated_by
                     WHERE `id` = :id"
                     );
 
@@ -205,6 +206,7 @@ x<?php
                         ':warranty_months' => $warranty_months,
                         ':weight_grams' => $weight_grams,
                         ':dimensions' => $dimensions,
+                        ':updated_by' => intval($_SESSION['id']),
                         ':id' => $product_id
                     ]);
 

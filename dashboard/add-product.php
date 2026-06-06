@@ -142,12 +142,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         `name`, `slug`, `description`, `price`, `compare_at_price`, `sku`, 
                         `stock_quantity`, `low_stock_limit`, `brand_id`, `category_id`, 
                         `status`, `imgs`, `specifications`, `warranty_months`, `weight_grams`, 
-                        `dimensions`, `created_at`, `added_by`
+                        `dimensions`, `created_at`, `added_by`, `updated_by`
                     ) VALUES (
                         :name, :slug, :description, :price, :compare_at_price, :sku, 
                         :stock_quantity, :low_stock_limit, :brand_id, :category_id, 
                         :status, :imgs, :specifications, :warranty_months, :weight_grams, 
-                        :dimensions, NOW(), :added_by
+                        :dimensions, NOW(), :added_by, :updated_by
                     )"
                 );
 
@@ -168,7 +168,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     ':warranty_months' => $warranty_months,
                     ':weight_grams' => $weight_grams,
                     ':dimensions' => $dimensions,
-                    ':added_by' => $_SESSION['id']
+                    ':added_by' => intval($_SESSION['id']),
+                    ':updated_by' => intval($_SESSION['id'])
                 ]);
 
                 $product_id = $pdo->lastInsertId();
@@ -248,10 +249,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <!-- User Account Details -->
         <div class="p-6 border-t border-zinc-800 flex items-center gap-3">
-            <span class="material-symbols-outlined text-2xl text-zinc-400">account_circle</span>
+            <img src="<?php echo $_SESSION['pro_img'] ? '../' . $_SESSION['pro_img'] : '../assets/proImgs/Default.jpg'; ?>" alt="Profile Picture" class="w-10 h-10 rounded-full">
             <div class="overflow-hidden">
-                <p class="text-xs font-bold uppercase tracking-wider text-white truncate">Administrator</p>
-                <p class="text-[10px] text-zinc-500 truncate">admin@electron.com</p>
+                <p class="text-xs font-bold uppercase tracking-wider text-white truncate"><?php echo $_SESSION['firstname'] . " " . $_SESSION['lastname']; ?></p>
+                <p class="text-[10px] text-zinc-500 truncate"><?php echo $_SESSION['email']; ?></p>
             </div>
         </div>
     </aside>
