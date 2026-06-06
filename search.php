@@ -38,8 +38,9 @@ $where_clauses = ["p.status = 'published'"];
 $bindings = [];
 
 if ($search !== '') {
-    $where_clauses[] = "(p.name LIKE :search OR p.description LIKE :search)";
-    $bindings[':search'] = '%' . $search . '%';
+    $where_clauses[] = "(p.name LIKE :search_name OR p.description LIKE :search_desc)";
+    $bindings[':search_name'] = '%' . $search . '%';
+    $bindings[':search_desc'] = '%' . $search . '%';
 }
 
 if (!empty($selected_categories)) {

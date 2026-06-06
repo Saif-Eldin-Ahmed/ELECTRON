@@ -28,12 +28,14 @@ $offset = ($page - 1) * $limit;
 $where_clause = "1=1";
 $bindings = [];
 if ($search !== '') {
-    $where_clause = "(p.name LIKE :search OR p.description LIKE :search OR p.sku LIKE :search)";
-    $bindings[':search'] = '%' . $search . '%';
+    $where_clause = "(p.name LIKE :search_name OR p.description LIKE :search_desc OR p.sku LIKE :search_sku)";
+    $bindings[':search_name'] = '%' . $search . '%';
+    $bindings[':search_desc'] = '%' . $search . '%';
+    $bindings[':search_sku'] = '%' . $search . '%';
 }
 
 // Total search count
-$count_query = "SELECT COUNT(*) FROM products p WHERE {$where_clause}";
+$count_query = "SELECT COUNT(*) FROM products p WHERE " . $where_clause;
 $stmt_count = $pdo->prepare($count_query);
 $stmt_count->execute($bindings);
 $total_filtered = $stmt_count->fetchColumn();
