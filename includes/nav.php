@@ -171,5 +171,35 @@ if (isset($_SESSION['id'])) {
         </div>
     </div>
 </div>
+<!-- Mobile Menu Trigger -->
+<script>
+    function openMobileNav() {
+        // Close cart if open
+        closeCartDrawer();
+        const drawer = document.getElementById('mobileNavDrawer');
+        const backdrop = document.getElementById('mobileNavBackdrop');
+        drawer.classList.remove('translate-x-full');
+        drawer.classList.add('translate-x-0');
+        backdrop.classList.remove('hidden');
+        requestAnimationFrame(() => {
+            backdrop.classList.remove('opacity-0');
+            backdrop.classList.add('opacity-100');
+        });
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeMobileNav() {
+        const drawer = document.getElementById('mobileNavDrawer');
+        const backdrop = document.getElementById('mobileNavBackdrop');
+        drawer.classList.remove('translate-x-0');
+        drawer.classList.add('translate-x-full');
+        backdrop.classList.remove('opacity-100');
+        backdrop.classList.add('opacity-0');
+        setTimeout(() => {
+            backdrop.classList.add('hidden');
+        }, 300);
+        document.body.style.overflow = '';
+    }
+</script>
 
 <?php include 'includes/cart-drawer.php'; ?>
