@@ -36,13 +36,15 @@ if ($product_id <= 0 || !in_array($action, ['increment', 'decrement'])) {
 
 try {
     $pdo = getDBConnection();
+    $pdo->beginTransaction();
 
-    // Verify product exists and get stock
-    $stmt = $pdo->prepare("SELECT stock_quantity, name FROM products WHERE id = :id AND status = 'published' LIMIT 1");
+    // Lock the product row for the duration of the transaction
+    $stmt = $pdo->prepare("SELECT stock_quantity, name FROM products WHERE id = :id AND status = 'published' LIMIT 1 FOR UPDATE");
     $stmt->execute([':id' => $product_id]);
     $product = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$product) {
+        $pdo->rollBack();
         http_response_code(404);
         echo json_encode(['success' => false, 'error' => 'Product not found.']);
         exit;
@@ -64,6 +66,7 @@ try {
     if ($action === 'increment') {
         $new_qty = $current_qty + 1;
         if ($new_qty > intval($product['stock_quantity'])) {
+            $pdo->rollBack();
             http_response_code(400);
             echo json_encode([
                 'success' => false,
@@ -75,6 +78,10 @@ try {
         $stmt = $pdo->prepare("UPDATE cart_items SET quantity = :qty WHERE id = :id");
         $stmt->execute([':qty' => $new_qty, ':id' => $existing['id']]);
 
+        // Decrement stock by 1
+        $pdo->prepare("UPDATE products SET stock_quantity = stock_quantity - 1 WHERE id = :id")
+            ->execute([':id' => $product_id]);
+
     } else { // decrement
         $new_qty = $current_qty - 1;
         if ($new_qty <= 0) {
@@ -85,7 +92,13 @@ try {
             $stmt = $pdo->prepare("UPDATE cart_items SET quantity = :qty WHERE id = :id");
             $stmt->execute([':qty' => $new_qty, ':id' => $existing['id']]);
         }
+
+        // Restore 1 unit back to stock (whether item was removed or just decremented)
+        $pdo->prepare("UPDATE products SET stock_quantity = stock_quantity + 1 WHERE id = :id")
+            ->execute([':id' => $product_id]);
     }
+
+    $pdo->commit();
 
     // Get updated total quantity and subtotal of the cart
     $stmt = $pdo->prepare("
@@ -109,6 +122,9 @@ try {
     ]);
 
 } catch (PDOException $e) {
+    if (isset($pdo) && $pdo->inTransaction()) {
+        $pdo->rollBack();
+    }
     http_response_code(500);
     echo json_encode(['success' => false, 'error' => 'Database error: ' . $e->getMessage()]);
 }

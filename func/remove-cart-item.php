@@ -26,8 +26,9 @@ if (!isset($_SESSION['id'])) {
 
 $user_id    = intval($_SESSION['id']);
 $product_id = isset($_POST['product_id']) ? intval($_POST['product_id']) : 0;
+$quantity = isset($_POST['quantity']) ? intval($_POST['quantity']) : 0;
 
-if ($product_id <= 0) {
+if ($product_id <= 0 || $quantity <= 0) {
     http_response_code(400);
     echo json_encode(['success' => false, 'error' => 'Invalid product ID.']);
     exit;
@@ -35,11 +36,19 @@ if ($product_id <= 0) {
 
 try {
     $pdo = getDBConnection();
+    $pdo->beginTransaction();
 
     // Delete item
     $stmt = $pdo->prepare("DELETE FROM cart_items WHERE user_id = :user_id AND product_id = :product_id");
     $stmt->execute([
         ':user_id'    => $user_id,
+        ':product_id' => $product_id
+    ]);
+
+    // Restore stock
+    $stmt = $pdo->prepare("UPDATE products SET stock_quantity = stock_quantity + :quantity WHERE id = :product_id");
+    $stmt->execute([
+        ':quantity'   => $quantity,
         ':product_id' => $product_id
     ]);
 
@@ -64,8 +73,11 @@ try {
         'subtotal'   => $subtotal,
         'message'    => 'Item removed from cart.'
     ]);
-
+    $pdo->commit();
 } catch (PDOException $e) {
+    if (isset($pdo) && $pdo->inTransaction()) {
+        $pdo->rollBack();
+    }
     http_response_code(500);
     echo json_encode(['success' => false, 'error' => 'Database error: ' . $e->getMessage()]);
 }

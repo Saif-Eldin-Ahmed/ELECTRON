@@ -77,7 +77,7 @@
     async function fetchCartItems() {
         const container = document.getElementById('cartDrawerContent');
         const footer = document.getElementById('cartDrawerFooter');
-        
+
         // Render Loading Spinner
         container.innerHTML = `
             <div class="flex flex-col items-center justify-center py-24 text-slate-400 dark:text-zinc-500">
@@ -161,7 +161,7 @@
                                         </button>
                                     </div>
                                     
-                                    <button onclick="removeCartItem(${item.product_id})" class="text-slate-400 hover:text-red-500 dark:text-zinc-600 dark:hover:text-red-400 transition-colors flex items-center justify-center" aria-label="Remove item">
+                                    <button onclick="removeCartItem(${item.product_id}, ${item.quantity})" class="text-slate-400 hover:text-red-500 dark:text-zinc-600 dark:hover:text-red-400 transition-colors flex items-center justify-center" aria-label="Remove item">
                                         <span class="material-symbols-outlined text-lg">delete</span>
                                     </button>
                                 </div>
@@ -221,7 +221,7 @@
         }
     }
 
-    async function removeCartItem(productId) {
+    async function removeCartItem(productId, qty) {
         const itemRow = document.getElementById(`cart-item-${productId}`);
         if (itemRow) {
             itemRow.style.opacity = '0.3';
@@ -231,6 +231,7 @@
         try {
             const formData = new FormData();
             formData.append('product_id', productId);
+            formData.append('quantity', qty);
 
             const res = await fetch('func/remove-cart-item.php', {
                 method: 'POST',
@@ -273,7 +274,7 @@
                 // Empty the drawer and show successful checkout state
                 const container = document.getElementById('cartDrawerContent');
                 const footer = document.getElementById('cartDrawerFooter');
-                
+
                 container.innerHTML = `
                     <div class="flex flex-col items-center justify-center py-20 text-center">
                         <span class="material-symbols-outlined text-6xl text-emerald-600 dark:text-emerald-500 mb-6 animate-bounce">check_circle</span>
@@ -316,14 +317,14 @@
     }
 
     function escapeHTML(str) {
-        return str.replace(/[&<>'"]/g, 
+        return str.replace(/[&<>'"]/g,
             tag => ({
                 '&': '&amp;',
                 '<': '&lt;',
                 '>': '&gt;',
                 "'": '&#39;',
                 '"': '&quot;'
-            }[tag] || tag)
+            } [tag] || tag)
         );
     }
 
