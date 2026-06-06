@@ -1,8 +1,22 @@
 <?php
+require_once 'includes/config.php';
 $acc = true;
 $page_title = "ELECTRON | Digital Flagship";
 $body_class = "font-body-md text-on-surface bg-white";
 include 'includes/header.php';
+
+// Fetch cart count for logged-in user
+$nav_cart_count = 0;
+if (isset($_SESSION['id'])) {
+    try {
+        $nav_pdo = getDBConnection();
+        $nav_cart_stmt = $nav_pdo->prepare("SELECT SUM(quantity) FROM cart_items WHERE user_id = :uid");
+        $nav_cart_stmt->execute([':uid' => $_SESSION['id']]);
+        $nav_cart_count = intval($nav_cart_stmt->fetchColumn());
+    } catch (Exception $e) {
+        $nav_cart_count = 0;
+    }
+}
 ?>
 
 <div class="custom-frame overflow-hidden relative">
@@ -45,10 +59,11 @@ include 'includes/header.php';
                         <?php endif; ?>
                     </div>
                 </div>
-                <div class="flex items-center gap-1 group cursor-pointer">
-                    <a class="text-[11px] font-bold uppercase tracking-widest text-black" href="#">cart</a>
-                    <span class="material-symbols-outlined text-sm">expand_more</span>
-                </div>
+                <button onclick="openCartDrawer()" class="flex items-center gap-2 group cursor-pointer scale-95 active:opacity-80 transition-transform relative">
+                    <span class="material-symbols-outlined text-base text-black">shopping_cart</span>
+                    <span class="text-[11px] font-bold uppercase tracking-widest text-black">cart</span>
+                    <span class="cart-badge-count bg-black text-white text-[8px] px-1.5 rounded-full <?php echo $nav_cart_count === 0 ? 'hidden' : ''; ?>"><?php echo $nav_cart_count; ?></span>
+                </button>
             </nav>
             <div class="absolute left-1/2 -translate-x-1/2">
                 <a href="index.php" class="text-2xl md:text-3xl font-black tracking-tighter text-black uppercase">ELECTRON</a>
@@ -70,9 +85,10 @@ include 'includes/header.php';
             </nav>
 
             <!-- Mobile Cart -->
-            <div class="md:hidden flex items-center">
-                <span class="material-symbols-outlined text-2xl text-black">shopping_bag</span>
-            </div>
+            <button onclick="openCartDrawer()" class="md:hidden flex items-center scale-95 active:opacity-80 transition-transform relative">
+                <span class="material-symbols-outlined text-2xl text-black">shopping_cart</span>
+                <span class="cart-badge-count absolute -top-1 -right-1 bg-black text-white text-[8px] px-1 rounded-full <?php echo $nav_cart_count === 0 ? 'hidden' : ''; ?>"><?php echo $nav_cart_count; ?></span>
+            </button>
         </div>
     </header>
     <!-- Hero Section -->
@@ -354,6 +370,9 @@ include 'includes/header.php';
         <p class="text-[10px] font-bold text-black/40 uppercase tracking-widest">ELECTRON DIGITAL FLAGSHIP</p>
     </div>
 </div>
+
+<!-- Cart Drawer -->
+<?php include 'includes/cart-drawer.php'; ?>
 
 <!-- Footer -->
 <?php include 'includes/footer.php'; ?>
