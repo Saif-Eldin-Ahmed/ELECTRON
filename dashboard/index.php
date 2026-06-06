@@ -260,16 +260,16 @@ $body_class = "bg-zinc-950 text-white font-body-md min-h-screen";
                                                 <p class="text-[10px] text-red-500 line-through font-medium">$<?php echo number_format($product['compare_at_price'], 2); ?></p>
                                             <?php endif; ?>
                                         </td>
-                                        <td class="p-6">
+                                        <td class="p-6 ">
                                             <?php
                                             $qty = intval($product['stock_quantity']);
                                             $low = intval($product['low_stock_limit']);
                                             if ($qty === 0) {
-                                                echo '<span class="px-2 py-1 bg-red-950/50 text-red-400 text-[10px] font-bold uppercase tracking-wider rounded border border-red-900/30">Out of Stock</span>';
+                                                echo '<span class="px-2 py-1 bg-red-950/50 text-red-400 text-[10px] font-bold uppercase tracking-wider rounded border border-red-900/30 ">Out</span>';
                                             } elseif ($qty <= $low) {
-                                                echo '<span class="px-2 py-1 bg-amber-950/50 text-amber-400 text-[10px] font-bold uppercase tracking-wider rounded border border-amber-900/30">Low: ' . $qty . '</span>';
+                                                echo '<span class="px-2 py-1 bg-amber-950/50 text-amber-400 text-[10px] font-bold uppercase tracking-wider rounded border border-amber-900/30 ">' . $qty . '</span>';
                                             } else {
-                                                echo '<span class="px-2 py-1 bg-emerald-950/50 text-emerald-400 text-[10px] font-bold uppercase tracking-wider rounded border border-emerald-900/30">In Stock: ' . $qty . '</span>';
+                                                echo '<span class="px-2 py-1 bg-emerald-950/50 text-emerald-400 text-[10px] font-bold uppercase tracking-wider rounded border border-emerald-900/30">' . $qty . '</span>';
                                             }
                                             ?>
                                         </td>
@@ -284,7 +284,7 @@ $body_class = "bg-zinc-950 text-white font-body-md min-h-screen";
                                                 </span>
                                             <?php endif; ?>
                                         </td>
-                                        <td class="p-6 text-right">
+                                        <td class="p-6 text-right whitespace-nowrap">
                                             <?php if ($product['status'] === 'published'): ?>
                                                 <button onclick="pubProduct(<?php echo (isset($product['id'])) ? $product['id'] : ''; ?>, 'hide', '<?php echo (isset($product['status'])) ? $product['status'] : ''; ?>')" class="text-xs font-bold text-zinc-400 hover:text-yellow-400 uppercase tracking-widest border border-zinc-800 hover:border-yellow-700 px-3 py-1.5 rounded-lg transition-colors">
                                                     Hide

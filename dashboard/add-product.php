@@ -213,13 +213,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
     <script src="../assets/js/tailwind-config.js"></script>
     <link href="style.css" rel="stylesheet" />
-    <style>
-        .glass-card {
-            background: rgba(24, 24, 27, 0.65);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-    </style>
 </head>
 
 <body class="bg-zinc-950 text-zinc-100 min-h-screen flex">
