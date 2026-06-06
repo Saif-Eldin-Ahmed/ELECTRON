@@ -141,25 +141,28 @@ $body_class = "bg-background font-body-md text-on-background selection:bg-second
 include 'includes/header.php';
 ?>
 
-<main class="max-w-[1440px] mx-auto flex px-12 pt-32 pb-10 gap-gutter min-h-screen">
-    <!-- Sidebar Filters -->
-    <aside class="hidden lg:flex flex-col w-64 sticky top-32 h-fit bg-white dark:bg-zinc-950 p-6 rounded-lg border border-zinc-100 dark:border-zinc-900">
-        <form action="search.php" method="GET" id="filterForm" class="space-y-8">
-            <!-- Preserve search query -->
+<!-- Mobile Filter Backdrop -->
+<div id="filterBackdrop" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 hidden lg:hidden transition-opacity duration-300 opacity-0" onclick="closeFilterDrawer()"></div>
+
+<!-- Mobile Filter Drawer -->
+<aside id="filterDrawer" class="fixed top-0 left-0 h-full w-80 max-w-[85vw] bg-white dark:bg-zinc-950 border-r border-zinc-100 dark:border-zinc-900 z-50 overflow-y-auto transform -translate-x-full transition-transform duration-300 ease-in-out lg:hidden">
+    <div class="p-6">
+        <!-- Drawer Header -->
+        <div class="flex justify-between items-center mb-6 pb-4 border-b border-zinc-100 dark:border-zinc-900">
+            <h2 class="font-headline-md text-sm font-bold text-zinc-900 dark:text-white uppercase tracking-widest">Filters</h2>
+            <button onclick="closeFilterDrawer()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors">
+                <span class="material-symbols-outlined text-zinc-500 dark:text-zinc-400">close</span>
+            </button>
+        </div>
+        <form action="search.php" method="GET" id="filterFormMobile" class="space-y-8">
             <input type="hidden" name="q" value="<?php echo htmlspecialchars($search); ?>">
-            <!-- Preserve sorting -->
             <input type="hidden" name="sort" value="<?php echo htmlspecialchars($sort); ?>">
 
-            <div class="mb-8">
-                <div class="flex justify-between items-center mb-1">
-                    <h2 class="font-headline-md text-sm font-bold text-zinc-900 dark:text-white uppercase tracking-widest">Filters</h2>
-                    <a href="search.php?q=<?php echo urlencode($search); ?>&sort=<?php echo urlencode($sort); ?>" class="text-xs font-medium text-zinc-400 hover:text-zinc-950 dark:hover:text-white transition-colors">Clear All</a>
-                </div>
-                <p class="text-xs text-zinc-400">Refine Results</p>
+            <div class="flex justify-end mb-2">
+                <a href="search.php?q=<?php echo urlencode($search); ?>&sort=<?php echo urlencode($sort); ?>" class="text-xs font-medium text-zinc-400 hover:text-zinc-950 dark:hover:text-white transition-colors">Clear All</a>
             </div>
 
             <div class="space-y-8">
-                <!-- Categories -->
                 <div>
                     <h3 class="font-label-bold text-xs uppercase mb-4 text-zinc-900 dark:text-white">Categories</h3>
                     <div class="space-y-3">
@@ -177,7 +180,6 @@ include 'includes/header.php';
                         </label>
                     </div>
                 </div>
-                <!-- Price Range -->
                 <div>
                     <h3 class="font-label-bold text-xs uppercase mb-4 text-zinc-900 dark:text-white">Price Range</h3>
                     <div class="space-y-4">
@@ -185,10 +187,9 @@ include 'includes/header.php';
                             <input name="min_price" class="w-1/2 text-xs border-zinc-200 dark:border-zinc-800 dark:bg-zinc-900 rounded p-2 focus:ring-0 focus:border-zinc-950 focus:dark:border-white" placeholder="Min" type="number" step="0.01" value="<?php echo $min_price !== null ? htmlspecialchars($min_price) : ''; ?>" />
                             <input name="max_price" class="w-1/2 text-xs border-zinc-200 dark:border-zinc-800 dark:bg-zinc-900 rounded p-2 focus:ring-0 focus:border-zinc-950 focus:dark:border-white" placeholder="Max" type="number" step="0.01" value="<?php echo $max_price !== null ? htmlspecialchars($max_price) : ''; ?>" />
                         </div>
-                        <button type="submit" class="w-full text-xs font-bold uppercase tracking-widest bg-zinc-950 dark:bg-white text-white dark:text-zinc-950 py-2 rounded hover:bg-zinc-800 dark:hover:bg-zinc-100 transition-colors">Apply Price</button>
+                        <button type="submit" class="w-full text-xs font-bold uppercase tracking-widest bg-zinc-950 dark:bg-white text-white dark:text-zinc-950 py-2 rounded hover:bg-zinc-800 dark:hover:bg-zinc-100 transition-colors">Apply</button>
                     </div>
                 </div>
-                <!-- Camera Spec -->
                 <div>
                     <h3 class="font-label-bold text-xs uppercase mb-4 text-zinc-900 dark:text-white">Camera Spec</h3>
                     <div class="space-y-3">
@@ -202,7 +203,80 @@ include 'includes/header.php';
                         </label>
                     </div>
                 </div>
-                <!-- Battery Life -->
+                <div>
+                    <h3 class="font-label-bold text-xs uppercase mb-4 text-zinc-900 dark:text-white">Battery Life</h3>
+                    <div class="space-y-3">
+                        <label class="flex items-center gap-3 cursor-pointer group">
+                            <input name="battery[]" value="4500" class="w-5 h-5 rounded border-zinc-300 dark:border-zinc-700 text-secondary focus:ring-secondary" type="checkbox" <?php echo in_array('4500', $battery) ? 'checked' : ''; ?> onchange="this.form.submit()" />
+                            <span class="text-sm text-zinc-500 group-hover:text-zinc-900 dark:group-hover:text-white transition-colors">&gt;= 4500mAh</span>
+                        </label>
+                        <label class="flex items-center gap-3 cursor-pointer group">
+                            <input name="battery[]" value="5000" class="w-5 h-5 rounded border-zinc-300 dark:border-zinc-700 text-secondary focus:ring-secondary" type="checkbox" <?php echo in_array('5000', $battery) ? 'checked' : ''; ?> onchange="this.form.submit()" />
+                            <span class="text-sm text-zinc-500 group-hover:text-zinc-900 dark:group-hover:text-white transition-colors">&gt;= 5000mAh</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</aside>
+
+<main class="max-w-[1440px] mx-auto flex px-6 lg:px-12 pt-32 pb-10 gap-gutter min-h-screen">
+    <!-- Desktop Sidebar Filters -->
+    <aside class="hidden lg:flex flex-col w-64 sticky top-32 h-fit bg-white dark:bg-zinc-950 p-6 rounded-lg border border-zinc-100 dark:border-zinc-900">
+        <form action="search.php" method="GET" id="filterForm" class="space-y-8">
+            <input type="hidden" name="q" value="<?php echo htmlspecialchars($search); ?>">
+            <input type="hidden" name="sort" value="<?php echo htmlspecialchars($sort); ?>">
+
+            <div class="mb-8">
+                <div class="flex justify-between items-center mb-1">
+                    <h2 class="font-headline-md text-sm font-bold text-zinc-900 dark:text-white uppercase tracking-widest">Filters</h2>
+                    <a href="search.php?q=<?php echo urlencode($search); ?>&sort=<?php echo urlencode($sort); ?>" class="text-xs font-medium text-zinc-400 hover:text-zinc-950 dark:hover:text-white transition-colors">Clear All</a>
+                </div>
+                <p class="text-xs text-zinc-400">Refine Results</p>
+            </div>
+
+            <div class="space-y-8">
+                <div>
+                    <h3 class="font-label-bold text-xs uppercase mb-4 text-zinc-900 dark:text-white">Categories</h3>
+                    <div class="space-y-3">
+                        <label class="flex items-center gap-3 cursor-pointer group">
+                            <input name="category[]" value="smartphone" class="w-5 h-5 rounded border-zinc-300 dark:border-zinc-700 text-secondary focus:ring-secondary" type="checkbox" <?php echo in_array('smartphone', $selected_categories) ? 'checked' : ''; ?> onchange="this.form.submit()" />
+                            <span class="text-sm text-zinc-500 group-hover:text-zinc-900 dark:group-hover:text-white transition-colors">Smartphone</span>
+                        </label>
+                        <label class="flex items-center gap-3 cursor-pointer group">
+                            <input name="category[]" value="audio" class="w-5 h-5 rounded border-zinc-300 dark:border-zinc-700 text-secondary focus:ring-secondary" type="checkbox" <?php echo in_array('audio', $selected_categories) ? 'checked' : ''; ?> onchange="this.form.submit()" />
+                            <span class="text-sm text-zinc-500 group-hover:text-zinc-900 dark:group-hover:text-white transition-colors">Audio</span>
+                        </label>
+                        <label class="flex items-center gap-3 cursor-pointer group">
+                            <input name="category[]" value="computing" class="w-5 h-5 rounded border-zinc-300 dark:border-zinc-700 text-secondary focus:ring-secondary" type="checkbox" <?php echo in_array('computing', $selected_categories) ? 'checked' : ''; ?> onchange="this.form.submit()" />
+                            <span class="text-sm text-zinc-500 group-hover:text-zinc-900 dark:group-hover:text-white transition-colors">Computing</span>
+                        </label>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="font-label-bold text-xs uppercase mb-4 text-zinc-900 dark:text-white">Price Range</h3>
+                    <div class="space-y-4">
+                        <div class="flex justify-between gap-4">
+                            <input name="min_price" class="w-1/2 text-xs border-zinc-200 dark:border-zinc-800 dark:bg-zinc-900 rounded p-2 focus:ring-0 focus:border-zinc-950 focus:dark:border-white" placeholder="Min" type="number" step="0.01" value="<?php echo $min_price !== null ? htmlspecialchars($min_price) : ''; ?>" />
+                            <input name="max_price" class="w-1/2 text-xs border-zinc-200 dark:border-zinc-800 dark:bg-zinc-900 rounded p-2 focus:ring-0 focus:border-zinc-950 focus:dark:border-white" placeholder="Max" type="number" step="0.01" value="<?php echo $max_price !== null ? htmlspecialchars($max_price) : ''; ?>" />
+                        </div>
+                        <button type="submit" class="w-full text-xs font-bold uppercase tracking-widest bg-zinc-950 dark:bg-white text-white dark:text-zinc-950 py-2 rounded hover:bg-zinc-800 dark:hover:bg-zinc-100 transition-colors">Apply</button>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="font-label-bold text-xs uppercase mb-4 text-zinc-900 dark:text-white">Camera Spec</h3>
+                    <div class="space-y-3">
+                        <label class="flex items-center gap-3 cursor-pointer group">
+                            <input name="camera" value="50" class="w-5 h-5 border-zinc-300 dark:border-zinc-700 text-secondary focus:ring-secondary" type="radio" <?php echo $camera === '50' ? 'checked' : ''; ?> onchange="this.form.submit()" />
+                            <span class="text-sm text-zinc-500 group-hover:text-zinc-900 dark:group-hover:text-white transition-colors">&gt;= 50MP</span>
+                        </label>
+                        <label class="flex items-center gap-3 cursor-pointer group">
+                            <input name="camera" value="108" class="w-5 h-5 border-zinc-300 dark:border-zinc-700 text-secondary focus:ring-secondary" type="radio" <?php echo $camera === '108' ? 'checked' : ''; ?> onchange="this.form.submit()" />
+                            <span class="text-sm text-zinc-500 group-hover:text-zinc-900 dark:group-hover:text-white transition-colors">&gt;= 108MP</span>
+                        </label>
+                    </div>
+                </div>
                 <div>
                     <h3 class="font-label-bold text-xs uppercase mb-4 text-zinc-900 dark:text-white">Battery Life</h3>
                     <div class="space-y-3">
@@ -224,6 +298,11 @@ include 'includes/header.php';
     <section class="flex-1">
         <!-- Summary & Sort -->
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
+            <!-- Mobile Filter Trigger Button -->
+            <button onclick="openFilterDrawer()" class="lg:hidden flex items-center gap-2 px-4 py-2.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-bold uppercase tracking-widest text-zinc-700 dark:text-zinc-300 hover:border-zinc-950 dark:hover:border-white hover:text-zinc-950 dark:hover:text-white transition-colors mb-4 md:mb-0">
+                <span class="material-symbols-outlined text-lg">tune</span>
+                Filters
+            </button>
             <div>
                 <h1 class="font-headline-lg text-2xl font-bold text-zinc-950 dark:text-white mb-1">
                     <?php
@@ -385,6 +464,34 @@ include 'includes/header.php';
         <?php endif; ?>
     </section>
 </main>
+
+<script>
+    function openFilterDrawer() {
+        const drawer = document.getElementById('filterDrawer');
+        const backdrop = document.getElementById('filterBackdrop');
+        drawer.classList.remove('-translate-x-full');
+        drawer.classList.add('translate-x-0');
+        backdrop.classList.remove('hidden');
+        requestAnimationFrame(() => {
+            backdrop.classList.remove('opacity-0');
+            backdrop.classList.add('opacity-100');
+        });
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeFilterDrawer() {
+        const drawer = document.getElementById('filterDrawer');
+        const backdrop = document.getElementById('filterBackdrop');
+        drawer.classList.remove('translate-x-0');
+        drawer.classList.add('-translate-x-full');
+        backdrop.classList.remove('opacity-100');
+        backdrop.classList.add('opacity-0');
+        setTimeout(() => {
+            backdrop.classList.add('hidden');
+        }, 300);
+        document.body.style.overflow = '';
+    }
+</script>
 
 <!-- Footer -->
 <?php include 'includes/footer.php'; ?>
