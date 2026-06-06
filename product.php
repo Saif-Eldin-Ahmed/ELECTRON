@@ -336,7 +336,7 @@ include 'includes/header.php';
                 data.append('product_id', '<?php echo $product["id"]; ?>');
                 data.append('quantity', '1');
 
-                const res = await fetch('includes/add-cart.php', {
+                const res = await fetch('func/add-cart.php', {
                     method: 'POST',
                     body: data
                 });

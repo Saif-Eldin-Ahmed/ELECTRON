@@ -87,7 +87,7 @@
         `;
 
         try {
-            const res = await fetch('includes/get-cart.php');
+            const res = await fetch('func/get-cart.php');
             const data = await res.json();
 
             if (data.login_required) {
@@ -196,7 +196,7 @@
             formData.append('product_id', productId);
             formData.append('action', action);
 
-            const res = await fetch('includes/update-cart-quantity.php', {
+            const res = await fetch('func/update-cart-quantity.php', {
                 method: 'POST',
                 body: formData
             });
@@ -232,7 +232,7 @@
             const formData = new FormData();
             formData.append('product_id', productId);
 
-            const res = await fetch('includes/remove-cart-item.php', {
+            const res = await fetch('func/remove-cart-item.php', {
                 method: 'POST',
                 body: formData
             });
@@ -264,7 +264,7 @@
         checkoutBtn.innerHTML = '<span class="material-symbols-outlined text-base animate-spin">progress_activity</span> Processing...';
 
         try {
-            const res = await fetch('includes/checkout.php', {
+            const res = await fetch('func/checkout.php', {
                 method: 'POST'
             });
             const data = await res.json();

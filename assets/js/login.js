@@ -94,7 +94,7 @@ form.addEventListener('submit', async (e) => {
     data.append('password', passwordEl.value);
 
     try {
-        const res = await fetch('includes/login-db.php', { method: 'POST', body: data });
+        const res = await fetch('func/login-db.php', { method: 'POST', body: data });
         const json = await res.json();
 
         if (json.success) {
@@ -115,7 +115,7 @@ form.addEventListener('submit', async (e) => {
         } else {
             toast(json.error || 'Logging in failed. Please try again.', 'danger');
         }
-    } catch { err } {
+    } catch (err) {
         toast('Network error: ' + err.message, 'danger');
     }
 });
