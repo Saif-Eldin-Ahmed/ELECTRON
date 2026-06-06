@@ -147,11 +147,10 @@ if (isset($_SESSION['id'])) {
         <div class="space-y-1">
             <?php if (isset($_SESSION['id'])): ?>
                 <div class="px-4 py-3 text-xs font-bold uppercase tracking-widest text-slate-950 dark:text-white">
-                    <span class="material-symbols-outlined text-lg align-middle mr-2">account_circle</span>
                     Hi, <?php echo htmlspecialchars($_SESSION['firstname']); ?>
                 </div>
-                <a href="profile.php" class="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-slate-700 dark:text-zinc-300 hover:bg-slate-50 dark:hover:bg-zinc-900 rounded-lg transition-colors">
-                    <span class="material-symbols-outlined text-lg">person</span>
+                <a href="profile.php" class="flex items-center gap-3 px-4 py-3 font-bold uppercase text-sm tracking-widest text-slate-700 dark:text-zinc-300 hover:bg-slate-50 dark:hover:bg-zinc-900 rounded-lg transition-colors">
+                    <img class="w-5 h-5 rounded-full" src="<?php echo isset($_SESSION['pro_img']) ? $_SESSION['pro_img'] : 'assets/proImgs/Default.jpg'; ?>" alt="<?php echo isset($_SESSION['firstname']) ? htmlspecialchars($_SESSION['firstname']) : 'account'; ?>'s profile image">
                     Profile
                 </a>
                 <a href="logout.php" class="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/20 rounded-lg transition-colors">

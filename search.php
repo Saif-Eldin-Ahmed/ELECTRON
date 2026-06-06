@@ -383,14 +383,6 @@ include 'includes/header.php';
                                     <span class="bg-orange-500 text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1">Low Stock</span>
                                 </div>
                             <?php endif; ?>
-                            <div class="absolute top-4 right-4 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                <button onclick="event.stopPropagation();" class="w-10 h-10 bg-white dark:bg-zinc-900 rounded-full flex items-center justify-center text-zinc-900 dark:text-white hover:bg-zinc-950 dark:hover:bg-white dark:hover:text-zinc-950 hover:text-white transition-colors shadow-sm">
-                                    <span class="material-symbols-outlined text-xl" data-icon="favorite">favorite</span>
-                                </button>
-                                <button onclick="event.stopPropagation();" class="w-10 h-10 bg-white dark:bg-zinc-900 rounded-full flex items-center justify-center text-zinc-900 dark:text-white hover:bg-zinc-950 dark:hover:bg-white dark:hover:text-zinc-950 hover:text-white transition-colors shadow-sm">
-                                    <span class="material-symbols-outlined text-xl" data-icon="shopping_cart">shopping_cart</span>
-                                </button>
-                            </div>
                         </div>
                         <div class="p-6 flex flex-col flex-grow">
                             <span class="text-[10px] text-zinc-400 font-bold uppercase tracking-widest mb-1"><?php echo htmlspecialchars($category_name); ?> | <?php echo htmlspecialchars($brand_name); ?></span>
