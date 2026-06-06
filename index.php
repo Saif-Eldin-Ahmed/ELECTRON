@@ -98,7 +98,7 @@ if (isset($_SESSION['id'])) {
             <div class="hidden lg:block lg:w-64 lg:h-72 lg:h-80 bg-white/40 rounded-[2.5rem] lg:rounded-[3rem] shadow-2xl p-4 lg:p-6 floating  -mt-32">
                 <img alt="Premium Headphones" class="w-full h-full object-contain" src="assets/images/img_cda5e480.jpg" />
             </div>
-            <div class="w-60 lg:w-64 h-72 md:h-72 lg:h-80 bg-white/40 rounded-[2.5rem] lg:rounded-[3rem] shadow-2xl p-4 lg:p-6 floating floating-delayed -mt-64 lg:mt-10">
+            <div class="w-50 lg:w-64 h-60 lg:h-80 bg-white/40 rounded-[2.5rem] lg:rounded-[3rem] shadow-2xl p-4 lg:p-6 floating floating-delayed -mt-64 lg:mt-10">
                 <img alt="IPad" class="w-full h-full object-contain" src="assets/images/img_fc558cd.png" />
             </div>
             <div class="hidden lg:block lg:w-64 lg:h-72 lg:h-80 bg-white/40 rounded-[2.5rem] lg:rounded-[3rem] shadow-2xl p-4 lg:p-6 floating floating-more-delayed -mt-20">
