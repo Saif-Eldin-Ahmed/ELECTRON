@@ -89,14 +89,17 @@ try {
         $user['phone'] = 'N/A';
     }
 
-    // Success — you can now create a session or return user details
-    http_response_code(200);
-    echo json_encode([
-        'success' => true,
-        'firstname' => $user['firstname'],
-        'lastname'  => $user['lastname']
+    // ── Start session BEFORE any output so headers are writable ──
+    // Set session lifetime to 24 hours (86 400 seconds)
+    $lifetime = 86400;
+    ini_set('session.gc_maxlifetime', $lifetime);
+    session_set_cookie_params([
+        'lifetime' => $lifetime,
+        'path'     => '/',
+        'secure'   => false,
+        'httponly' => true,
+        'samesite' => 'Lax',
     ]);
-
     session_start();
 
     $_SESSION['id']             = $user['id'];
@@ -109,6 +112,15 @@ try {
     $_SESSION['last_login_at']  = $user['last_login_at'];
     $_SESSION['last_login_ip']  = $user['last_login_ip'];
     $_SESSION['pro_img']        = $user['pro_img'];
+    $_SESSION['login_time']     = time(); // used for server-side 24-h expiry check
+
+    // Success — respond with user details
+    http_response_code(200);
+    echo json_encode([
+        'success'   => true,
+        'firstname' => $user['firstname'],
+        'lastname'  => $user['lastname']
+    ]);
 } catch (PDOException $e) {
     http_response_code(500);
     echo json_encode(['success' => false, 'error' => 'Database error: ' . $e->getMessage()]);

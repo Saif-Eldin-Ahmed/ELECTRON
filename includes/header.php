@@ -1,6 +1,23 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) {
+    // Keep the user logged in for 24 hours (86 400 seconds)
+    $session_lifetime = 86400;
+    ini_set('session.gc_maxlifetime', $session_lifetime);
+    session_set_cookie_params([
+        'lifetime' => $session_lifetime,
+        'path'     => '/',
+        'secure'   => false,   // change to true when using HTTPS
+        'httponly' => true,
+        'samesite' => 'Lax',
+    ]);
     session_start();
+
+    // Server-side expiry check: destroy the session if it's older than 24 h
+    if (isset($_SESSION['login_time']) && (time() - $_SESSION['login_time']) > $session_lifetime) {
+        $_SESSION = [];
+        session_destroy();
+        session_start(); // restart a clean session for the current request
+    }
 }
 ?>
 <!DOCTYPE html>
