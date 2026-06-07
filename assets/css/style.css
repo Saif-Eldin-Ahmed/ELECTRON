@@ -89,14 +89,18 @@ body {
   opacity: 0;
   pointer-events: none;
   transform: scale(0.95) translateY(-10px);
-  transition: opacity 0.2s ease-out, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transition:
+    opacity 0.2s ease-out,
+    transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .show-menu {
   opacity: 1;
   pointer-events: auto;
   transform: scale(1) translateY(0);
-  transition: opacity 0.2s ease-out, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transition:
+    opacity 0.2s ease-out,
+    transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Product gradients */
@@ -288,7 +292,7 @@ body {
 .btn-ghost.no:hover {
   background: var(--danger);
 }
-.btn-outline {
+.btn-outline.yes {
   background: transparent;
   border: 1px solid rgba(16, 185, 129, 0.35);
   color: var(--success);
@@ -296,9 +300,21 @@ body {
   align-items: center;
   justify-content: center;
 }
-.btn-outline:hover {
+.btn-outline.no {
+  background: transparent;
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  color: var(--danger);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.btn-outline.yes:hover {
   background: rgba(16, 185, 129, 0.08);
   border-color: rgba(16, 185, 129, 0.55);
+}
+.btn-outline.no:hover {
+  background: rgba(239, 68, 68, 0.08);
+  border-color: rgba(239, 68, 68, 0.55);
 }
 
 /* --- Toast Notifications ------------------------------------- */

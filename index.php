@@ -110,7 +110,7 @@ if (isset($_SESSION['id'])) {
                 <h1 class="font-bold text-4xl md:text-5xl lg:text-6xl leading-[1.1] text-black uppercase tracking-tight mb-6 lg:mb-8">THE FUTURE AT YOUR FINGERTIPS</h1>
                 <div class="flex flex-col lg:flex-row justify-between items-center lg:items-end gap-6 lg:gap-0">
                     <p class="font-body-md text-black/80 md:text-black/60 max-w-[280px] md:max-w-[240px] lg:max-w-xs text-sm md:text-sm lg:text-base">Discover the convergence of precision engineering and lifestyle aesthetics with our curated collection.</p>
-                    <button class="bg-white/30 backdrop-blur-md border border-white/50 text-black shadow-[0_8px_32px_rgba(0,0,0,0.1)] px-10 py-4 md:py-3 w-full lg:w-auto rounded-full font-bold uppercase text-[12px] tracking-widest hover:bg-white/50 transition-all">Explore</button>
+                    <a href="search.php" class="bg-white/30 backdrop-blur-md border border-white/50 text-black shadow-[0_8px_32px_rgba(0,0,0,0.1)] px-10 py-4 md:py-3 w-full lg:w-auto rounded-full font-bold uppercase text-[12px] tracking-widest hover:bg-white/50 transition-all">Explore</a>
                 </div>
             </div>
         </div>
@@ -120,42 +120,48 @@ if (isset($_SESSION['id'])) {
     <!-- Category Grid -->
     <section class="mt-6">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-4 lg:gap-6">
-            <div class="bg-[#d7e9f7] rounded-[2rem] h-[400px] md:h-[400px] lg:h-[500px] flex flex-col justify-between group overflow-hidden relative px-8 md:px-6 lg:px-12 py-8">
-                <div>
-                    <h3 class="text-3xl md:text-3xl lg:text-4xl font-bold text-[#1a3a5f] leading-tight">Audio<br />Systems</h3>
+            <a href="search.php?category%5B%5D=audio">
+                <div class="bg-[#d7e9f7] rounded-[2rem] h-[400px] md:h-[400px] lg:h-[500px] flex flex-col justify-between group overflow-hidden relative px-8 md:px-6 lg:px-12 py-8">
+                    <div>
+                        <h3 class="text-3xl md:text-3xl lg:text-4xl font-bold text-[#1a3a5f] leading-tight">Audio<br />Systems</h3>
+                    </div>
+                    <div class="relative flex justify-center items-center flex-1">
+                        <img alt="Audio Systems" class="h-[200px] object-contain group-hover:scale-105 transition-transform duration-700" src="assets/images/img_59ed7574.png" />
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <p class="text-xs md:text-[10px] lg:text-sm font-bold text-[#1a3a5f]/60 uppercase tracking-widest">Hi-Fi Solutions</p>
+                        <span class="material-symbols-outlined text-2xl">north_east</span>
+                    </div>
                 </div>
-                <div class="relative flex justify-center items-center flex-1">
-                    <img alt="Audio Systems" class="h-[200px] object-contain group-hover:scale-105 transition-transform duration-700" src="assets/images/img_59ed7574.png" />
+            </a>
+            <a href="search.php?category%5B%5D=computing">
+                <div class="bg-[#e6f4ea] rounded-[2rem] h-[400px] md:h-[400px] lg:h-[500px] flex flex-col justify-between group overflow-hidden relative px-8 md:px-6 lg:px-12 py-8">
+                    <div>
+                        <h3 class="text-3xl md:text-3xl lg:text-4xl font-bold text-[#1e4620] leading-tight">Computing<br />Devices</h3>
+                    </div>
+                    <div class="relative flex justify-center items-center flex-1 ">
+                        <img alt="Computing" class="h-[200px] object-contain group-hover:scale-105 transition-transform duration-700" src="assets/images/img_7778cd9c.png" />
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <p class="text-xs md:text-[10px] lg:text-sm font-bold text-[#1e4620]/60 uppercase tracking-widest">Pro Performance</p>
+                        <span class="material-symbols-outlined text-2xl">north_east</span>
+                    </div>
                 </div>
-                <div class="flex justify-between items-center">
-                    <p class="text-xs md:text-[10px] lg:text-sm font-bold text-[#1a3a5f]/60 uppercase tracking-widest">Hi-Fi Solutions</p>
-                    <span class="material-symbols-outlined text-2xl">north_east</span>
+            </a>
+            <a href="search.php?category%5B%5D=smartphone">
+                <div class="bg-slate-100 rounded-[2rem] h-[400px] md:h-[400px] lg:h-[500px] flex flex-col justify-between group overflow-hidden relative px-8 md:px-6 lg:px-12 py-8">
+                    <div>
+                        <h3 class="text-3xl md:text-3xl lg:text-4xl font-bold text-slate-900 leading-tight">Mobile<br />Essentials</h3>
+                    </div>
+                    <div class="relative flex justify-center items-center flex-1">
+                        <img alt="Mobile" class="h-[175px] md:scale-[1] sm:scale-[1.4] object-contain group-hover:scale-105 sm:group-hover:scale-[1.5] md:group-hover:scale-[1.05] transition-transform duration-700" src="assets/images/img_6e30900c.png" />
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <p class="text-xs md:text-[10px] lg:text-sm font-bold text-slate-500 uppercase tracking-widest">Connected Living</p>
+                        <span class="material-symbols-outlined text-2xl text-slate-900">north_east</span>
+                    </div>
                 </div>
-            </div>
-            <div class="bg-[#e6f4ea] rounded-[2rem] h-[400px] md:h-[400px] lg:h-[500px] flex flex-col justify-between group overflow-hidden relative px-8 md:px-6 lg:px-12 py-8">
-                <div>
-                    <h3 class="text-3xl md:text-3xl lg:text-4xl font-bold text-[#1e4620] leading-tight">Computing<br />Devices</h3>
-                </div>
-                <div class="relative flex justify-center items-center flex-1 ">
-                    <img alt="Computing" class="h-[200px] object-contain group-hover:scale-105 transition-transform duration-700" src="assets/images/img_7778cd9c.png" />
-                </div>
-                <div class="flex justify-between items-center">
-                    <p class="text-xs md:text-[10px] lg:text-sm font-bold text-[#1e4620]/60 uppercase tracking-widest">Pro Performance</p>
-                    <span class="material-symbols-outlined text-2xl">north_east</span>
-                </div>
-            </div>
-            <div class="bg-slate-100 rounded-[2rem] h-[400px] md:h-[400px] lg:h-[500px] flex flex-col justify-between group overflow-hidden relative px-8 md:px-6 lg:px-12 py-8">
-                <div>
-                    <h3 class="text-3xl md:text-3xl lg:text-4xl font-bold text-slate-900 leading-tight">Mobile<br />Essentials</h3>
-                </div>
-                <div class="relative flex justify-center items-center flex-1">
-                    <img alt="Mobile" class="h-[175px] md:scale-[1] sm:scale-[1.4] object-contain group-hover:scale-105 sm:group-hover:scale-[1.5] md:group-hover:scale-[1.05] transition-transform duration-700" src="assets/images/img_6e30900c.png" />
-                </div>
-                <div class="flex justify-between items-center">
-                    <p class="text-xs md:text-[10px] lg:text-sm font-bold text-slate-500 uppercase tracking-widest">Connected Living</p>
-                    <span class="material-symbols-outlined text-2xl text-slate-900">north_east</span>
-                </div>
-            </div>
+            </a>
         </div>
     </section>
     <!-- Subcategories Toggles -->
@@ -308,7 +314,7 @@ if (isset($_SESSION['id'])) {
             </div>
         </div>
         <!-- New release section -->
-        <section class="rounded-[2rem] mt-12 md:mt-16 lg:mt-24 items-center mx-auto w-full overflow-hidden max-h-[70vh]"><img alt="Samsung S26 Ultra" class="rounded-[2rem] w-full object-contain" src="assets/images/img_b731058b.jpg" /></section>
+        <section class="rounded-[2rem] mt-12 md:mt-16 lg:mt-24 items-center mx-auto w-full overflow-hidden max-h-[70vh]"><a href="product.php?id=2"><img alt="Samsung S26 Ultra" class="rounded-[2rem] w-full object-contain" src="assets/images/img_b731058b.jpg" /></a></section>
         <!-- Call to Action Banner -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-12 md:mt-16">
             <div class="bg-[#fdf9d8] rounded-[2rem] p-8 md:p-12 lg:p-16 flex flex-col justify-between min-h-[380px] md:min-h-[350px] lg:min-h-[440px] relative overflow-hidden group">

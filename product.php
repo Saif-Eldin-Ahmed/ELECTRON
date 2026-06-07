@@ -219,12 +219,6 @@ include 'includes/header.php';
                         Out of Stock
                     </button>
                 <?php endif; ?>
-                <button class="w-14 h-14 border-2 border-zinc-200 rounded-full flex items-center justify-center hover:border-red-400 hover:text-red-500 transition-all active:scale-95" id="wishlistBtn" title="Add to Wishlist">
-                    <span class="material-symbols-outlined text-xl">favorite</span>
-                </button>
-                <button class="w-14 h-14 border-2 border-zinc-200 rounded-full flex items-center justify-center hover:border-zinc-950 transition-all active:scale-95" title="Share">
-                    <span class="material-symbols-outlined text-xl">share</span>
-                </button>
             </div>
 
             <!-- Meta Info -->

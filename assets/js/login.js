@@ -99,7 +99,7 @@ form.addEventListener('submit', async (e) => {
 
         if (json.success) {
             // Populate success overlay with returned user details
-            document.getElementById('r-fullname').textContent = json.firstname + " " + json.lastname;
+            document.getElementById('r-fullname').textContent = json.firstname + " " + json.lastname + "?";
             successOverlay.classList.add('open');
             successOverlay.setAttribute('aria-hidden', 'false');
             toast('Logged in Successfully!', 'success');

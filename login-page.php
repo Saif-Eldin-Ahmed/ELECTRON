@@ -78,8 +78,8 @@ include 'includes/header.php';
         </div>
 
         <div class="success-actions">
-            <button class="btn-ghost yes" id="btn-yes">Yes</button>
-            <button class="btn-ghost no" id="btn-no">No</button>
+            <button class="btn-outline yes" id="btn-yes">Yes</button>
+            <button class="btn-outline no" id="btn-no">No</button>
         </div>
     </div>
 </div>

@@ -121,18 +121,15 @@ include 'includes/header.php';
 
         <div class="record-box">
             <h3>Inserted Record</h3>
-            <div class="record-row"><span>ID</span><strong id="r-id">—</strong></div>
-            <div class="record-row"><span>Full Name</span><strong id="r-fullname">—</strong></div>
-            <div class="record-row"><span>Email</span><strong id="r-email">—</strong></div>
-            <div class="record-row"><span>Phone</span><strong id="r-phone">—</strong></div>
-            <div class="record-row"><span>Created At</span><strong id="r-created">—</strong></div>
-            <div class="record-row"><span>Database</span>
-            </div>
+            <div class="flex justify-between"><span>ID</span><strong id="r-id">—</strong></div>
+            <div class="flex justify-between"><span>Full Name</span><strong id="r-fullname">—</strong></div>
+            <div class="flex justify-between"><span>Email</span><strong id="r-email">—</strong></div>
+            <div class="flex justify-between"><span>Phone</span><strong id="r-phone">—</strong></div>
+            <div class="flex justify-between"><span>Created At</span><strong id="r-created">—</strong></div>
         </div>
 
         <div class="success-actions">
-            <button class="btn-ghost" id="btn-another">Register Another</button>
-            <a href="test-db.php" target="_blank" class="btn-outline">View in Diagnostics</a>
+            <a href="login-page.php" class="btn-outline yes">Log in</a>
         </div>
     </div>
 </div>

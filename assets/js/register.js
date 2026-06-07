@@ -214,10 +214,6 @@ form.addEventListener('submit', async (e) => {
 });
 
 // ---- Success Overlay Dismiss --------------------------------
-btnAnother.addEventListener('click', () => {
-  successOverlay.classList.remove('open');
-  successOverlay.setAttribute('aria-hidden', 'true');
-});
 
 successOverlay.addEventListener('click', (e) => {
   if (e.target === successOverlay) {
