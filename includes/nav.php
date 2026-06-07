@@ -65,7 +65,7 @@ if (isset($_SESSION['id'])) {
                                 <span class="material-symbols-outlined text-base">person</span>
                                 Profile
                             </a>
-                            <a href="logout.php" class="flex items-center gap-3 px-4 py-2.5 text-[11px] font-bold uppercase tracking-widest text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/20 transition-colors">
+                            <a href="func/logout.php" class="flex items-center gap-3 px-4 py-2.5 text-[11px] font-bold uppercase tracking-widest text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/20 transition-colors">
                                 <span class="material-symbols-outlined text-base">logout</span>
                                 Log Out
                             </a>
@@ -153,7 +153,7 @@ if (isset($_SESSION['id'])) {
                     <img class="w-5 h-5 rounded-full" src="<?php echo isset($_SESSION['pro_img']) ? $_SESSION['pro_img'] : 'assets/proImgs/Default.jpg'; ?>" alt="<?php echo isset($_SESSION['firstname']) ? htmlspecialchars($_SESSION['firstname']) : 'account'; ?>'s profile image">
                     Profile
                 </a>
-                <a href="logout.php" class="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/20 rounded-lg transition-colors">
+                <a href="func/logout.php" class="flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-widest text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/20 rounded-lg transition-colors">
                     <span class="material-symbols-outlined text-lg">logout</span>
                     Log Out
                 </a>

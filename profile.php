@@ -69,7 +69,7 @@ include 'includes/header.php';
                 <a href="index.php" class="w-full bg-slate-950 hover:bg-slate-800 text-white font-bold uppercase text-[11px] tracking-widest py-3.5 px-6 rounded-full shadow-sm hover:shadow transition-all active:scale-[0.98] text-center">
                     Continue Shopping
                 </a>
-                <a href="logout.php" class="w-full border border-red-200 hover:border-red-300 text-red-600 hover:bg-red-50/50 font-bold uppercase text-[11px] tracking-widest py-3.5 px-6 rounded-full transition-all active:scale-[0.98] text-center">
+                <a href="func/logout.php" class="w-full border border-red-200 hover:border-red-300 text-red-600 hover:bg-red-50/50 font-bold uppercase text-[11px] tracking-widest py-3.5 px-6 rounded-full transition-all active:scale-[0.98] text-center">
                     Log Out
                 </a>
             </div>
@@ -142,15 +142,15 @@ include 'includes/header.php';
 <div id="avatarToast" class="fixed bottom-6 right-6 z-[200] flex items-center gap-3 px-5 py-3.5 rounded-2xl shadow-2xl text-xs font-bold uppercase tracking-widest transition-all duration-300 translate-y-4 opacity-0 pointer-events-none"></div>
 
 <script>
-    const avatarInput   = document.getElementById('avatarInput');
+    const avatarInput = document.getElementById('avatarInput');
     const avatarPreview = document.getElementById('avatarPreview');
-    const avatarToast   = document.getElementById('avatarToast');
+    const avatarToast = document.getElementById('avatarToast');
 
     function showAvatarToast(message, type) {
         avatarToast.className = 'fixed bottom-6 right-6 z-[200] flex items-center gap-3 px-5 py-3.5 rounded-2xl shadow-2xl text-xs font-bold uppercase tracking-widest transition-all duration-300 ';
-        avatarToast.className += type === 'success'
-            ? 'bg-emerald-600 text-white'
-            : 'bg-red-600 text-white';
+        avatarToast.className += type === 'success' ?
+            'bg-emerald-600 text-white' :
+            'bg-red-600 text-white';
         const icon = type === 'success' ? 'check_circle' : 'error';
         avatarToast.innerHTML = `<span class="material-symbols-outlined text-base" style="font-variation-settings:'FILL' 1">${icon}</span>${message}`;
 
@@ -179,7 +179,10 @@ include 'includes/header.php';
         formData.append('photo', file);
 
         try {
-            const res  = await fetch('func/update-profile-img.php', { method: 'POST', body: formData });
+            const res = await fetch('func/update-profile-img.php', {
+                method: 'POST',
+                body: formData
+            });
             const json = await res.json();
 
             if (json.success) {

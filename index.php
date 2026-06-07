@@ -43,7 +43,7 @@ if (isset($_SESSION['id'])) {
                                 <span class="material-symbols-outlined text-base">person</span>
                                 Profile
                             </a>
-                            <a href="logout.php" class="flex items-center gap-3 px-4 py-2.5 text-[11px] font-bold uppercase tracking-widest text-red-600 hover:bg-red-50 transition-colors">
+                            <a href="func/logout.php" class="flex items-center gap-3 px-4 py-2.5 text-[11px] font-bold uppercase tracking-widest text-red-600 hover:bg-red-50 transition-colors">
                                 <span class="material-symbols-outlined text-base">logout</span>
                                 Log Out
                             </a>
@@ -357,7 +357,7 @@ if (isset($_SESSION['id'])) {
                 <a class="text-3xl font-headline-md uppercase tracking-tight text-black hover:text-black/70 flex items-center gap-3" href="profile.php">
                     <span class="material-symbols-outlined text-2xl">person</span> Profile
                 </a>
-                <a class="text-3xl font-headline-md uppercase tracking-tight text-red-600 hover:text-red-500 flex items-center gap-3" href="logout.php">
+                <a class="text-3xl font-headline-md uppercase tracking-tight text-red-600 hover:text-red-500 flex items-center gap-3" href="func/logout.php">
                     <span class="material-symbols-outlined text-2xl">logout</span> Log Out
                 </a>
             </div>
