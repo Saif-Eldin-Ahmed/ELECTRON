@@ -39,6 +39,6 @@ if (session_status() === PHP_SESSION_NONE) {
 
     <?php
     if (!isset($acc)) {
-        include 'includes/nav.php';
+        include 'nav.php';
     }
     ?>
