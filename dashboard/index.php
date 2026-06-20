@@ -358,13 +358,25 @@ $body_class = "bg-zinc-950 text-white font-body-md min-h-screen";
 </body>
 
 <script>
+    // Helper to dynamically resolve endpoints relative to the dashboard directory,
+    // avoiding 404 errors caused by missing trailing slashes (e.g., /dashboard vs /dashboard/)
+    function getApiUrl(endpoint) {
+        let basePath = window.location.pathname;
+        if (basePath.endsWith('.php')) {
+            basePath = basePath.substring(0, basePath.lastIndexOf('/') + 1);
+        } else if (!basePath.endsWith('/')) {
+            basePath += '/';
+        }
+        return basePath + endpoint;
+    }
+
     async function pubProduct(id, order, status) {
         const data = new FormData()
         data.append('id', id)
         data.append('order', order)
         data.append('status', status)
         try {
-            const res = await fetch('functions/hide-pub.php', {
+            const res = await fetch(getApiUrl('functions/hide-pub.php'), {
                 method: 'POST',
                 body: data
             });
@@ -394,7 +406,7 @@ $body_class = "bg-zinc-950 text-white font-body-md min-h-screen";
         data.append('id', id);
 
         try {
-            const res = await fetch('functions/delete-product.php', {
+            const res = await fetch(getApiUrl('functions/delete-product.php'), {
                 method: 'POST',
                 body: data
             });

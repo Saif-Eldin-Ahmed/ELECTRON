@@ -286,6 +286,18 @@ $brands = $pdo->query("SELECT * FROM brands ORDER BY name ASC")->fetchAll(PDO::F
             }
         }
 
+        // Helper to dynamically resolve endpoints relative to the dashboard directory,
+        // avoiding 404 errors caused by missing trailing slashes (e.g., /dashboard vs /dashboard/)
+        function getApiUrl(endpoint) {
+            let basePath = window.location.pathname;
+            if (basePath.endsWith('.php')) {
+                basePath = basePath.substring(0, basePath.lastIndexOf('/') + 1);
+            } else if (!basePath.endsWith('/')) {
+                basePath += '/';
+            }
+            return basePath + endpoint;
+        }
+
         // Intercept form submit and send via Fetch (AJAX)
         document.getElementById('addProductForm').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -306,7 +318,7 @@ $brands = $pdo->query("SELECT * FROM brands ORDER BY name ASC")->fetchAll(PDO::F
 
             try {
                 const formData = new FormData(this);
-                const response = await fetch('functions/add-product.php', {
+                const response = await fetch(getApiUrl('functions/add-product.php'), {
                     method: 'POST',
                     body: formData
                 });
