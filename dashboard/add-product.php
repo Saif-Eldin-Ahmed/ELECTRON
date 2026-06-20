@@ -4,11 +4,11 @@
 // ============================================================
 session_start();
 if (!isset($_SESSION['id']) || $_SESSION['role'] !== 'admin') {
-    header("Location: /index.php");
+    header("Location: ../index.php");
     exit;
 }
 
-require_once '/includes/config.php';
+require_once '../includes/config.php';
 
 try {
     $pdo = getDBConnection();

@@ -13,7 +13,6 @@ if (!isset($_SESSION['id']) || $_SESSION['role'] !== 'admin') {
     exit;
 }
 
-$acc = true; // Exclude front-end navbar
 require_once '../includes/config.php';
 
 try {
