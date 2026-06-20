@@ -1,6 +1,7 @@
 <?php
 
 echo "This is PHP";
+include "includes/config.php"
 include "includes/header.php";
 ?>
 
