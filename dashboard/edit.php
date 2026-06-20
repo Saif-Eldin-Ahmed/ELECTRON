@@ -122,8 +122,9 @@ $current_specs = json_decode($product['specifications'] ?: '[]', true) ?: [];
 
         <!-- Form container -->
         <section class="p-8 max-w-5xl">
-            <!-- Alert container for AJAX response -->
-            <div id="alertContainer" class="hidden mb-6 p-4 rounded-xl text-xs font-semibold uppercase tracking-wider"></div>
+            <!-- Dynamic Alert Containers -->
+            <div id="error-alert" class="hidden mb-6 p-4 bg-red-950/40 border border-red-900/60 rounded-xl text-red-200 text-xs font-semibold uppercase tracking-wider"></div>
+            <div id="success-alert" class="hidden mb-6 p-4 bg-emerald-950/40 border border-emerald-900/60 rounded-xl text-emerald-200 text-xs font-semibold uppercase tracking-wider"></div>
 
             <form id="editProductForm" action="functions/edit-product.php?id=<?php echo $product_id; ?>" method="POST" enctype="multipart/form-data" class="space-y-8">
                 <!-- Info Section -->
@@ -348,67 +349,58 @@ $current_specs = json_decode($product['specifications'] ?: '[]', true) ?: [];
             }
         }
 
-        document.getElementById('editProductForm').addEventListener('submit', function(e) {
+        document.getElementById('editProductForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            
-            const form = this;
-            const formData = new FormData(form);
-            const alertContainer = document.getElementById('alertContainer');
-            
-            // Clear old alert states
-            alertContainer.classList.add('hidden');
-            alertContainer.className = 'hidden mb-6 p-4 rounded-xl text-xs font-semibold uppercase tracking-wider';
-            alertContainer.innerHTML = '';
-            
-            // Disable submit button and show spinner
-            const submitBtn = form.querySelector('button[type="submit"]');
-            const originalBtnHTML = submitBtn.innerHTML;
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = `
-                <span class="material-symbols-outlined text-base font-bold animate-spin">sync</span>
-                Saving Changes...
-            `;
-            
-            const url = form.getAttribute('action');
-            
-            fetch(url, {
-                method: 'POST',
-                body: formData
-            })
-            .then(async response => {
-                const data = await response.json();
-                if (!response.ok) {
-                    throw new Error(data.error || `Server error (Status ${response.status})`);
-                }
-                return data;
-            })
-            .then(data => {
-                if (data.success) {
-                    alertContainer.classList.remove('hidden');
-                    alertContainer.classList.add('bg-emerald-950/40', 'border', 'border-emerald-900/60', 'text-emerald-200');
-                    alertContainer.innerHTML = data.message || 'Product updated successfully!';
-                    
-                    alertContainer.scrollIntoView({ behavior: 'smooth', block: 'end' });
+
+            const errorAlert = document.getElementById('error-alert');
+            const successAlert = document.getElementById('success-alert');
+            const submitBtn = this.querySelector('button[type="submit"]');
+
+            // Clear previous alerts
+            errorAlert.classList.add('hidden');
+            successAlert.classList.add('hidden');
+
+            // Disable submit button during requests
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.style.opacity = '0.5';
+            }
+
+            try {
+                const formData = new FormData(this);
+                const url = this.getAttribute('action');
+                const response = await fetch(url, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    successAlert.textContent = result.message;
+                    successAlert.classList.remove('hidden');
                     
                     // Reload the page after 1.5 seconds to refresh data (like images)
                     setTimeout(() => {
                         window.location.reload();
                     }, 1500);
                 } else {
-                    throw new Error(data.error || 'Update failed.');
+                    errorAlert.textContent = result.error || 'Failed to update product.';
+                    errorAlert.classList.remove('hidden');
                 }
-            })
-            .catch(error => {
-                alertContainer.classList.remove('hidden');
-                alertContainer.classList.add('bg-red-950/40', 'border', 'border-red-900/60', 'text-red-200');
-                alertContainer.innerHTML = error.message;
-                
-                alertContainer.scrollIntoView({ behavior: 'smooth', block: 'end' });
-                
-                // Re-enable submit button
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = originalBtnHTML;
-            });
+            } catch (err) {
+                errorAlert.textContent = 'An error occurred: ' + err.message;
+                errorAlert.classList.remove('hidden');
+            } finally {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.style.opacity = '1';
+                }
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            }
         });
     </script>
 </body>
