@@ -5,12 +5,12 @@ x<?php
 
     session_start();
     if (!isset($_SESSION['id']) || $_SESSION['role'] !== 'admin') {
-        header("Location: ../index.php");
+        header("Location: /index.php");
         exit;
     }
 
     $acc = true; // Exclude front-end navbar
-    require_once '../includes/config.php';
+    require_once '/includes/config.php';
 
     try {
         $pdo = getDBConnection();
@@ -28,7 +28,7 @@ x<?php
     // Get product ID
     $product_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
     if (!$product_id) {
-        header("Location: index.php");
+        header("Location: /dashboard/index.php");
         exit;
     }
 
@@ -97,7 +97,7 @@ x<?php
                 }
             }
 
-            $upload_dir = '../assets/prdctImgs/';
+            $upload_dir = '/assets/prdctImgs/';
             if (!is_dir($upload_dir)) {
                 mkdir($upload_dir, 0777, true);
             }
@@ -114,7 +114,7 @@ x<?php
                         $new_filename = 'img_' . uniqid() . '.' . $ext;
                         $dest = $upload_dir . $new_filename;
                         if (move_uploaded_file($file_tmp, $dest)) {
-                            return 'assets/prdctImgs/' . $new_filename;
+                            return '/assets/prdctImgs/' . $new_filename;
                         } else {
                             $error = "Failed to move uploaded file: {$file_name}";
                         }
@@ -136,7 +136,7 @@ x<?php
                 }
             } elseif (empty($image_paths)) {
                 // If all images were removed, fall back to Default
-                $image_paths[] = 'assets/prdctImgs/Default.png';
+                $image_paths[] = '/assets/prdctImgs/Default.png';
             }
 
             // 2. Process New Gallery Images
@@ -254,8 +254,8 @@ x<?php
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
-    <script src="../assets/js/tailwind-config.js"></script>
-    <link href="../assets/css/style.css" rel="stylesheet" />
+    <script src="/assets/js/tailwind-config.js"></script>
+    <link href="/assets/css/style.css" rel="stylesheet" />
     <style>
         .glass-card {
             background: rgba(24, 24, 27, 0.65);
@@ -281,15 +281,15 @@ x<?php
             <!-- Navigation -->
             <nav class="p-4 space-y-2">
                 <p class="px-4 text-[10px] font-bold uppercase tracking-widest text-zinc-500 mb-2">Management</p>
-                <a href="index.php" class="flex items-center gap-3 px-4 py-3 text-xs font-bold uppercase tracking-widest text-zinc-400 hover:text-white rounded-lg hover:bg-zinc-900 transition-all">
+                <a href="/dashboard/index.php" class="flex items-center gap-3 px-4 py-3 text-xs font-bold uppercase tracking-widest text-zinc-400 hover:text-white rounded-lg hover:bg-zinc-900 transition-all">
                     <span class="material-symbols-outlined text-lg">dashboard</span>
                     Products
                 </a>
-                <a href="add-product.php" class="flex items-center gap-3 px-4 py-3 text-xs font-bold uppercase tracking-widest text-zinc-400 hover:text-white rounded-lg hover:bg-zinc-900 transition-all">
+                <a href="/dashboard/add-product.php" class="flex items-center gap-3 px-4 py-3 text-xs font-bold uppercase tracking-widest text-zinc-400 hover:text-white rounded-lg hover:bg-zinc-900 transition-all">
                     <span class="material-symbols-outlined text-lg">add_circle</span>
                     Add Product
                 </a>
-                <a href="../search.php" class="flex items-center gap-3 px-4 py-3 text-xs font-bold uppercase tracking-widest text-zinc-400 hover:text-white rounded-lg hover:bg-zinc-900 transition-all">
+                <a href="/search.php" class="flex items-center gap-3 px-4 py-3 text-xs font-bold uppercase tracking-widest text-zinc-400 hover:text-white rounded-lg hover:bg-zinc-900 transition-all">
                     <span class="material-symbols-outlined text-lg">storefront</span>
                     Store Front
                 </a>
@@ -311,7 +311,7 @@ x<?php
         <!-- Top Bar Header -->
         <header class="h-24 border-b border-zinc-800 flex items-center justify-between px-8 bg-zinc-950/80 backdrop-blur-md">
             <div>
-                <a href="index.php" class="text-xs font-bold uppercase tracking-widest text-zinc-500 hover:text-white flex items-center gap-1.5 mb-1">
+                <a href="/dashboard/index.php" class="text-xs font-bold uppercase tracking-widest text-zinc-500 hover:text-white flex items-center gap-1.5 mb-1">
                     <span class="material-symbols-outlined text-sm">arrow_back</span>
                     Back to Catalog
                 </a>
@@ -333,7 +333,7 @@ x<?php
                 </div>
             <?php endif; ?>
 
-            <form action="edit.php?id=<?php echo $product_id; ?>" method="POST" enctype="multipart/form-data" class="space-y-8">
+            <form action="/dashboard/edit.php?id=<?php echo $product_id; ?>" method="POST" enctype="multipart/form-data" class="space-y-8">
                 <!-- Info Section -->
                 <div class="glass-card rounded-2xl p-8 space-y-6">
                     <h2 class="font-['Space_Grotesk'] text-sm font-bold uppercase tracking-wider text-white pb-3 border-b border-zinc-800">Basic Info</h2>
@@ -516,7 +516,7 @@ x<?php
                         <span class="material-symbols-outlined text-base font-bold">save</span>
                         Save Changes
                     </button>
-                    <a href="index.php" class="flex items-center gap-2 px-8 py-3.5 text-xs font-bold uppercase tracking-widest border border-zinc-800 text-zinc-400 hover:text-white rounded-full hover:bg-zinc-900 transition-all active:scale-[0.98]">
+                    <a href="/dashboard/index.php" class="flex items-center gap-2 px-8 py-3.5 text-xs font-bold uppercase tracking-widest border border-zinc-800 text-zinc-400 hover:text-white rounded-full hover:bg-zinc-900 transition-all active:scale-[0.98]">
                         Cancel
                     </a>
                 </div>
