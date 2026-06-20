@@ -15,6 +15,10 @@ RUN apt-get update && apt-get install -y \
 # Enable Apache mod_rewrite for routing and friendly URLs (if needed)
 RUN a2enmod rewrite
 
+# Disable conflicting Apache MPMs and enable prefork (required for PHP)
+RUN a2dismod mpm_event mpm_worker || true \
+    && a2enmod mpm_prefork || true
+
 # Install Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
@@ -36,6 +40,14 @@ RUN sed -i 's/<VirtualHost \*:80>/<VirtualHost *:${PORT}>/g' /etc/apache2/sites-
 
 # Set proper ownership and permissions for web server files
 RUN chown -R www-data:www-data /var/www/html
+
+# Copy the entrypoint script
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN sed -i 's/\r$//' /usr/local/bin/docker-entrypoint.sh \
+    && chmod +x /usr/local/bin/docker-entrypoint.sh
+
+# Set the entrypoint
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 
 # Expose the dynamic port
 EXPOSE ${PORT}
