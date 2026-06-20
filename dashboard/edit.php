@@ -99,10 +99,10 @@ $current_specs = json_decode($product['specifications'] ?: '[]', true) ?: [];
 
         <!-- User Account Details -->
         <div class="p-6 border-t border-zinc-800 flex items-center gap-3">
-            <span class="material-symbols-outlined text-2xl text-zinc-400">account_circle</span>
+            <img src="<?php echo $_SESSION['pro_img'] ? '../' . $_SESSION['pro_img'] : '../assets/proImgs/Default.jpg'; ?>" alt="Profile Picture" class="w-10 h-10 rounded-full">
             <div class="overflow-hidden">
-                <p class="text-xs font-bold uppercase tracking-wider text-white truncate">Administrator</p>
-                <p class="text-[10px] text-zinc-500 truncate">admin@electron.com</p>
+                <p class="text-xs font-bold uppercase tracking-wider text-white truncate"><?php echo $_SESSION['firstname'] . " " . $_SESSION['lastname']; ?></p>
+                <p class="text-[10px] text-zinc-500 truncate"><?php echo $_SESSION['email']; ?></p>
             </div>
         </div>
     </aside>
@@ -379,7 +379,7 @@ $current_specs = json_decode($product['specifications'] ?: '[]', true) ?: [];
                 if (result.success) {
                     successAlert.textContent = result.message;
                     successAlert.classList.remove('hidden');
-                    
+
                     // Reload the page after 1.5 seconds to refresh data (like images)
                     setTimeout(() => {
                         window.location.reload();
