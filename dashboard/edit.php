@@ -1,114 +1,150 @@
-x<?php
-    // ============================================================
-    //  dashboard/edit.php — Edit Product Page
-    // ============================================================
+<?php
+// ============================================================
+//  dashboard/edit.php — Edit Product Page
+// ============================================================
 
-    if (session_status() === PHP_SESSION_NONE) {
-        session_start();
+if (!isset($_SESSION['id']) || $_SESSION['role'] !== 'admin') {
+    header("Location: /index.php");
+    exit;
+}
+
+$acc = true; // Exclude front-end navbar
+require_once '/includes/config.php';
+
+try {
+    $pdo = getDBConnection();
+} catch (PDOException $e) {
+    die("Database connection failed: " . $e->getMessage());
+}
+
+// Fetch categories and brands for options
+$categories = $pdo->query("SELECT * FROM categories ORDER BY parent_id ASC, name ASC")->fetchAll(PDO::FETCH_ASSOC);
+$brands = $pdo->query("SELECT * FROM brands ORDER BY name ASC")->fetchAll(PDO::FETCH_ASSOC);
+
+$error = '';
+$success = '';
+
+// Get product ID
+$product_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+if (!$product_id) {
+    header("Location: /dashboard/index.php");
+    exit;
+}
+
+// Fetch current product data
+$stmt = $pdo->prepare("SELECT * FROM products WHERE id = :id");
+$stmt->execute([':id' => $product_id]);
+$product = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if (!$product) {
+    die("Product not found.");
+}
+
+// Parse current images and specifications
+$current_imgs = json_decode($product['imgs'] ?: '[]', true) ?: [];
+$current_specs = json_decode($product['specifications'] ?: '[]', true) ?: [];
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Collect and sanitize fields
+    $name = trim($_POST['name'] ?? '');
+    $slug = trim($_POST['slug'] ?? '');
+    $sku = trim($_POST['sku'] ?? '');
+    $price = floatval($_POST['price'] ?? 0);
+    $compare_at_price = !empty($_POST['compare_at_price']) ? floatval($_POST['compare_at_price']) : null;
+    $description = trim($_POST['description'] ?? '');
+    $stock_quantity = intval($_POST['stock_quantity'] ?? 0);
+    $low_stock_limit = intval($_POST['low_stock_limit'] ?? 5);
+    $category_id = !empty($_POST['category_id']) ? intval($_POST['category_id']) : null;
+    $brand_id = !empty($_POST['brand_id']) ? intval($_POST['brand_id']) : null;
+    $status = trim($_POST['status'] ?? 'draft');
+    $warranty_months = !empty($_POST['warranty_months']) ? intval($_POST['warranty_months']) : null;
+    $weight_grams = !empty($_POST['weight_grams']) ? intval($_POST['weight_grams']) : null;
+    $dimensions = trim($_POST['dimensions'] ?? '') ?: null;
+
+    // Build Specifications JSON
+    $spec_keys = $_POST['spec_keys'] ?? [];
+    $spec_vals = $_POST['spec_vals'] ?? [];
+    $specs_array = [];
+    foreach ($spec_keys as $idx => $key) {
+        $key = trim($key);
+        $val = trim($spec_vals[$idx] ?? '');
+        if ($key !== '' && $val !== '') {
+            $specs_array[$key] = $val;
+        }
     }
-    if (!isset($_SESSION['id']) || $_SESSION['role'] !== 'admin') {
-        header("Location: /index.php");
-        exit;
-    }
+    $specifications_json = json_encode($specs_array);
 
-    $acc = true; // Exclude front-end navbar
-    require_once '/includes/config.php';
+    // Validate requirements
+    if (empty($name)) {
+        $error = "Product name is required.";
+    } elseif ($price <= 0) {
+        $error = "Product price must be greater than 0.";
+    } else {
+        // Generate slug if empty
+        if (empty($slug)) {
+            $slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $name), '-'));
+        }
 
-    try {
-        $pdo = getDBConnection();
-    } catch (PDOException $e) {
-        die("Database connection failed: " . $e->getMessage());
-    }
+        // Handle Image edits/removals
+        $keep_imgs = $_POST['keep_imgs'] ?? [];
+        $image_paths = [];
 
-    // Fetch categories and brands for options
-    $categories = $pdo->query("SELECT * FROM categories ORDER BY parent_id ASC, name ASC")->fetchAll(PDO::FETCH_ASSOC);
-    $brands = $pdo->query("SELECT * FROM brands ORDER BY name ASC")->fetchAll(PDO::FETCH_ASSOC);
-
-    $error = '';
-    $success = '';
-
-    // Get product ID
-    $product_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
-    if (!$product_id) {
-        header("Location: /dashboard/index.php");
-        exit;
-    }
-
-    // Fetch current product data
-    $stmt = $pdo->prepare("SELECT * FROM products WHERE id = :id");
-    $stmt->execute([':id' => $product_id]);
-    $product = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if (!$product) {
-        die("Product not found.");
-    }
-
-    // Parse current images and specifications
-    $current_imgs = json_decode($product['imgs'] ?: '[]', true) ?: [];
-    $current_specs = json_decode($product['specifications'] ?: '[]', true) ?: [];
-
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        // Collect and sanitize fields
-        $name = trim($_POST['name'] ?? '');
-        $slug = trim($_POST['slug'] ?? '');
-        $sku = trim($_POST['sku'] ?? '');
-        $price = floatval($_POST['price'] ?? 0);
-        $compare_at_price = !empty($_POST['compare_at_price']) ? floatval($_POST['compare_at_price']) : null;
-        $description = trim($_POST['description'] ?? '');
-        $stock_quantity = intval($_POST['stock_quantity'] ?? 0);
-        $low_stock_limit = intval($_POST['low_stock_limit'] ?? 5);
-        $category_id = !empty($_POST['category_id']) ? intval($_POST['category_id']) : null;
-        $brand_id = !empty($_POST['brand_id']) ? intval($_POST['brand_id']) : null;
-        $status = trim($_POST['status'] ?? 'draft');
-        $warranty_months = !empty($_POST['warranty_months']) ? intval($_POST['warranty_months']) : null;
-        $weight_grams = !empty($_POST['weight_grams']) ? intval($_POST['weight_grams']) : null;
-        $dimensions = trim($_POST['dimensions'] ?? '') ?: null;
-
-        // Build Specifications JSON
-        $spec_keys = $_POST['spec_keys'] ?? [];
-        $spec_vals = $_POST['spec_vals'] ?? [];
-        $specs_array = [];
-        foreach ($spec_keys as $idx => $key) {
-            $key = trim($key);
-            $val = trim($spec_vals[$idx] ?? '');
-            if ($key !== '' && $val !== '') {
-                $specs_array[$key] = $val;
+        // Retain only selected previous images
+        foreach ($current_imgs as $img_path) {
+            if (in_array($img_path, $keep_imgs)) {
+                $image_paths[] = $img_path;
             }
         }
-        $specifications_json = json_encode($specs_array);
 
-        // Validate requirements
-        if (empty($name)) {
-            $error = "Product name is required.";
-        } elseif ($price <= 0) {
-            $error = "Product price must be greater than 0.";
-        } else {
-            // Generate slug if empty
-            if (empty($slug)) {
-                $slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $name), '-'));
-            }
+        $upload_dir = '/assets/prdctImgs/';
+        if (!is_dir($upload_dir)) {
+            mkdir($upload_dir, 0777, true);
+        }
 
-            // Handle Image edits/removals
-            $keep_imgs = $_POST['keep_imgs'] ?? [];
-            $image_paths = [];
+        // Helper function to process single upload
+        $process_upload = function ($file_input_name) use ($upload_dir, &$error) {
+            if (isset($_FILES[$file_input_name]) && $_FILES[$file_input_name]['error'] === UPLOAD_ERR_OK) {
+                $file_tmp = $_FILES[$file_input_name]['tmp_name'];
+                $file_name = $_FILES[$file_input_name]['name'];
+                $ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
 
-            // Retain only selected previous images
-            foreach ($current_imgs as $img_path) {
-                if (in_array($img_path, $keep_imgs)) {
-                    $image_paths[] = $img_path;
+                $allowed = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
+                if (in_array($ext, $allowed)) {
+                    $new_filename = 'img_' . uniqid() . '.' . $ext;
+                    $dest = $upload_dir . $new_filename;
+                    if (move_uploaded_file($file_tmp, $dest)) {
+                        return '/assets/prdctImgs/' . $new_filename;
+                    } else {
+                        $error = "Failed to move uploaded file: {$file_name}";
+                    }
+                } else {
+                    $error = "Unsupported image format: {$ext}";
                 }
             }
+            return null;
+        };
 
-            $upload_dir = '/assets/prdctImgs/';
-            if (!is_dir($upload_dir)) {
-                mkdir($upload_dir, 0777, true);
+        // 1. Process New Primary Image (if uploaded)
+        $new_primary_path = $process_upload('primary_image');
+        if ($new_primary_path) {
+            // Replace the primary image (first element or insert at beginning)
+            if (!empty($image_paths)) {
+                $image_paths[0] = $new_primary_path;
+            } else {
+                $image_paths[] = $new_primary_path;
             }
+        } elseif (empty($image_paths)) {
+            // If all images were removed, fall back to Default
+            $image_paths[] = '/assets/prdctImgs/Default.png';
+        }
 
-            // Helper function to process single upload
-            $process_upload = function ($file_input_name) use ($upload_dir, &$error) {
-                if (isset($_FILES[$file_input_name]) && $_FILES[$file_input_name]['error'] === UPLOAD_ERR_OK) {
-                    $file_tmp = $_FILES[$file_input_name]['tmp_name'];
-                    $file_name = $_FILES[$file_input_name]['name'];
+        // 2. Process New Gallery Images
+        if (isset($_FILES['gallery_images'])) {
+            $total_files = count($_FILES['gallery_images']['name']);
+            for ($i = 0; $i < $total_files; $i++) {
+                if ($_FILES['gallery_images']['error'][$i] === UPLOAD_ERR_OK) {
+                    $file_tmp = $_FILES['gallery_images']['tmp_name'][$i];
+                    $file_name = $_FILES['gallery_images']['name'][$i];
                     $ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
 
                     $allowed = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
@@ -116,61 +152,22 @@ x<?php
                         $new_filename = 'img_' . uniqid() . '.' . $ext;
                         $dest = $upload_dir . $new_filename;
                         if (move_uploaded_file($file_tmp, $dest)) {
-                            return '/assets/prdctImgs/' . $new_filename;
-                        } else {
-                            $error = "Failed to move uploaded file: {$file_name}";
-                        }
-                    } else {
-                        $error = "Unsupported image format: {$ext}";
-                    }
-                }
-                return null;
-            };
-
-            // 1. Process New Primary Image (if uploaded)
-            $new_primary_path = $process_upload('primary_image');
-            if ($new_primary_path) {
-                // Replace the primary image (first element or insert at beginning)
-                if (!empty($image_paths)) {
-                    $image_paths[0] = $new_primary_path;
-                } else {
-                    $image_paths[] = $new_primary_path;
-                }
-            } elseif (empty($image_paths)) {
-                // If all images were removed, fall back to Default
-                $image_paths[] = '/assets/prdctImgs/Default.png';
-            }
-
-            // 2. Process New Gallery Images
-            if (isset($_FILES['gallery_images'])) {
-                $total_files = count($_FILES['gallery_images']['name']);
-                for ($i = 0; $i < $total_files; $i++) {
-                    if ($_FILES['gallery_images']['error'][$i] === UPLOAD_ERR_OK) {
-                        $file_tmp = $_FILES['gallery_images']['tmp_name'][$i];
-                        $file_name = $_FILES['gallery_images']['name'][$i];
-                        $ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
-
-                        $allowed = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
-                        if (in_array($ext, $allowed)) {
-                            $new_filename = 'img_' . uniqid() . '.' . $ext;
-                            $dest = $upload_dir . $new_filename;
-                            if (move_uploaded_file($file_tmp, $dest)) {
-                                $image_paths[] = 'assets/prdctImgs/' . $new_filename;
-                            }
+                            $image_paths[] = 'assets/prdctImgs/' . $new_filename;
                         }
                     }
                 }
             }
+        }
 
-            $imgs_json = json_encode($image_paths);
+        $imgs_json = json_encode($image_paths);
 
-            if (empty($error)) {
-                // Database Update
-                try {
-                    $pdo->beginTransaction();
+        if (empty($error)) {
+            // Database Update
+            try {
+                $pdo->beginTransaction();
 
-                    $stmtUpdate = $pdo->prepare(
-                        "UPDATE `products` SET
+                $stmtUpdate = $pdo->prepare(
+                    "UPDATE `products` SET
                         `name` = :name,
                         `slug` = :slug,
                         `description` = :description,
@@ -189,63 +186,63 @@ x<?php
                         `dimensions` = :dimensions,
                         `updated_by` = :updated_by
                     WHERE `id` = :id"
-                    );
+                );
 
-                    $stmtUpdate->execute([
-                        ':name' => $name,
-                        ':slug' => $slug,
-                        ':description' => $description,
-                        ':price' => $price,
-                        ':compare_at_price' => $compare_at_price,
-                        ':sku' => $sku ?: null,
-                        ':stock_quantity' => $stock_quantity,
-                        ':low_stock_limit' => $low_stock_limit,
-                        ':brand_id' => $brand_id,
-                        ':category_id' => $category_id,
-                        ':status' => $status,
-                        ':imgs' => $imgs_json,
-                        ':specifications' => $specifications_json ?: '{}',
-                        ':warranty_months' => $warranty_months,
-                        ':weight_grams' => $weight_grams,
-                        ':dimensions' => $dimensions,
-                        ':updated_by' => intval($_SESSION['id']),
-                        ':id' => $product_id
-                    ]);
+                $stmtUpdate->execute([
+                    ':name' => $name,
+                    ':slug' => $slug,
+                    ':description' => $description,
+                    ':price' => $price,
+                    ':compare_at_price' => $compare_at_price,
+                    ':sku' => $sku ?: null,
+                    ':stock_quantity' => $stock_quantity,
+                    ':low_stock_limit' => $low_stock_limit,
+                    ':brand_id' => $brand_id,
+                    ':category_id' => $category_id,
+                    ':status' => $status,
+                    ':imgs' => $imgs_json,
+                    ':specifications' => $specifications_json ?: '{}',
+                    ':warranty_months' => $warranty_months,
+                    ':weight_grams' => $weight_grams,
+                    ':dimensions' => $dimensions,
+                    ':updated_by' => intval($_SESSION['id']),
+                    ':id' => $product_id
+                ]);
 
-                    // Sync product_images table
-                    $stmtDelImgs = $pdo->prepare("DELETE FROM `product_images` WHERE `product_id` = :pid");
-                    $stmtDelImgs->execute([':pid' => $product_id]);
+                // Sync product_images table
+                $stmtDelImgs = $pdo->prepare("DELETE FROM `product_images` WHERE `product_id` = :pid");
+                $stmtDelImgs->execute([':pid' => $product_id]);
 
-                    foreach ($image_paths as $idx => $path) {
-                        $is_primary = ($idx === 0) ? 1 : 0;
-                        $stmtImg = $pdo->prepare(
-                            "INSERT INTO `product_images` (`product_id`, `image_url`, `is_primary`, `sort_order`) 
+                foreach ($image_paths as $idx => $path) {
+                    $is_primary = ($idx === 0) ? 1 : 0;
+                    $stmtImg = $pdo->prepare(
+                        "INSERT INTO `product_images` (`product_id`, `image_url`, `is_primary`, `sort_order`) 
                         VALUES (:pid, :url, :is_primary, :sort)"
-                        );
-                        $stmtImg->execute([
-                            ':pid' => $product_id,
-                            ':url' => $path,
-                            ':is_primary' => $is_primary,
-                            ':sort' => $idx
-                        ]);
-                    }
-
-                    $pdo->commit();
-                    $success = "Product updated successfully!";
-
-                    // Refresh local data
-                    $stmt->execute([':id' => $product_id]);
-                    $product = $stmt->fetch(PDO::FETCH_ASSOC);
-                    $current_imgs = json_decode($product['imgs'] ?: '[]', true) ?: [];
-                    $current_specs = json_decode($product['specifications'] ?: '[]', true) ?: [];
-                } catch (Exception $e) {
-                    $pdo->rollBack();
-                    $error = "Database update failed: " . $e->getMessage();
+                    );
+                    $stmtImg->execute([
+                        ':pid' => $product_id,
+                        ':url' => $path,
+                        ':is_primary' => $is_primary,
+                        ':sort' => $idx
+                    ]);
                 }
+
+                $pdo->commit();
+                $success = "Product updated successfully!";
+
+                // Refresh local data
+                $stmt->execute([':id' => $product_id]);
+                $product = $stmt->fetch(PDO::FETCH_ASSOC);
+                $current_imgs = json_decode($product['imgs'] ?: '[]', true) ?: [];
+                $current_specs = json_decode($product['specifications'] ?: '[]', true) ?: [];
+            } catch (Exception $e) {
+                $pdo->rollBack();
+                $error = "Database update failed: " . $e->getMessage();
             }
         }
     }
-    ?>
+}
+?>
 <!DOCTYPE html>
 <html class="dark" lang="en">
 
