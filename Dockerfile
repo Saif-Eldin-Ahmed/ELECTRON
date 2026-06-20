@@ -1,39 +1,44 @@
+# Use the official PHP 8.2 image with Apache
 FROM php:8.2-apache
 
-# Install system dependencies + PHP extensions commonly needed for MySQL e-commerce apps
+# Install system dependencies and PHP extensions required for the application
 RUN apt-get update && apt-get install -y \
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    zip \
     unzip \
     git \
-    libzip-dev \
-    && docker-php-ext-install pdo pdo_mysql mysqli zip \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) gd pdo_mysql mysqli
 
-# Enable Apache mod_rewrite (useful for clean URLs / .htaccess rules)
+# Enable Apache mod_rewrite for routing and friendly URLs (if needed)
 RUN a2enmod rewrite
-
-# Fix "More than one MPM loaded" error:
-# mod_php requires the prefork MPM; disable event/worker explicitly and ensure prefork is enabled
-RUN a2dismod mpm_event mpm_worker 2>/dev/null || true \
-    && a2enmod mpm_prefork
 
 # Install Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Set Apache's document root to /var/www/html (default), copy project files there
+# Set working directory to Apache's document root
 WORKDIR /var/www/html
-COPY . /var/www/html/
 
-# Install PHP dependencies via Composer (no dev dependencies, optimized autoloader)
-RUN composer install --no-dev --optimize-autoloader --no-interaction || true
+# Copy composer files and install dependencies
+COPY composer.json ./
+RUN composer install --no-dev --optimize-autoloader --no-interaction
 
-# Ensure correct ownership/permissions for Apache to read/write where needed
+# Copy the rest of the application files to the container
+COPY . .
+
+# Adjust Apache configuration to listen on the dynamic port provided by Railway ($PORT)
+# Railway injects the PORT environment variable at runtime
+ENV PORT=80
+RUN sed -i 's/Listen 80/Listen ${PORT}/g' /etc/apache2/ports.conf
+RUN sed -i 's/<VirtualHost \*:80>/<VirtualHost *:${PORT}>/g' /etc/apache2/sites-available/000-default.conf
+
+# Set proper ownership and permissions for web server files
 RUN chown -R www-data:www-data /var/www/html
 
-# Apache listens on port 80 by default; Railway maps its $PORT to this internally via its proxy,
-# but Apache itself should listen on the port Railway expects.
-ENV APACHE_PORT=8080
-RUN sed -i "s/80/${APACHE_PORT}/g" /etc/apache2/ports.conf /etc/apache2/sites-enabled/000-default.conf
+# Expose the dynamic port
+EXPOSE ${PORT}
 
-EXPOSE 8080
-
+# Run Apache in the foreground
 CMD ["apache2-foreground"]
