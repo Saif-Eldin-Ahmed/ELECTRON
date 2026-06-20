@@ -2,7 +2,9 @@
 // ============================================================
 //  dashboard/add-product.php — Add Product Page
 // ============================================================
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 if (!isset($_SESSION['id']) || $_SESSION['role'] !== 'admin') {
     header("Location: ../index.php");
     exit;
@@ -30,7 +32,7 @@ $brands = $pdo->query("SELECT * FROM brands ORDER BY name ASC")->fetchAll(PDO::F
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
-    <script src="../assets/js/tailwind-config.js"></script>
+    <script src="/assets/js/tailwind-config.js"></script>
     <link href="/dashboard/style.css" rel="stylesheet" />
 </head>
 
@@ -285,17 +287,6 @@ $brands = $pdo->query("SELECT * FROM brands ORDER BY name ASC")->fetchAll(PDO::F
         }
 
         // Helper to dynamically resolve endpoints relative to the dashboard directory,
-        // avoiding 404 errors caused by missing trailing slashes (e.g., /dashboard vs /dashboard/)
-        function getApiUrl(endpoint) {
-            let basePath = window.location.pathname;
-            if (basePath.endsWith('.php')) {
-                basePath = basePath.substring(0, basePath.lastIndexOf('/') + 1);
-            } else if (!basePath.endsWith('/')) {
-                basePath += '/';
-            }
-            return basePath + endpoint;
-        }
-
         // Intercept form submit and send via Fetch (AJAX)
         document.getElementById('addProductForm').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -316,7 +307,7 @@ $brands = $pdo->query("SELECT * FROM brands ORDER BY name ASC")->fetchAll(PDO::F
 
             try {
                 const formData = new FormData(this);
-                const response = await fetch(getApiUrl('/dashboard/functions/add-product.php'), {
+                const response = await fetch('/dashboard/functions/add-product.php', {
                     method: 'POST',
                     body: formData
                 });
