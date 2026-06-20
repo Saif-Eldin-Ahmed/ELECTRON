@@ -6,10 +6,11 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 if (!isset($_SESSION['id']) || $_SESSION['role'] !== 'admin') {
+    header("Location: /index.php");
     exit;
 }
 
-require_once '../includes/config.php';
+require_once '/includes/config.php';
 
 try {
     $pdo = getDBConnection();
@@ -81,7 +82,7 @@ $brands = $pdo->query("SELECT * FROM brands ORDER BY name ASC")->fetchAll(PDO::F
         <!-- Top Bar Header -->
         <header class="h-24 border-b border-zinc-800 flex items-center justify-between px-8 bg-zinc-950/80 backdrop-blur-md">
             <div>
-                <a href="index.php" class="text-xs font-bold uppercase tracking-widest text-zinc-500 hover:text-white flex items-center gap-1.5 mb-1">
+                <a href="/dashboard/index.php" class="text-xs font-bold uppercase tracking-widest text-zinc-500 hover:text-white flex items-center gap-1.5 mb-1">
                     <span class="material-symbols-outlined text-sm">arrow_back</span>
                     Back to Catalog
                 </a>

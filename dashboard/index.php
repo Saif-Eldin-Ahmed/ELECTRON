@@ -3,17 +3,15 @@
 //  dashboard/index.php — Admin Dashboard
 // ============================================================
 
-// Adminestrator can only access this page
-
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 if (!isset($_SESSION['id']) || $_SESSION['role'] !== 'admin') {
-    header("Location: ../index.php");
+    header("Location: /index.php");
     exit;
 }
 
-require_once '../includes/config.php';
+require_once '/includes/config.php';
 
 try {
     $pdo = getDBConnection();
@@ -98,7 +96,7 @@ $body_class = "bg-zinc-950 text-white font-body-md min-h-screen";
         <div>
             <!-- Brand Logo -->
             <div class="h-24 flex items-center px-8 border-b border-zinc-800">
-                <a href="../index.php" class="text-2xl font-black tracking-tighter text-white font-['Space_Grotesk'] uppercase flex items-center gap-2">
+                <a href="/index.php" class="text-2xl font-black tracking-tighter text-white font-['Space_Grotesk'] uppercase flex items-center gap-2">
                     <span class="material-symbols-outlined text-white text-3xl">bolt</span>
                     ELECTRON
                 </a>
@@ -107,7 +105,7 @@ $body_class = "bg-zinc-950 text-white font-body-md min-h-screen";
             <!-- Navigation -->
             <nav class="p-4 space-y-2">
                 <p class="px-4 text-[10px] font-bold uppercase tracking-widest text-zinc-500 mb-2">Management</p>
-                <a href="index.php" class="flex items-center gap-3 px-4 py-3 text-xs font-bold uppercase tracking-widest text-white rounded-lg sidebar-item-active transition-all">
+                <a href="/dashboard/index.php" class="flex items-center gap-3 px-4 py-3 text-xs font-bold uppercase tracking-widest text-white rounded-lg sidebar-item-active transition-all">
                     <span class="material-symbols-outlined text-lg">dashboard</span>
                     Products
                 </a>
@@ -115,7 +113,7 @@ $body_class = "bg-zinc-950 text-white font-body-md min-h-screen";
                     <span class="material-symbols-outlined text-lg">add_circle</span>
                     Add Product
                 </a>
-                <a href="../search.php" class="flex items-center gap-3 px-4 py-3 text-xs font-bold uppercase tracking-widest text-zinc-400 hover:text-white rounded-lg hover:bg-zinc-900 transition-all">
+                <a href="/search.php" class="flex items-center gap-3 px-4 py-3 text-xs font-bold uppercase tracking-widest text-zinc-400 hover:text-white rounded-lg hover:bg-zinc-900 transition-all">
                     <span class="material-symbols-outlined text-lg">storefront</span>
                     Store Front
                 </a>
