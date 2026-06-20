@@ -15,11 +15,11 @@ header('Access-Control-Allow-Methods: POST');
 header('Content-Type: application/json');
 
 
-define('DB_HOST', 'localhost');
+define('DB_HOST', 'mysql.railway.internal');
 define('DB_PORT', '3306');
 define('DB_USER', 'root');
-define('DB_PASS', '');
-define('DB_NAME', 'electron_test');
+define('DB_PASS', 'qnlssgRPsUYlQOgsSgHnYWpzsImOwxGd');
+define('DB_NAME', 'railway');
 
 /**
  * Returns an active PDO connection.
