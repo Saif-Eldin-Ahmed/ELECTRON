@@ -205,7 +205,7 @@ $body_class = "bg-zinc-950 text-white font-body-md min-h-screen";
             <div class="glass-card rounded-2xl overflow-hidden flex flex-col h-full">
                 <!-- Table Header Options -->
                 <div class="p-6 border-b border-zinc-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                    <form action="index.php" method="GET" class="relative w-full sm:w-80">
+                    <form action="/dashboard/index.php" method="GET" class="relative w-full sm:w-80">
                         <input type="text" name="q" value="<?php echo htmlspecialchars($search); ?>" placeholder="Search product name, SKU..." class="w-full bg-zinc-900 border border-zinc-850 rounded-lg py-2 pl-4 pr-10 text-xs font-bold uppercase tracking-widest text-white placeholder-zinc-500 focus:outline-none focus:border-zinc-700 focus:ring-0 transition-colors" />
                         <button type="submit" class="absolute right-3.5 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white flex items-center">
                             <span class="material-symbols-outlined text-base">search</span>
@@ -394,7 +394,7 @@ $body_class = "bg-zinc-950 text-white font-body-md min-h-screen";
         data.append('id', id);
 
         try {
-            const res = await fetch(getApiUrl('/dashboard/functions/delete-product.php'), {
+            const res = await fetch('/dashboard/functions/delete-product.php', {
                 method: 'POST',
                 body: data
             });
