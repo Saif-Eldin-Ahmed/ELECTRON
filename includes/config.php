@@ -7,7 +7,7 @@
 define('DB_HOST', 'mysql.railway.internal');
 define('DB_PORT', '3306');
 define('DB_USER', 'root');
-define('DB_PASS', 'qnlssgRPsUYlQOgsSgHnYWpzsImOwxGd');
+define('DB_PASS', 'RMeWegmKCighsoyculHNZWFcpDlDzDGY');
 define('DB_NAME', 'railway');
 
 /**
