@@ -9,6 +9,10 @@ define('DB_PORT', '3306');
 define('DB_USER', 'root');
 define('DB_PASS', 'RMeWegmKCighsoyculHNZWFcpDlDzDGY');
 define('DB_NAME', 'railway');
+define('CLOUDINARY_API_KEY', '272493645737237');
+define('CLOUDINARY_API_SECRET', '4uj8nFrxpHSh_9X-9wdkDSxh9RA');
+define('CLOUDINARY_NAME', 'dam41zcfu');
+define('CLOUDINARY_URL', 'cloudinary://' . CLOUDINARY_API_KEY . ':' . CLOUDINARY_API_SECRET . '@' . CLOUDINARY_NAME . '/');
 
 /**
  * Returns an active PDO connection.

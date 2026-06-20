@@ -80,7 +80,7 @@ if (empty($slug)) {
 
 // Handle Image Uploads
 $image_paths = [];
-$upload_dir = '../../assets/prdctImgs/';
+$upload_dir = CLOUDINARY_URL;
 
 // Ensure assets/prdctImgs directory exists
 if (!is_dir($upload_dir)) {
@@ -101,7 +101,7 @@ $process_upload = function ($file_input_name) use ($upload_dir, &$error) {
             $new_filename = 'img_' . uniqid() . '.' . $ext;
             $dest = $upload_dir . $new_filename;
             if (move_uploaded_file($file_tmp, $dest)) {
-                return 'assets/prdctImgs/' . $new_filename;
+                return CLOUDINARY_URL . $new_filename;
             } else {
                 $error = "Failed to move uploaded file: {$file_name}";
             }
@@ -136,7 +136,7 @@ if (isset($_FILES['gallery_images'])) {
                 $new_filename = 'img_' . uniqid() . '.' . $ext;
                 $dest = $upload_dir . $new_filename;
                 if (move_uploaded_file($file_tmp, $dest)) {
-                    $image_paths[] = 'assets/prdctImgs/' . $new_filename;
+                    $image_paths[] = CLOUDINARY_URL . $new_filename;
                 } else {
                     $error = "Failed to move gallery image file: {$file_name}";
                 }
