@@ -111,7 +111,7 @@ $body_class = "bg-zinc-950 text-white font-body-md min-h-screen";
                     <span class="material-symbols-outlined text-lg">dashboard</span>
                     Products
                 </a>
-                <a href="add-product.php" class="flex items-center gap-3 px-4 py-3 text-xs font-bold uppercase tracking-widest text-zinc-400 hover:text-white rounded-lg hover:bg-zinc-900 transition-all">
+                <a href="/dashboard/add-product.php" class="flex items-center gap-3 px-4 py-3 text-xs font-bold uppercase tracking-widest text-zinc-400 hover:text-white rounded-lg hover:bg-zinc-900 transition-all">
                     <span class="material-symbols-outlined text-lg">add_circle</span>
                     Add Product
                 </a>
