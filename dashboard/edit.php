@@ -2,7 +2,7 @@
 // ============================================================
 //  dashboard/edit.php — Edit Product Page
 // ============================================================
-
+session_start();
 if (!isset($_SESSION['id']) || $_SESSION['role'] !== 'admin') {
     header("Location: /index.php");
     exit;
