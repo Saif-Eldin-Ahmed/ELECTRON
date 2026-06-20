@@ -304,7 +304,7 @@ $body_class = "bg-zinc-950 text-white font-body-md min-h-screen";
                                                     visibility
                                                 </button>
                                             <?php endif; ?>
-                                            <a href="edit.php?id=<?php echo $product['id']; ?>" target="_blank" class="material-symbols-outlined text-xs font-bold text-zinc-400 hover:text-white uppercase tracking-widest border border-zinc-800 hover:border-zinc-700 px-3 py-1.5 rounded-lg transition-colors">
+                                            <a href="/dashboard/edit.php?id=<?php echo $product['id']; ?>" target="_blank" class="material-symbols-outlined text-xs font-bold text-zinc-400 hover:text-white uppercase tracking-widest border border-zinc-800 hover:border-zinc-700 px-3 py-1.5 rounded-lg transition-colors">
                                                 edit
                                             </a>
                                             <?php if ($product['status'] === 'published'): ?>
