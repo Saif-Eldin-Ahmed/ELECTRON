@@ -36,7 +36,33 @@ if (session_status() === PHP_SESSION_NONE) {
 </head>
 
 <body class="<?php echo isset($body_class) ? $body_class : 'min-h-[100vh] bg-background text-on-background font-body-md selection:bg-secondary-container'; ?>">
-
+    <div id="page-loader" class="fixed inset-0 z-[9999] flex items-center justify-center bg-white">
+        <div class="loader z-[99999]">
+            <div class="block"></div>
+            <div class="block"></div>
+            <div class="block"></div>
+            <div class="block"></div>
+            <div class="block"></div>
+            <div class="block"></div>
+            <div class="block"></div>
+            <div class="block"></div>
+            <div class="block"></div>
+            <div class="block"></div>
+            <div class="block"></div>
+            <div class="block"></div>
+            <div class="block"></div>
+            <div class="block"></div>
+            <div class="block"></div>
+            <div class="block"></div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            window.addEventListener('load', function() {
+                document.getElementById('page-loader').style.translate = '-100%';
+            });
+        });
+    </script>
     <?php
     if (!isset($acc)) {
         include 'nav.php';
