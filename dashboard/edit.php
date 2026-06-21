@@ -215,7 +215,7 @@ $current_specs = json_decode($product['specifications'] ?: '[]', true) ?: [];
                             <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-4">
                                 <?php foreach ($current_imgs as $idx => $img_path): ?>
                                     <div class="relative bg-zinc-900 border border-zinc-800 rounded-lg p-2 flex flex-col items-center gap-2">
-                                        <img class="w-20 h-20 object-contain rounded" src="../<?php echo htmlspecialchars($img_path); ?>" alt="">
+                                        <img class="w-20 h-20 object-contain rounded" src="<?php echo htmlspecialchars($img_path); ?>" alt="">
                                         <div class="flex items-center gap-1.5 mt-1">
                                             <input type="checkbox" name="keep_imgs[]" value="<?php echo htmlspecialchars($img_path); ?>" checked class="rounded bg-zinc-950 border-zinc-800 text-white focus:ring-0 cursor-pointer">
                                             <span class="text-[9px] uppercase tracking-wider font-bold text-zinc-400">

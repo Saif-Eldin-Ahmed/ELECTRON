@@ -122,7 +122,7 @@ $body_class = "bg-zinc-950 text-white font-body-md min-h-screen";
 
         <!-- User Account Details -->
         <div class="p-6 border-t border-zinc-800 flex items-center gap-3">
-            <img src="<?php echo $_SESSION['pro_img'] ? '../' . $_SESSION['pro_img'] : '../assets/proImgs/Default.jpg'; ?>" alt="Profile Picture" class="w-10 h-10 rounded-full">
+            <img src="<?php echo $_SESSION['pro_img'] ? $_SESSION['pro_img'] : '../assets/proImgs/Default.jpg'; ?>" alt="Profile Picture" class="w-10 h-10 rounded-full">
             <div class="overflow-hidden">
                 <p class="text-xs font-bold uppercase tracking-wider text-white truncate"><?php echo $_SESSION['firstname'] . " " . $_SESSION['lastname']; ?></p>
                 <p class="text-[10px] text-zinc-500 truncate"><?php echo $_SESSION['email']; ?></p>
@@ -243,7 +243,7 @@ $body_class = "bg-zinc-950 text-white font-body-md min-h-screen";
                                 <?php foreach ($products as $product): ?>
                                     <?php
                                     $p_imgs = json_decode($product['imgs'], true);
-                                    $p_img = (!empty($p_imgs) && is_array($p_imgs)) ? '../' . $p_imgs[0] : '../assets/prdctImgs/Default.png';
+                                    $p_img = (!empty($p_imgs) && is_array($p_imgs)) ? $p_imgs[0] : '../assets/prdctImgs/Default.png';
                                     ?>
                                     <tr id="product-row-<?php echo $product['id']; ?>" class="hover:bg-zinc-900/10 transition-colors">
                                         <td class="p-6 flex items-center gap-4">
