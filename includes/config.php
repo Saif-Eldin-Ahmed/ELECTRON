@@ -3,23 +3,22 @@
 //  Database Configuration — PDO Connection
 // ============================================================
 
-
-define('DB_HOST', 'mysql.railway.internal');
-define('DB_PORT', '3306');
-define('DB_USER', 'root');
-define('DB_PASS', 'RMeWegmKCighsoyculHNZWFcpDlDzDGY');
-define('DB_NAME', 'railway');
-
+require_once 'env.php';
+loadEnv('../config.env');
 
 function getDBConnection(): PDO
 {
-    $dsn = 'mysql:host=' . DB_HOST . ';port=' . DB_PORT . ';dbname=' . DB_NAME . ';charset=utf8mb4';
+    $host = $_ENV['DB_HOST'];
+    $port = $_ENV['DB_PORT'];
+    $name = $_ENV['DB_NAME'];
+    $user = $_ENV['DB_USER'];
+    $pass = $_ENV['DB_PASS'];
 
-    $pdo = new PDO($dsn, DB_USER, DB_PASS, [
+    $dsn = "mysql:host={$host};port={$port};dbname={$name};charset=utf8mb4";
+
+    return new PDO($dsn, $user, $pass, [
         PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
         PDO::ATTR_EMULATE_PREPARES   => false,
     ]);
-
-    return $pdo;
 }

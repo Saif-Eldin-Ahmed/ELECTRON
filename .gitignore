@@ -1,0 +1,34 @@
+# Environment / secrets
+.env
+.env.local
+.env.*.local
+
+# Config files with credentials (if you keep any outside .env)
+config.local.php
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor/IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Logs
+*.log
+error_log
+
+# Uploads / user content (adjust path to your project)
+/uploads/*
+!uploads/.gitkeep
+
+# Backups / dumps
+*.sql
+*.sql.gz
+*.zip
+
+# Misc
+*.bak
+*.tmp
