@@ -4,7 +4,7 @@
 // ============================================================
 
 require_once 'env.php';
-loadEnv('../config.env');
+loadEnv('config.env');
 
 function getDBConnection(): PDO
 {
