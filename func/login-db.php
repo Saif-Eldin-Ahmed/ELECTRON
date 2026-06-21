@@ -10,7 +10,7 @@ header('Access-Control-Allow-Headers: Content-Type');
 header('Access-Control-Allow-Credentials: true');
 header('Access-Control-Allow-Methods: POST');
 
-require_once '../includes/config.php';
+require_once 'includes/config.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
