@@ -4,13 +4,14 @@
 // ============================================================
 
 session_start();
-
 if (!isset($_SESSION['id'])) {
     header("Location: login-page.php");
     exit;
 }
 
-require_once 'includes/config.php';
+$page_title = "ELECTRON | Profile";
+$body_class = "bg-gradient-to-br from-stone-50 via-zinc-100 to-indigo-50/30 min-h-screen font-body-md text-on-surface";
+include 'includes/header.php';
 
 try {
     $pdo = getDBConnection();
@@ -27,9 +28,7 @@ try {
     $user = $_SESSION;
 }
 
-$page_title = "ELECTRON | Profile";
-$body_class = "bg-gradient-to-br from-stone-50 via-zinc-100 to-indigo-50/30 min-h-screen font-body-md text-on-surface";
-include 'includes/header.php';
+
 ?>
 
 <main class="max-w-4xl mx-auto px-6 pt-36 pb-20 flex justify-center items-center min-h-[90vh]">

@@ -1,5 +1,4 @@
 <?php
-require_once 'includes/config.php';
 $acc = true;
 $page_title = "ELECTRON | Digital Flagship";
 $body_class = "font-body-md text-on-surface bg-white";

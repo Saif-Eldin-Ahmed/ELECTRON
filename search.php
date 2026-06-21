@@ -1,5 +1,8 @@
 <?php
-require_once 'includes/config.php';
+// Page headers
+$page_title = "ELECTRON | Search Results";
+$body_class = "bg-background font-body-md text-on-background selection:bg-secondary-container";
+include 'includes/header.php';
 
 // Establish Database Connection
 try {
@@ -135,10 +138,6 @@ $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
 $stmt->execute();
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Page headers
-$page_title = "ELECTRON | Search Results";
-$body_class = "bg-background font-body-md text-on-background selection:bg-secondary-container";
-include 'includes/header.php';
 ?>
 
 <!-- Mobile Filter Backdrop -->
