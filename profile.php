@@ -5,7 +5,6 @@
 
 session_start();
 
-// Redirect to login if user is not authenticated
 if (!isset($_SESSION['id'])) {
     header("Location: login-page.php");
     exit;
@@ -20,13 +19,11 @@ try {
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$user) {
-        // User not found in database, clean session and redirect
         session_destroy();
         header("Location: login-page.php");
         exit;
     }
 } catch (PDOException $e) {
-    // Fallback to session variables if database fails
     $user = $_SESSION;
 }
 
@@ -138,7 +135,6 @@ include 'includes/header.php';
 
 <?php include 'includes/footer.php'; ?>
 
-<!-- Profile image upload toast -->
 <div id="avatarToast" class="fixed bottom-6 right-6 z-[200] flex items-center gap-3 px-5 py-3.5 rounded-2xl shadow-2xl text-xs font-bold uppercase tracking-widest transition-all duration-300 translate-y-4 opacity-0 pointer-events-none"></div>
 
 <script>
@@ -154,13 +150,11 @@ include 'includes/header.php';
         const icon = type === 'success' ? 'check_circle' : 'error';
         avatarToast.innerHTML = `<span class="material-symbols-outlined text-base" style="font-variation-settings:'FILL' 1">${icon}</span>${message}`;
 
-        // Animate in
         requestAnimationFrame(() => {
             avatarToast.classList.remove('translate-y-4', 'opacity-0');
             avatarToast.classList.add('translate-y-0', 'opacity-100');
         });
 
-        // Animate out after 3 s
         setTimeout(() => {
             avatarToast.classList.remove('translate-y-0', 'opacity-100');
             avatarToast.classList.add('translate-y-4', 'opacity-0');
@@ -171,7 +165,6 @@ include 'includes/header.php';
         const file = avatarInput.files[0];
         if (!file) return;
 
-        // Instant local preview before upload finishes
         const objectUrl = URL.createObjectURL(file);
         avatarPreview.src = objectUrl;
 
@@ -186,12 +179,10 @@ include 'includes/header.php';
             const json = await res.json();
 
             if (json.success) {
-                // Replace the blob URL with the persisted server path
                 avatarPreview.src = json.new_src + '?t=' + Date.now();
                 URL.revokeObjectURL(objectUrl);
                 showAvatarToast('Profile photo updated!', 'success');
             } else {
-                // Revert to original on failure
                 avatarPreview.src = '<?php echo isset($user["pro_img"]) ? htmlspecialchars($user["pro_img"]) : "assets/proImgs/Default.jpg"; ?>';
                 URL.revokeObjectURL(objectUrl);
                 showAvatarToast(json.error || 'Upload failed.', 'error');
@@ -202,7 +193,6 @@ include 'includes/header.php';
             showAvatarToast('Network error. Please try again.', 'error');
         }
 
-        // Reset so same file can be picked again if needed
         avatarInput.value = '';
     });
 </script>
