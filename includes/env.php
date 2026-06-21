@@ -11,7 +11,6 @@ function loadEnv(string $path): void
     foreach ($lines as $line) {
         $line = trim($line);
 
-        // Skip comments
         if ($line === '' || str_starts_with($line, '#')) {
             continue;
         }
@@ -24,7 +23,6 @@ function loadEnv(string $path): void
         $key = trim($key);
         $value = trim($value);
 
-        // Strip surrounding quotes if present
         $value = trim($value, '"\'');
 
         $_ENV[$key] = $value;
