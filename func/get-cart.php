@@ -5,6 +5,10 @@
 // ============================================================
 
 header('Content-Type: application/json');
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Headers: Content-Type');
+header('Access-Control-Allow-Credentials: true');
+header('Access-Control-Allow-Methods: POST');
 
 require_once '../includes/config.php';
 
@@ -52,7 +56,7 @@ try {
         $price = floatval($item['price']);
         $qty = intval($item['quantity']);
         $line_total = $price * $qty;
-        
+
         $subtotal += $line_total;
         $cart_count += $qty;
 
@@ -80,7 +84,6 @@ try {
         'subtotal'   => $subtotal,
         'cart_count' => $cart_count
     ]);
-
 } catch (PDOException $e) {
     http_response_code(500);
     echo json_encode([

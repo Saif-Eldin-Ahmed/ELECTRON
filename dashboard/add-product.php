@@ -2,14 +2,14 @@
 // ============================================================
 //  dashboard/add-product.php — Add Product Page
 // ============================================================
-
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 if (!isset($_SESSION['id']) || $_SESSION['role'] !== 'admin') {
-    header("Location: ../index.php");
+    header("Location: /index.php");
     exit;
 }
 
-$acc = true; // Exclude front-end navbar
 require_once '../includes/config.php';
 
 try {
@@ -32,8 +32,8 @@ $brands = $pdo->query("SELECT * FROM brands ORDER BY name ASC")->fetchAll(PDO::F
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
-    <script src="../assets/js/tailwind-config.js"></script>
-    <link href="style.css" rel="stylesheet" />
+    <script src="/assets/js/tailwind-config.js"></script>
+    <link href="/dashboard/style.css" rel="stylesheet" />
 </head>
 
 <body class="bg-zinc-950 text-zinc-100 min-h-screen flex">
@@ -43,7 +43,7 @@ $brands = $pdo->query("SELECT * FROM brands ORDER BY name ASC")->fetchAll(PDO::F
         <div>
             <!-- Brand Logo -->
             <div class="h-24 flex items-center px-8 border-b border-zinc-800">
-                <a href="../index.php" class="text-2xl font-black tracking-tighter text-white font-['Space_Grotesk'] uppercase flex items-center gap-2">
+                <a href="/index.php" class="text-2xl font-black tracking-tighter text-white font-['Space_Grotesk'] uppercase flex items-center gap-2">
                     <span class="material-symbols-outlined text-white text-3xl">bolt</span>
                     ELECTRON
                 </a>
@@ -52,15 +52,15 @@ $brands = $pdo->query("SELECT * FROM brands ORDER BY name ASC")->fetchAll(PDO::F
             <!-- Navigation -->
             <nav class="p-4 space-y-2">
                 <p class="px-4 text-[10px] font-bold uppercase tracking-widest text-zinc-500 mb-2">Management</p>
-                <a href="index.php" class="flex items-center gap-3 px-4 py-3 text-xs font-bold uppercase tracking-widest text-zinc-400 hover:text-white rounded-lg hover:bg-zinc-900 transition-all">
+                <a href="/dashboard/index.php" class="flex items-center gap-3 px-4 py-3 text-xs font-bold uppercase tracking-widest text-zinc-400 hover:text-white rounded-lg hover:bg-zinc-900 transition-all">
                     <span class="material-symbols-outlined text-lg">dashboard</span>
                     Products
                 </a>
-                <a href="add-product.php" class="flex items-center gap-3 px-4 py-3 text-xs font-bold uppercase tracking-widest text-white rounded-lg sidebar-item-active transition-all">
+                <a href="/dashboard/add-product.php" class="flex items-center gap-3 px-4 py-3 text-xs font-bold uppercase tracking-widest text-white rounded-lg sidebar-item-active transition-all">
                     <span class="material-symbols-outlined text-lg">add_circle</span>
                     Add Product
                 </a>
-                <a href="../search.php" class="flex items-center gap-3 px-4 py-3 text-xs font-bold uppercase tracking-widest text-zinc-400 hover:text-white rounded-lg hover:bg-zinc-900 transition-all">
+                <a href="/search.php" class="flex items-center gap-3 px-4 py-3 text-xs font-bold uppercase tracking-widest text-zinc-400 hover:text-white rounded-lg hover:bg-zinc-900 transition-all">
                     <span class="material-symbols-outlined text-lg">storefront</span>
                     Store Front
                 </a>
@@ -82,7 +82,7 @@ $brands = $pdo->query("SELECT * FROM brands ORDER BY name ASC")->fetchAll(PDO::F
         <!-- Top Bar Header -->
         <header class="h-24 border-b border-zinc-800 flex items-center justify-between px-8 bg-zinc-950/80 backdrop-blur-md">
             <div>
-                <a href="index.php" class="text-xs font-bold uppercase tracking-widest text-zinc-500 hover:text-white flex items-center gap-1.5 mb-1">
+                <a href="/dashboard/index.php" class="text-xs font-bold uppercase tracking-widest text-zinc-500 hover:text-white flex items-center gap-1.5 mb-1">
                     <span class="material-symbols-outlined text-sm">arrow_back</span>
                     Back to Catalog
                 </a>
@@ -246,7 +246,7 @@ $brands = $pdo->query("SELECT * FROM brands ORDER BY name ASC")->fetchAll(PDO::F
                         <span class="material-symbols-outlined text-base font-bold">save</span>
                         Save Product
                     </button>
-                    <a href="index.php" class="flex items-center gap-2 px-8 py-3.5 text-xs font-bold uppercase tracking-widest border border-zinc-800 text-zinc-400 hover:text-white rounded-full hover:bg-zinc-900 transition-all active:scale-[0.98]">
+                    <a href="/dashboard/index.php" class="flex items-center gap-2 px-8 py-3.5 text-xs font-bold uppercase tracking-widest border border-zinc-800 text-zinc-400 hover:text-white rounded-full hover:bg-zinc-900 transition-all active:scale-[0.98]">
                         Cancel
                     </a>
                 </div>
@@ -286,6 +286,7 @@ $brands = $pdo->query("SELECT * FROM brands ORDER BY name ASC")->fetchAll(PDO::F
             }
         }
 
+        // Helper to dynamically resolve endpoints relative to the dashboard directory,
         // Intercept form submit and send via Fetch (AJAX)
         document.getElementById('addProductForm').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -306,7 +307,7 @@ $brands = $pdo->query("SELECT * FROM brands ORDER BY name ASC")->fetchAll(PDO::F
 
             try {
                 const formData = new FormData(this);
-                const response = await fetch('functions/add-product.php', {
+                const response = await fetch('/dashboard/functions/add-product.php', {
                     method: 'POST',
                     body: formData
                 });
@@ -317,7 +318,7 @@ $brands = $pdo->query("SELECT * FROM brands ORDER BY name ASC")->fetchAll(PDO::F
                     successAlert.textContent = result.message;
                     successAlert.classList.remove('hidden');
                     this.reset();
-                    
+
                     // Reset custom specifications container
                     document.getElementById('slugInput').value = '';
                     document.getElementById('specifications_container').innerHTML = `
@@ -341,7 +342,10 @@ $brands = $pdo->query("SELECT * FROM brands ORDER BY name ASC")->fetchAll(PDO::F
                     submitBtn.disabled = false;
                     submitBtn.style.opacity = '1';
                 }
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
             }
         });
     </script>

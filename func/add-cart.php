@@ -4,8 +4,11 @@
 //  Accepts POST requests, adds product to the user's cart
 //  and decrements the product's stock_quantity accordingly.
 // ============================================================
-
 header('Content-Type: application/json');
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Headers: Content-Type');
+header('Access-Control-Allow-Credentials: true');
+header('Access-Control-Allow-Methods: POST');
 
 require_once '../includes/config.php';
 
@@ -121,7 +124,6 @@ try {
         'message'    => htmlspecialchars($product['name']) . ' added to cart!',
         'cart_count' => $cart_total
     ]);
-
 } catch (PDOException $e) {
     if (isset($pdo) && $pdo->inTransaction()) {
         $pdo->rollBack();

@@ -5,6 +5,10 @@
 // ============================================================
 
 header('Content-Type: application/json');
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Headers: Content-Type');
+header('Access-Control-Allow-Credentials: true');
+header('Access-Control-Allow-Methods: POST');
 
 require_once '../includes/config.php';
 
@@ -81,7 +85,6 @@ try {
         // Decrement stock by 1
         $pdo->prepare("UPDATE products SET stock_quantity = stock_quantity - 1 WHERE id = :id")
             ->execute([':id' => $product_id]);
-
     } else { // decrement
         $new_qty = $current_qty - 1;
         if ($new_qty <= 0) {
@@ -120,7 +123,6 @@ try {
         'cart_count' => $cart_count,
         'subtotal'   => $subtotal
     ]);
-
 } catch (PDOException $e) {
     if (isset($pdo) && $pdo->inTransaction()) {
         $pdo->rollBack();

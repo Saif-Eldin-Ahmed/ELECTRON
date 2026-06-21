@@ -3,31 +3,16 @@
 //  Database Configuration — PDO Connection
 // ============================================================
 
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(200);
-    exit();
-}
 
-header('Access-Control-Allow-Headers: Content-Type');
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Credentials: true');
-header('Access-Control-Allow-Methods: POST');
-header('Content-Type: application/json');
+define('DB_HOST', 'Place your host here');
+define('DB_PORT', 'Place The Database port');
+define('DB_USER', 'Place The Database username');
+define('DB_PASS', 'Place The Database password');
+define('DB_NAME', 'Place The Database name');
 
 
-define('DB_HOST', 'localhost');
-define('DB_PORT', '3306');
-define('DB_USER', 'root');
-define('DB_PASS', '');
-define('DB_NAME', 'electron_test');
-
-/**
- * Returns an active PDO connection.
- * Auto-creates the database and users table if they do not exist.
- */
 function getDBConnection(): PDO
 {
-    // Step 3 — Now connect with the target database selected
     $dsn = 'mysql:host=' . DB_HOST . ';port=' . DB_PORT . ';dbname=' . DB_NAME . ';charset=utf8mb4';
 
     $pdo = new PDO($dsn, DB_USER, DB_PASS, [

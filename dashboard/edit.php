@@ -1,249 +1,50 @@
-x<?php
-    // ============================================================
-    //  dashboard/edit.php — Edit Product Page
-    // ============================================================
-
+<?php
+// ============================================================
+//  dashboard/edit.php — Edit Product Page
+// ============================================================
+if (session_status() === PHP_SESSION_NONE) {
     session_start();
-    if (!isset($_SESSION['id']) || $_SESSION['role'] !== 'admin') {
-        header("Location: ../index.php");
-        exit;
-    }
+}
+if (!isset($_SESSION['id']) || $_SESSION['role'] !== 'admin') {
+    header("Location: ../index.php");
+    exit;
+}
 
-    $acc = true; // Exclude front-end navbar
-    require_once '../includes/config.php';
+require_once '../includes/config.php';
 
-    try {
-        $pdo = getDBConnection();
-    } catch (PDOException $e) {
-        die("Database connection failed: " . $e->getMessage());
-    }
+try {
+    $pdo = getDBConnection();
+} catch (PDOException $e) {
+    die("Database connection failed: " . $e->getMessage());
+}
 
-    // Fetch categories and brands for options
-    $categories = $pdo->query("SELECT * FROM categories ORDER BY parent_id ASC, name ASC")->fetchAll(PDO::FETCH_ASSOC);
-    $brands = $pdo->query("SELECT * FROM brands ORDER BY name ASC")->fetchAll(PDO::FETCH_ASSOC);
+// Fetch categories and brands for options
+$categories = $pdo->query("SELECT * FROM categories ORDER BY parent_id ASC, name ASC")->fetchAll(PDO::FETCH_ASSOC);
+$brands = $pdo->query("SELECT * FROM brands ORDER BY name ASC")->fetchAll(PDO::FETCH_ASSOC);
 
-    $error = '';
-    $success = '';
+$error = '';
+$success = '';
 
-    // Get product ID
-    $product_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
-    if (!$product_id) {
-        header("Location: index.php");
-        exit;
-    }
+// Get product ID
+$product_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+if (!$product_id) {
+    header("Location: /dashboard/index.php");
+    exit;
+}
 
-    // Fetch current product data
-    $stmt = $pdo->prepare("SELECT * FROM products WHERE id = :id");
-    $stmt->execute([':id' => $product_id]);
-    $product = $stmt->fetch(PDO::FETCH_ASSOC);
+// Fetch current product data
+$stmt = $pdo->prepare("SELECT * FROM products WHERE id = :id");
+$stmt->execute([':id' => $product_id]);
+$product = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if (!$product) {
-        die("Product not found.");
-    }
+if (!$product) {
+    die("Product not found.");
+}
 
-    // Parse current images and specifications
-    $current_imgs = json_decode($product['imgs'] ?: '[]', true) ?: [];
-    $current_specs = json_decode($product['specifications'] ?: '[]', true) ?: [];
-
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        // Collect and sanitize fields
-        $name = trim($_POST['name'] ?? '');
-        $slug = trim($_POST['slug'] ?? '');
-        $sku = trim($_POST['sku'] ?? '');
-        $price = floatval($_POST['price'] ?? 0);
-        $compare_at_price = !empty($_POST['compare_at_price']) ? floatval($_POST['compare_at_price']) : null;
-        $description = trim($_POST['description'] ?? '');
-        $stock_quantity = intval($_POST['stock_quantity'] ?? 0);
-        $low_stock_limit = intval($_POST['low_stock_limit'] ?? 5);
-        $category_id = !empty($_POST['category_id']) ? intval($_POST['category_id']) : null;
-        $brand_id = !empty($_POST['brand_id']) ? intval($_POST['brand_id']) : null;
-        $status = trim($_POST['status'] ?? 'draft');
-        $warranty_months = !empty($_POST['warranty_months']) ? intval($_POST['warranty_months']) : null;
-        $weight_grams = !empty($_POST['weight_grams']) ? intval($_POST['weight_grams']) : null;
-        $dimensions = trim($_POST['dimensions'] ?? '') ?: null;
-
-        // Build Specifications JSON
-        $spec_keys = $_POST['spec_keys'] ?? [];
-        $spec_vals = $_POST['spec_vals'] ?? [];
-        $specs_array = [];
-        foreach ($spec_keys as $idx => $key) {
-            $key = trim($key);
-            $val = trim($spec_vals[$idx] ?? '');
-            if ($key !== '' && $val !== '') {
-                $specs_array[$key] = $val;
-            }
-        }
-        $specifications_json = json_encode($specs_array);
-
-        // Validate requirements
-        if (empty($name)) {
-            $error = "Product name is required.";
-        } elseif ($price <= 0) {
-            $error = "Product price must be greater than 0.";
-        } else {
-            // Generate slug if empty
-            if (empty($slug)) {
-                $slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $name), '-'));
-            }
-
-            // Handle Image edits/removals
-            $keep_imgs = $_POST['keep_imgs'] ?? [];
-            $image_paths = [];
-
-            // Retain only selected previous images
-            foreach ($current_imgs as $img_path) {
-                if (in_array($img_path, $keep_imgs)) {
-                    $image_paths[] = $img_path;
-                }
-            }
-
-            $upload_dir = '../assets/prdctImgs/';
-            if (!is_dir($upload_dir)) {
-                mkdir($upload_dir, 0777, true);
-            }
-
-            // Helper function to process single upload
-            $process_upload = function ($file_input_name) use ($upload_dir, &$error) {
-                if (isset($_FILES[$file_input_name]) && $_FILES[$file_input_name]['error'] === UPLOAD_ERR_OK) {
-                    $file_tmp = $_FILES[$file_input_name]['tmp_name'];
-                    $file_name = $_FILES[$file_input_name]['name'];
-                    $ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
-
-                    $allowed = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
-                    if (in_array($ext, $allowed)) {
-                        $new_filename = 'img_' . uniqid() . '.' . $ext;
-                        $dest = $upload_dir . $new_filename;
-                        if (move_uploaded_file($file_tmp, $dest)) {
-                            return 'assets/prdctImgs/' . $new_filename;
-                        } else {
-                            $error = "Failed to move uploaded file: {$file_name}";
-                        }
-                    } else {
-                        $error = "Unsupported image format: {$ext}";
-                    }
-                }
-                return null;
-            };
-
-            // 1. Process New Primary Image (if uploaded)
-            $new_primary_path = $process_upload('primary_image');
-            if ($new_primary_path) {
-                // Replace the primary image (first element or insert at beginning)
-                if (!empty($image_paths)) {
-                    $image_paths[0] = $new_primary_path;
-                } else {
-                    $image_paths[] = $new_primary_path;
-                }
-            } elseif (empty($image_paths)) {
-                // If all images were removed, fall back to Default
-                $image_paths[] = 'assets/prdctImgs/Default.png';
-            }
-
-            // 2. Process New Gallery Images
-            if (isset($_FILES['gallery_images'])) {
-                $total_files = count($_FILES['gallery_images']['name']);
-                for ($i = 0; $i < $total_files; $i++) {
-                    if ($_FILES['gallery_images']['error'][$i] === UPLOAD_ERR_OK) {
-                        $file_tmp = $_FILES['gallery_images']['tmp_name'][$i];
-                        $file_name = $_FILES['gallery_images']['name'][$i];
-                        $ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
-
-                        $allowed = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
-                        if (in_array($ext, $allowed)) {
-                            $new_filename = 'img_' . uniqid() . '.' . $ext;
-                            $dest = $upload_dir . $new_filename;
-                            if (move_uploaded_file($file_tmp, $dest)) {
-                                $image_paths[] = 'assets/prdctImgs/' . $new_filename;
-                            }
-                        }
-                    }
-                }
-            }
-
-            $imgs_json = json_encode($image_paths);
-
-            if (empty($error)) {
-                // Database Update
-                try {
-                    $pdo->beginTransaction();
-
-                    $stmtUpdate = $pdo->prepare(
-                        "UPDATE `products` SET
-                        `name` = :name,
-                        `slug` = :slug,
-                        `description` = :description,
-                        `price` = :price,
-                        `compare_at_price` = :compare_at_price,
-                        `sku` = :sku,
-                        `stock_quantity` = :stock_quantity,
-                        `low_stock_limit` = :low_stock_limit,
-                        `brand_id` = :brand_id,
-                        `category_id` = :category_id,
-                        `status` = :status,
-                        `imgs` = :imgs,
-                        `specifications` = :specifications,
-                        `warranty_months` = :warranty_months,
-                        `weight_grams` = :weight_grams,
-                        `dimensions` = :dimensions,
-                        `updated_by` = :updated_by
-                    WHERE `id` = :id"
-                    );
-
-                    $stmtUpdate->execute([
-                        ':name' => $name,
-                        ':slug' => $slug,
-                        ':description' => $description,
-                        ':price' => $price,
-                        ':compare_at_price' => $compare_at_price,
-                        ':sku' => $sku ?: null,
-                        ':stock_quantity' => $stock_quantity,
-                        ':low_stock_limit' => $low_stock_limit,
-                        ':brand_id' => $brand_id,
-                        ':category_id' => $category_id,
-                        ':status' => $status,
-                        ':imgs' => $imgs_json,
-                        ':specifications' => $specifications_json ?: '{}',
-                        ':warranty_months' => $warranty_months,
-                        ':weight_grams' => $weight_grams,
-                        ':dimensions' => $dimensions,
-                        ':updated_by' => intval($_SESSION['id']),
-                        ':id' => $product_id
-                    ]);
-
-                    // Sync product_images table
-                    $stmtDelImgs = $pdo->prepare("DELETE FROM `product_images` WHERE `product_id` = :pid");
-                    $stmtDelImgs->execute([':pid' => $product_id]);
-
-                    foreach ($image_paths as $idx => $path) {
-                        $is_primary = ($idx === 0) ? 1 : 0;
-                        $stmtImg = $pdo->prepare(
-                            "INSERT INTO `product_images` (`product_id`, `image_url`, `is_primary`, `sort_order`) 
-                        VALUES (:pid, :url, :is_primary, :sort)"
-                        );
-                        $stmtImg->execute([
-                            ':pid' => $product_id,
-                            ':url' => $path,
-                            ':is_primary' => $is_primary,
-                            ':sort' => $idx
-                        ]);
-                    }
-
-                    $pdo->commit();
-                    $success = "Product updated successfully!";
-
-                    // Refresh local data
-                    $stmt->execute([':id' => $product_id]);
-                    $product = $stmt->fetch(PDO::FETCH_ASSOC);
-                    $current_imgs = json_decode($product['imgs'] ?: '[]', true) ?: [];
-                    $current_specs = json_decode($product['specifications'] ?: '[]', true) ?: [];
-                } catch (Exception $e) {
-                    $pdo->rollBack();
-                    $error = "Database update failed: " . $e->getMessage();
-                }
-            }
-        }
-    }
-    ?>
+// Parse current images and specifications
+$current_imgs = json_decode($product['imgs'] ?: '[]', true) ?: [];
+$current_specs = json_decode($product['specifications'] ?: '[]', true) ?: [];
+?>
 <!DOCTYPE html>
 <html class="dark" lang="en">
 
@@ -254,8 +55,8 @@ x<?php
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
-    <script src="../assets/js/tailwind-config.js"></script>
-    <link href="../assets/css/style.css" rel="stylesheet" />
+    <script src="/assets/js/tailwind-config.js"></script>
+    <link href="/assets/css/style.css" rel="stylesheet" />
     <style>
         .glass-card {
             background: rgba(24, 24, 27, 0.65);
@@ -281,15 +82,15 @@ x<?php
             <!-- Navigation -->
             <nav class="p-4 space-y-2">
                 <p class="px-4 text-[10px] font-bold uppercase tracking-widest text-zinc-500 mb-2">Management</p>
-                <a href="index.php" class="flex items-center gap-3 px-4 py-3 text-xs font-bold uppercase tracking-widest text-zinc-400 hover:text-white rounded-lg hover:bg-zinc-900 transition-all">
+                <a href="/dashboard/index.php" class="flex items-center gap-3 px-4 py-3 text-xs font-bold uppercase tracking-widest text-zinc-400 hover:text-white rounded-lg hover:bg-zinc-900 transition-all">
                     <span class="material-symbols-outlined text-lg">dashboard</span>
                     Products
                 </a>
-                <a href="add-product.php" class="flex items-center gap-3 px-4 py-3 text-xs font-bold uppercase tracking-widest text-zinc-400 hover:text-white rounded-lg hover:bg-zinc-900 transition-all">
+                <a href="/dashboard/add-product.php" class="flex items-center gap-3 px-4 py-3 text-xs font-bold uppercase tracking-widest text-zinc-400 hover:text-white rounded-lg hover:bg-zinc-900 transition-all">
                     <span class="material-symbols-outlined text-lg">add_circle</span>
                     Add Product
                 </a>
-                <a href="../search.php" class="flex items-center gap-3 px-4 py-3 text-xs font-bold uppercase tracking-widest text-zinc-400 hover:text-white rounded-lg hover:bg-zinc-900 transition-all">
+                <a href="/search.php" class="flex items-center gap-3 px-4 py-3 text-xs font-bold uppercase tracking-widest text-zinc-400 hover:text-white rounded-lg hover:bg-zinc-900 transition-all">
                     <span class="material-symbols-outlined text-lg">storefront</span>
                     Store Front
                 </a>
@@ -298,10 +99,10 @@ x<?php
 
         <!-- User Account Details -->
         <div class="p-6 border-t border-zinc-800 flex items-center gap-3">
-            <span class="material-symbols-outlined text-2xl text-zinc-400">account_circle</span>
+            <img src="<?php echo $_SESSION['pro_img'] ? '../' . $_SESSION['pro_img'] : '../assets/proImgs/Default.jpg'; ?>" alt="Profile Picture" class="w-10 h-10 rounded-full">
             <div class="overflow-hidden">
-                <p class="text-xs font-bold uppercase tracking-wider text-white truncate">Administrator</p>
-                <p class="text-[10px] text-zinc-500 truncate">admin@electron.com</p>
+                <p class="text-xs font-bold uppercase tracking-wider text-white truncate"><?php echo $_SESSION['firstname'] . " " . $_SESSION['lastname']; ?></p>
+                <p class="text-[10px] text-zinc-500 truncate"><?php echo $_SESSION['email']; ?></p>
             </div>
         </div>
     </aside>
@@ -311,7 +112,7 @@ x<?php
         <!-- Top Bar Header -->
         <header class="h-24 border-b border-zinc-800 flex items-center justify-between px-8 bg-zinc-950/80 backdrop-blur-md">
             <div>
-                <a href="index.php" class="text-xs font-bold uppercase tracking-widest text-zinc-500 hover:text-white flex items-center gap-1.5 mb-1">
+                <a href="/dashboard/index.php" class="text-xs font-bold uppercase tracking-widest text-zinc-500 hover:text-white flex items-center gap-1.5 mb-1">
                     <span class="material-symbols-outlined text-sm">arrow_back</span>
                     Back to Catalog
                 </a>
@@ -321,19 +122,11 @@ x<?php
 
         <!-- Form container -->
         <section class="p-8 max-w-5xl">
-            <?php if ($error): ?>
-                <div class="mb-6 p-4 bg-red-950/40 border border-red-900/60 rounded-xl text-red-200 text-xs font-semibold uppercase tracking-wider">
-                    <?php echo htmlspecialchars($error); ?>
-                </div>
-            <?php endif; ?>
+            <!-- Dynamic Alert Containers -->
+            <div id="error-alert" class="hidden mb-6 p-4 bg-red-950/40 border border-red-900/60 rounded-xl text-red-200 text-xs font-semibold uppercase tracking-wider"></div>
+            <div id="success-alert" class="hidden mb-6 p-4 bg-emerald-950/40 border border-emerald-900/60 rounded-xl text-emerald-200 text-xs font-semibold uppercase tracking-wider"></div>
 
-            <?php if ($success): ?>
-                <div class="mb-6 p-4 bg-emerald-950/40 border border-emerald-900/60 rounded-xl text-emerald-200 text-xs font-semibold uppercase tracking-wider">
-                    <?php echo htmlspecialchars($success); ?>
-                </div>
-            <?php endif; ?>
-
-            <form action="edit.php?id=<?php echo $product_id; ?>" method="POST" enctype="multipart/form-data" class="space-y-8">
+            <form id="editProductForm" action="/dashboard/functions/edit-product.php?id=<?php echo $product_id; ?>" method="POST" enctype="multipart/form-data" class="space-y-8">
                 <!-- Info Section -->
                 <div class="glass-card rounded-2xl p-8 space-y-6">
                     <h2 class="font-['Space_Grotesk'] text-sm font-bold uppercase tracking-wider text-white pb-3 border-b border-zinc-800">Basic Info</h2>
@@ -422,7 +215,7 @@ x<?php
                             <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-4">
                                 <?php foreach ($current_imgs as $idx => $img_path): ?>
                                     <div class="relative bg-zinc-900 border border-zinc-800 rounded-lg p-2 flex flex-col items-center gap-2">
-                                        <img class="w-20 h-20 object-contain rounded" src="../<?php echo htmlspecialchars($img_path); ?>" alt="">
+                                        <img class="w-20 h-20 object-contain rounded" src="<?php echo htmlspecialchars($img_path); ?>" alt="">
                                         <div class="flex items-center gap-1.5 mt-1">
                                             <input type="checkbox" name="keep_imgs[]" value="<?php echo htmlspecialchars($img_path); ?>" checked class="rounded bg-zinc-950 border-zinc-800 text-white focus:ring-0 cursor-pointer">
                                             <span class="text-[9px] uppercase tracking-wider font-bold text-zinc-400">
@@ -516,7 +309,7 @@ x<?php
                         <span class="material-symbols-outlined text-base font-bold">save</span>
                         Save Changes
                     </button>
-                    <a href="index.php" class="flex items-center gap-2 px-8 py-3.5 text-xs font-bold uppercase tracking-widest border border-zinc-800 text-zinc-400 hover:text-white rounded-full hover:bg-zinc-900 transition-all active:scale-[0.98]">
+                    <a href="/dashboard/index.php" class="flex items-center gap-2 px-8 py-3.5 text-xs font-bold uppercase tracking-widest border border-zinc-800 text-zinc-400 hover:text-white rounded-full hover:bg-zinc-900 transition-all active:scale-[0.98]">
                         Cancel
                     </a>
                 </div>
@@ -555,6 +348,56 @@ x<?php
                 row.remove();
             }
         }
+
+        document.getElementById('editProductForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const errorAlert = document.getElementById('error-alert');
+            const successAlert = document.getElementById('success-alert');
+            const submitBtn = this.querySelector('button[type="submit"]');
+
+            errorAlert.classList.add('hidden');
+            successAlert.classList.add('hidden');
+
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.style.opacity = '0.5';
+            }
+
+            try {
+                const formData = new FormData(this);
+                const url = this.getAttribute('action');
+                const response = await fetch(url, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    successAlert.textContent = result.message;
+                    successAlert.classList.remove('hidden');
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1500);
+                } else {
+                    errorAlert.textContent = result.error || 'Failed to update product.';
+                    errorAlert.classList.remove('hidden');
+                }
+            } catch (err) {
+                errorAlert.textContent = 'An error occurred: ' + err.message;
+                errorAlert.classList.remove('hidden');
+            } finally {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.style.opacity = '1';
+                }
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            }
+        });
     </script>
 </body>
 

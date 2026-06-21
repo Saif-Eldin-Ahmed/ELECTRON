@@ -7,6 +7,7 @@
 header('Content-Type: application/json');
 
 require_once '../../includes/config.php';
+require_once '../../includes/storage-upload.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
@@ -18,7 +19,6 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Only admins may add products
 if (!isset($_SESSION['id']) || $_SESSION['role'] !== 'admin') {
     http_response_code(403);
     echo json_encode(['success' => false, 'error' => 'Unauthorized.']);
@@ -33,7 +33,6 @@ try {
     exit;
 }
 
-// Collect and sanitize fields
 $name = trim($_POST['name'] ?? '');
 $slug = trim($_POST['slug'] ?? '');
 $sku = trim($_POST['sku'] ?? '');
@@ -49,7 +48,6 @@ $warranty_months = !empty($_POST['warranty_months']) ? intval($_POST['warranty_m
 $weight_grams = !empty($_POST['weight_grams']) ? intval($_POST['weight_grams']) : null;
 $dimensions = trim($_POST['dimensions'] ?? '') ?: null;
 
-// Build Specifications JSON
 $spec_keys = $_POST['spec_keys'] ?? [];
 $spec_vals = $_POST['spec_vals'] ?? [];
 $specs_array = [];
@@ -62,7 +60,6 @@ foreach ($spec_keys as $idx => $key) {
 }
 $specifications_json = json_encode($specs_array);
 
-// Validate requirements
 if (empty($name)) {
     http_response_code(400);
     echo json_encode(['success' => false, 'error' => 'Product name is required.']);
@@ -73,24 +70,16 @@ if (empty($name)) {
     exit;
 }
 
-// Generate slug if empty
 if (empty($slug)) {
     $slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $name), '-'));
 }
 
-// Handle Image Uploads
 $image_paths = [];
-$upload_dir = '../../assets/prdctImgs/';
 
-// Ensure assets/prdctImgs directory exists
-if (!is_dir($upload_dir)) {
-    mkdir($upload_dir, 0777, true);
-}
 
 $error = '';
 
-// Helper function to process single upload
-$process_upload = function ($file_input_name) use ($upload_dir, &$error) {
+$process_upload = function ($file_input_name) use (&$error) {
     if (isset($_FILES[$file_input_name]) && $_FILES[$file_input_name]['error'] === UPLOAD_ERR_OK) {
         $file_tmp = $_FILES[$file_input_name]['tmp_name'];
         $file_name = $_FILES[$file_input_name]['name'];
@@ -98,12 +87,11 @@ $process_upload = function ($file_input_name) use ($upload_dir, &$error) {
 
         $allowed = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
         if (in_array($ext, $allowed)) {
-            $new_filename = 'img_' . uniqid() . '.' . $ext;
-            $dest = $upload_dir . $new_filename;
-            if (move_uploaded_file($file_tmp, $dest)) {
-                return 'assets/prdctImgs/' . $new_filename;
+            $uploadResult = uploadToCloudinary($file_tmp, "products");
+            if (!$uploadResult['success']) {
+                $error = "Failed to move uploaded file: {$file_name}.";
             } else {
-                $error = "Failed to move uploaded file: {$file_name}";
+                return $uploadResult['url'];
             }
         } else {
             $error = "Unsupported image format: {$ext}";
@@ -112,17 +100,14 @@ $process_upload = function ($file_input_name) use ($upload_dir, &$error) {
     return null;
 };
 
-// 1. Process Primary Image
 $primary_path = $process_upload('primary_image');
 if ($primary_path) {
     $image_paths[] = $primary_path;
 } else {
-    // Default primary fallback
     $primary_path = 'assets/prdctImgs/Default.png';
     $image_paths[] = $primary_path;
 }
 
-// 2. Process Gallery Images
 if (isset($_FILES['gallery_images'])) {
     $total_files = count($_FILES['gallery_images']['name']);
     for ($i = 0; $i < $total_files; $i++) {
@@ -133,12 +118,11 @@ if (isset($_FILES['gallery_images'])) {
 
             $allowed = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
             if (in_array($ext, $allowed)) {
-                $new_filename = 'img_' . uniqid() . '.' . $ext;
-                $dest = $upload_dir . $new_filename;
-                if (move_uploaded_file($file_tmp, $dest)) {
-                    $image_paths[] = 'assets/prdctImgs/' . $new_filename;
+                $uploadResult = uploadToCloudinary($file_tmp, "products");
+                if (!$uploadResult['success']) {
+                    $error = "Failed to move gallery image file: {$file_name}.";
                 } else {
-                    $error = "Failed to move gallery image file: {$file_name}";
+                    $image_paths[] = $uploadResult['url'];
                 }
             } else {
                 $error = "Unsupported gallery image format: {$ext}";

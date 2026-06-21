@@ -10,7 +10,6 @@ header('Access-Control-Allow-Methods: POST');
 
 require_once '../../includes/config.php';
 
-
 // Only allow POST requests
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {

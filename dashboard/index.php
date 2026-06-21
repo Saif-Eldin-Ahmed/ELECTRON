@@ -3,17 +3,14 @@
 //  dashboard/index.php — Admin Dashboard
 // ============================================================
 
-// Adminestrator can only access this page
-
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 if (!isset($_SESSION['id']) || $_SESSION['role'] !== 'admin') {
-    header("Location: ../index.php");
+    header("Location: /index.php");
     exit;
 }
 
-$acc = true; // Exclude front-end navbar
 require_once '../includes/config.php';
 
 try {
@@ -89,7 +86,7 @@ $body_class = "bg-zinc-950 text-white font-body-md min-h-screen";
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
     <link rel="icon" href="../favicon.png" type="image/png">
     <script src="../assets/js/tailwind-config.js"></script>
-    <link href="style.css" rel="stylesheet" />
+    <link href="/dashboard/style.css" rel="stylesheet" />
 </head>
 
 <body class="bg-zinc-950 text-zinc-100 min-h-screen flex">
@@ -99,7 +96,7 @@ $body_class = "bg-zinc-950 text-white font-body-md min-h-screen";
         <div>
             <!-- Brand Logo -->
             <div class="h-24 flex items-center px-8 border-b border-zinc-800">
-                <a href="../index.php" class="text-2xl font-black tracking-tighter text-white font-['Space_Grotesk'] uppercase flex items-center gap-2">
+                <a href="/index.php" class="text-2xl font-black tracking-tighter text-white font-['Space_Grotesk'] uppercase flex items-center gap-2">
                     <span class="material-symbols-outlined text-white text-3xl">bolt</span>
                     ELECTRON
                 </a>
@@ -108,15 +105,15 @@ $body_class = "bg-zinc-950 text-white font-body-md min-h-screen";
             <!-- Navigation -->
             <nav class="p-4 space-y-2">
                 <p class="px-4 text-[10px] font-bold uppercase tracking-widest text-zinc-500 mb-2">Management</p>
-                <a href="index.php" class="flex items-center gap-3 px-4 py-3 text-xs font-bold uppercase tracking-widest text-white rounded-lg sidebar-item-active transition-all">
+                <a href="/dashboard/index.php" class="flex items-center gap-3 px-4 py-3 text-xs font-bold uppercase tracking-widest text-white rounded-lg sidebar-item-active transition-all">
                     <span class="material-symbols-outlined text-lg">dashboard</span>
                     Products
                 </a>
-                <a href="add-product.php" class="flex items-center gap-3 px-4 py-3 text-xs font-bold uppercase tracking-widest text-zinc-400 hover:text-white rounded-lg hover:bg-zinc-900 transition-all">
+                <a href="/dashboard/add-product.php" class="flex items-center gap-3 px-4 py-3 text-xs font-bold uppercase tracking-widest text-zinc-400 hover:text-white rounded-lg hover:bg-zinc-900 transition-all">
                     <span class="material-symbols-outlined text-lg">add_circle</span>
                     Add Product
                 </a>
-                <a href="../search.php" class="flex items-center gap-3 px-4 py-3 text-xs font-bold uppercase tracking-widest text-zinc-400 hover:text-white rounded-lg hover:bg-zinc-900 transition-all">
+                <a href="/search.php" class="flex items-center gap-3 px-4 py-3 text-xs font-bold uppercase tracking-widest text-zinc-400 hover:text-white rounded-lg hover:bg-zinc-900 transition-all">
                     <span class="material-symbols-outlined text-lg">storefront</span>
                     Store Front
                 </a>
@@ -125,7 +122,7 @@ $body_class = "bg-zinc-950 text-white font-body-md min-h-screen";
 
         <!-- User Account Details -->
         <div class="p-6 border-t border-zinc-800 flex items-center gap-3">
-            <img src="<?php echo $_SESSION['pro_img'] ? '../' . $_SESSION['pro_img'] : '../assets/proImgs/Default.jpg'; ?>" alt="Profile Picture" class="w-10 h-10 rounded-full">
+            <img src="<?php echo $_SESSION['pro_img'] ? $_SESSION['pro_img'] : '../assets/proImgs/Default.jpg'; ?>" alt="Profile Picture" class="w-10 h-10 rounded-full">
             <div class="overflow-hidden">
                 <p class="text-xs font-bold uppercase tracking-wider text-white truncate"><?php echo $_SESSION['firstname'] . " " . $_SESSION['lastname']; ?></p>
                 <p class="text-[10px] text-zinc-500 truncate"><?php echo $_SESSION['email']; ?></p>
@@ -208,7 +205,7 @@ $body_class = "bg-zinc-950 text-white font-body-md min-h-screen";
             <div class="glass-card rounded-2xl overflow-hidden flex flex-col h-full">
                 <!-- Table Header Options -->
                 <div class="p-6 border-b border-zinc-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                    <form action="index.php" method="GET" class="relative w-full sm:w-80">
+                    <form action="/dashboard/index.php" method="GET" class="relative w-full sm:w-80">
                         <input type="text" name="q" value="<?php echo htmlspecialchars($search); ?>" placeholder="Search product name, SKU..." class="w-full bg-zinc-900 border border-zinc-850 rounded-lg py-2 pl-4 pr-10 text-xs font-bold uppercase tracking-widest text-white placeholder-zinc-500 focus:outline-none focus:border-zinc-700 focus:ring-0 transition-colors" />
                         <button type="submit" class="absolute right-3.5 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white flex items-center">
                             <span class="material-symbols-outlined text-base">search</span>
@@ -246,7 +243,7 @@ $body_class = "bg-zinc-950 text-white font-body-md min-h-screen";
                                 <?php foreach ($products as $product): ?>
                                     <?php
                                     $p_imgs = json_decode($product['imgs'], true);
-                                    $p_img = (!empty($p_imgs) && is_array($p_imgs)) ? '../' . $p_imgs[0] : '../assets/prdctImgs/Default.png';
+                                    $p_img = (!empty($p_imgs) && is_array($p_imgs)) ? $p_imgs[0] : '../assets/prdctImgs/Default.png';
                                     ?>
                                     <tr id="product-row-<?php echo $product['id']; ?>" class="hover:bg-zinc-900/10 transition-colors">
                                         <td class="p-6 flex items-center gap-4">
@@ -307,7 +304,7 @@ $body_class = "bg-zinc-950 text-white font-body-md min-h-screen";
                                                     visibility
                                                 </button>
                                             <?php endif; ?>
-                                            <a href="edit.php?id=<?php echo $product['id']; ?>" target="_blank" class="material-symbols-outlined text-xs font-bold text-zinc-400 hover:text-white uppercase tracking-widest border border-zinc-800 hover:border-zinc-700 px-3 py-1.5 rounded-lg transition-colors">
+                                            <a href="/dashboard/edit.php?id=<?php echo $product['id']; ?>" target="_blank" class="material-symbols-outlined text-xs font-bold text-zinc-400 hover:text-white uppercase tracking-widest border border-zinc-800 hover:border-zinc-700 px-3 py-1.5 rounded-lg transition-colors">
                                                 edit
                                             </a>
                                             <?php if ($product['status'] === 'published'): ?>
@@ -358,13 +355,16 @@ $body_class = "bg-zinc-950 text-white font-body-md min-h-screen";
 </body>
 
 <script>
+    // Helper to dynamically resolve endpoints relative to the dashboard directory,
+    // avoiding 404 errors caused by missing trailing slashes (e.g., /dashboard vs /dashboard/)
+
     async function pubProduct(id, order, status) {
         const data = new FormData()
         data.append('id', id)
         data.append('order', order)
         data.append('status', status)
         try {
-            const res = await fetch('functions/hide-pub.php', {
+            const res = await fetch('/dashboard/functions/hide-pub.php', {
                 method: 'POST',
                 body: data
             });
@@ -394,7 +394,7 @@ $body_class = "bg-zinc-950 text-white font-body-md min-h-screen";
         data.append('id', id);
 
         try {
-            const res = await fetch('functions/delete-product.php', {
+            const res = await fetch('/dashboard/functions/delete-product.php', {
                 method: 'POST',
                 body: data
             });
