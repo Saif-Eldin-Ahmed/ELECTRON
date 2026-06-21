@@ -126,7 +126,7 @@ $current_specs = json_decode($product['specifications'] ?: '[]', true) ?: [];
             <div id="error-alert" class="hidden mb-6 p-4 bg-red-950/40 border border-red-900/60 rounded-xl text-red-200 text-xs font-semibold uppercase tracking-wider"></div>
             <div id="success-alert" class="hidden mb-6 p-4 bg-emerald-950/40 border border-emerald-900/60 rounded-xl text-emerald-200 text-xs font-semibold uppercase tracking-wider"></div>
 
-            <form id="editProductForm" action="functions/edit-product.php?id=<?php echo $product_id; ?>" method="POST" enctype="multipart/form-data" class="space-y-8">
+            <form id="editProductForm" action="/dashboard/functions/edit-product.php?id=<?php echo $product_id; ?>" method="POST" enctype="multipart/form-data" class="space-y-8">
                 <!-- Info Section -->
                 <div class="glass-card rounded-2xl p-8 space-y-6">
                     <h2 class="font-['Space_Grotesk'] text-sm font-bold uppercase tracking-wider text-white pb-3 border-b border-zinc-800">Basic Info</h2>
@@ -356,11 +356,9 @@ $current_specs = json_decode($product['specifications'] ?: '[]', true) ?: [];
             const successAlert = document.getElementById('success-alert');
             const submitBtn = this.querySelector('button[type="submit"]');
 
-            // Clear previous alerts
             errorAlert.classList.add('hidden');
             successAlert.classList.add('hidden');
 
-            // Disable submit button during requests
             if (submitBtn) {
                 submitBtn.disabled = true;
                 submitBtn.style.opacity = '0.5';
@@ -379,8 +377,6 @@ $current_specs = json_decode($product['specifications'] ?: '[]', true) ?: [];
                 if (result.success) {
                     successAlert.textContent = result.message;
                     successAlert.classList.remove('hidden');
-
-                    // Reload the page after 1.5 seconds to refresh data (like images)
                     setTimeout(() => {
                         window.location.reload();
                     }, 1500);
