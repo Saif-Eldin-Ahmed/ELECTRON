@@ -48,7 +48,7 @@ include 'includes/header.php';
             <div class="flex flex-col gap-base relative input-group" id="group-password">
                 <label class="font-label-md text-label-md text-on-surface-variant" for="password">Password*</label>
                 <div class="relative">
-                    <input class="w-full h-input-height px-4 rounded-lg border border-outline-variant bg-[#F9FAFB] focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-body-md" id="password" name="password" placeholder="XrkGFt067*" type="password" required />
+                    <input class="w-full h-input-height px-4 rounded-lg border border-outline-variant bg-[#F9FAFB] focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-body-md" id="password" name="password" placeholder="Zn8s04*" type="password" required />
                     <button class="eye-btn absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-primary transition-colors" type="button" id="toggle-pwd">
                         <span class="material-symbols-outlined text-[20px]">visibility</span>
                     </button>
@@ -69,7 +69,7 @@ include 'includes/header.php';
             <div class="flex flex-col gap-base relative input-group" id="group-confirm">
                 <label class="font-label-md text-label-md text-on-surface-variant" for="confirm">Confirm Password*</label>
                 <div class="relative">
-                    <input class="w-full h-input-height px-4 rounded-lg border border-outline-variant bg-[#F9FAFB] focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-body-md" id="confirm" name="confirm" placeholder="XrkGFt067*" type="password" required />
+                    <input class="w-full h-input-height px-4 rounded-lg border border-outline-variant bg-[#F9FAFB] focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-body-md" id="confirm" name="confirm" placeholder="Zn8s04*" type="password" required />
                     <button class="eye-btn absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-primary transition-colors" type="button" id="toggle-confirm" aria-label="Toggle confirm password visibility">
                         <span class="material-symbols-outlined text-[20px]">visibility</span>
                     </button>
