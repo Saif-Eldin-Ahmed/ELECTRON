@@ -4,11 +4,11 @@
 // ============================================================
 
 
-define("DB_HOST", "mysql.railway.internal");
-define("DB_PORT", "3306");
-define("DB_NAME", "railway");
-define("DB_USER", "root");
-define("DB_PASS", "RMeWegmKCighsoyculHNZWFcpDlDzDGY");
+define("DB_HOST", getenv(DB_HOST));
+define("DB_PORT", getenv(DB_PORT));
+define("DB_NAME", getenv(DB_NAME));
+define("DB_USER", getenv(DB_USER));
+define("DB_PASS", getenv(DB_PASS));
 
 function getDBConnection(): PDO
 {
