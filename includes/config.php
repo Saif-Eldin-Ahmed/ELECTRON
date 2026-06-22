@@ -4,7 +4,7 @@
 // ============================================================
 
 require_once 'env.php';
-loadEnv('.env');
+loadEnv();
 function getDBConnection(): PDO
 {
     $host = $_ENV['DB_HOST'];

@@ -1,7 +1,8 @@
 <?php
 
-function loadEnv(string $path): void
+function loadEnv(): void
 {
+    $path = __DIR__ . '\..\.env';
     if (!file_exists($path)) {
         throw new RuntimeException("Env file not found: {$path}");
     }
