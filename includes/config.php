@@ -3,21 +3,12 @@
 //  Database Configuration — PDO Connection
 // ============================================================
 
-
-<<<<<<< HEAD
-define("DB_HOST", getenv("DB_HOST"));
-define("DB_PORT", getenv("DB_PORT"));
-define("DB_NAME", getenv("DB_NAME"));
-define("DB_USER", getenv("DB_USER"));
-define("DB_PASS", getenv("DB_PASS"));
-=======
 define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
 define('DB_PORT', getenv('DB_PORT') ?: '3306');
 define('DB_USER', getenv('DB_USER') ?: 'root');
 define('DB_PASS', getenv('DB_PASS') ?: '');
 define('DB_NAME', getenv('DB_NAME') ?: 'electron');
 
->>>>>>> 3ef3285086461d8564e4e159fb63884c2e99842d
 
 function getDBConnection(): PDO
 {
