@@ -4,11 +4,11 @@
 // ============================================================
 
 
-define('DB_HOST', 'Place your host here');
-define('DB_PORT', 'Place The Database port');
-define('DB_USER', 'Place The Database username');
-define('DB_PASS', 'Place The Database password');
-define('DB_NAME', 'Place The Database name');
+define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
+define('DB_PORT', getenv('DB_PORT') ?: '3306');
+define('DB_USER', getenv('DB_USER') ?: 'root');
+define('DB_PASS', getenv('DB_PASS') ?: '');
+define('DB_NAME', getenv('DB_NAME') ?: 'electron');
 
 
 function getDBConnection(): PDO
