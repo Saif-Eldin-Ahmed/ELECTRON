@@ -3,8 +3,7 @@
 //  Database Configuration — PDO Connection
 // ============================================================
 
-require_once __DIR__ . '/env.php';
-loadEnv();
+
 define("DB_HOST", "mysql.railway.internal");
 define("DB_PORT", "3306");
 define("DB_NAME", "railway");
