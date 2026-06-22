@@ -216,8 +216,8 @@ if (isset($_SESSION['id'])) {
                 </div>
                 <div class="space-y-1 md:space-y-2">
                     <p class="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Audio</p>
-                    <h3 class="font-headline-md text-lg md:text-base lg:text-xl tracking-tight">iPhone 15</h3>
-                    <p class="font-bold text-zinc-900">$499.00</p>
+                    <h3 class="font-headline-md text-lg md:text-base lg:text-xl tracking-tight">iPhone 17 air</h3>
+                    <p class="font-bold text-zinc-900">$599.00</p>
                     <button class="text-[10px] font-bold uppercase tracking-widest pt-2 md:pt-4 hover:text-blue-600 transition-colors border-b border-transparent hover:border-blue-600 pb-0.5 inline-block">Shop Now</button>
                 </div>
             </div>
@@ -230,8 +230,8 @@ if (isset($_SESSION['id'])) {
                 </div>
                 <div class="space-y-1 md:space-y-2">
                     <p class="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Peripherals</p>
-                    <h3 class="font-headline-md text-lg md:text-base lg:text-xl tracking-tight">iPhone 15 Pro' (Blue Titanium)</h3>
-                    <p class="font-bold text-zinc-900">$229.00</p>
+                    <h3 class="font-headline-md text-lg md:text-base lg:text-xl tracking-tight">iPhone 17 Pro' (Blue Titanium)</h3>
+                    <p class="font-bold text-zinc-900">$899.00</p>
                     <button class="text-[10px] font-bold uppercase tracking-widest pt-2 md:pt-4 hover:text-blue-600 transition-colors border-b border-transparent hover:border-blue-600 pb-0.5 inline-block">Shop Now</button>
                 </div>
             </div>
@@ -244,8 +244,8 @@ if (isset($_SESSION['id'])) {
                 </div>
                 <div class="space-y-1 md:space-y-2">
                     <p class="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Computing</p>
-                    <h3 class="font-headline-md text-lg md:text-base lg:text-xl tracking-tight">iPhone 15 Pro' (Natural Titanium)</h3>
-                    <p class="font-bold text-zinc-900">$1,199.00</p>
+                    <h3 class="font-headline-md text-lg md:text-base lg:text-xl tracking-tight">iPhone 17 Pro' (Violet Titanium)</h3>
+                    <p class="font-bold text-zinc-900">$899.00</p>
                     <button class="text-[10px] font-bold uppercase tracking-widest pt-2 md:pt-4 hover:text-blue-600 transition-colors border-b border-transparent hover:border-blue-600 pb-0.5 inline-block">Shop Now</button>
                 </div>
             </div>
@@ -258,8 +258,8 @@ if (isset($_SESSION['id'])) {
                 </div>
                 <div class="space-y-1 md:space-y-2">
                     <p class="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Power</p>
-                    <h3 class="font-headline-md text-lg md:text-base lg:text-xl tracking-tight">iPhone 15 Pro' (White Titanium)</h3>
-                    <p class="font-bold text-zinc-900">$89.00</p>
+                    <h3 class="font-headline-md text-lg md:text-base lg:text-xl tracking-tight">iPhone 17 Pro Max</h3>
+                    <p class="font-bold text-zinc-900">$1199.00</p>
                     <button class="text-[10px] font-bold uppercase tracking-widest pt-2 md:pt-4 hover:text-blue-600 transition-colors border-b border-transparent hover:border-blue-600 pb-0.5 inline-block">Shop Now</button>
                 </div>
             </div>
