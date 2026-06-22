@@ -211,7 +211,7 @@ $current_specs = json_decode($product['specifications'] ?: '[]', true) ?: [];
                     <!-- Current Images -->
                     <?php if (!empty($current_imgs)): ?>
                         <div class="space-y-3">
-                            <label class="block text-[10px] font-bold uppercase tracking-widest text-zinc-400">Current Images (Select to keep)</label>
+                            <label class="block text-[10px] font-bold uppercase tracking-widest text-zinc-400">Current Images (Select to Delete)</label>
                             <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-4">
                                 <?php foreach ($current_imgs as $idx => $img_path): ?>
                                     <div class="relative bg-zinc-900 border border-zinc-800 rounded-lg p-2 flex flex-col items-center gap-2">
