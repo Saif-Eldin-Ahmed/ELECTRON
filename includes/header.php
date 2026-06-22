@@ -1,6 +1,6 @@
 <?php
 
-require_once "config.php";
+require_once __DIR__ . "/config.php";
 
 if (session_status() === PHP_SESSION_NONE) {
     // Keep the user logged in for 24 hours (86 400 seconds)
